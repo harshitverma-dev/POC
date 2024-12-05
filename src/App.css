@@ -1,0 +1,49 @@
+:root {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  font-family: 'circular';
+}
+
+/* new */
+.mainCard {
+  background-color: #fff;
+}
+
+.rightCardContainer .button.p-component:focus,
+.rightCardContainer .p-button:focus {
+  border: 0;
+  box-shadow: none;
+}
+
+.p-inputtext {
+  padding: 0.5rem 0.75rem !important;
+}
+
+.p-button:focus,
+.p-inputtext:enabled:focus,
+.p-dropdown:not(.p-disabled).p-focus {
+  box-shadow: none !important;
+}
+
+.p-button.p-button-sm {
+  padding: 0.5rem 1.6rem !important;
+}
+
+.p-button {
+  padding: 0.5rem 1.25rem !important;
+}
+
+.contentContainer{
+  background-color: #ededed !important;
+  min-height: 100vh;
+}
+
+/* add presenter */
+.addPresenterContainer {
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+  background: white;
+}
