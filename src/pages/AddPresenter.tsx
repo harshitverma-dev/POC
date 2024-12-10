@@ -42,8 +42,13 @@ const AddPresenter: React.FC = () => {
             role: createUserDetails.userRole?.id,
             techExperties: correctFormatForTechExperties
         }
-        console.log(payload, 'kp')
-        axios.post(url, payload).then((res) => {
+        // console.log(payload, 'kp')
+        axios.post(url, payload, {
+            headers:{
+                Authorization : 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJVUzMyNTIwOWRjN2EiLCJpc3MiOiJyYXZpbmRyYUBnbWFpbC5jb20iLCJuYW1lIjoicmF2aW5kcmEiLCJpYXQiOjE3MzM0Nzc5MDUsImV4cCI6MTczMzQ3ODgwNX0.CnHj9C0G_wEOjgAe1VlnnepYD0XlliP78DQFfC4mcs8'
+            },
+            withCredentials: false
+        }).then((res) => {
             console.log(res)
         }).catch(err => {
             console.log(err)
