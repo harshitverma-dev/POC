@@ -1,24 +1,36 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Avatar } from 'primereact/avatar';
 import { Button } from 'primereact/button';
-import { PresenterType } from '../interfaces/EventInterface';
+// import { PresenterType } from '../interface/EventInterface';
+import { userPresentersI } from '../interface/Presenters';
+import { ProductContextData } from '../context/ContextData';
 
 interface PresentersProps {
-    presentersData: PresenterType,
+    presentersData: userPresentersI,
     index: number
 }
 
 const PresentersCard: React.FC<PresentersProps> = (props) => {
-    const { presentersData } = props
+    const context = useContext(ProductContextData);
+    if (!context) {
+        throw new Error('it should not be null');
+    }
+    const { setPresentersDetailsPopupValue , setPresentersDetailsPopup } = context;
+    const { presentersData} = props
+
+    const handlePopupData = () =>{
+        setPresentersDetailsPopup(presentersData)
+        setPresentersDetailsPopupValue(true)
+    }
     return (
         <div>
             <div className='flex justify-start items-center'>
-                <Avatar label="P" size="large" shape="circle" />
-                <h5 className='ml-3'>{presentersData.presenterName}</h5>
+                <Avatar label={String(presentersData.name.split(' ')[0]).slice(0,1).toUpperCase() + String(presentersData.name.split(' ')[1]).slice(0,1).toUpperCase()} size="large" shape="circle" />
+                <h5 className='ml-3'>{presentersData.name}</h5>
             </div>
-            <p className='mt-2'>{presentersData.presenterDiscription}</p>
+            <p className='mt-2'>{presentersData.introduction}</p>
             <div className='flex justify-end'>
-                <Button className='px-0 pb-0' label="...Read Full Profile" link onClick={() => window.open('https://react.dev', '_blank')} />
+                <Button className='px-0 pb-0' label="...Read Full Profile" link onClick={handlePopupData} />
             </div>
         </div>
     )

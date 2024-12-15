@@ -1,6 +1,6 @@
 import { Button } from 'primereact/button'
 import React from 'react'
-import { RightSideType } from '../interfaces/EventInterface'
+import { RightSideType } from '../interface/EventInterface'
 
 interface RightSideProps {
     rightSideData: RightSideType

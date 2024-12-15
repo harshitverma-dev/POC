@@ -13,7 +13,7 @@ export const userRoleList: userRoleListI[] = [{
     id: 'SUBADMIN'
 },
 {
-    label: 'professor',
+    label: 'Professor',
     id: 'PROFESSOR'
 }
 ]

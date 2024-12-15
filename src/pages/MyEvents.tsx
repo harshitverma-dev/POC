@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import EventCard from '../components/EventCard';
-import { EventType, RightSideType } from '../interfaces/EventInterface';
+import { EventType, RightSideType } from '../interface/EventInterface';
 import RightSideCard from '../components/RightSideCard';
 import EventsTab from '../components/EventsTab';
 import { Button } from 'primereact/button';
@@ -186,7 +186,7 @@ const MyEvents: React.FC = () => {
         }
     ]
     return (
-        <div className='flex gap-3'>
+        <div className='flex gap-3 w-full'>
             <div className='w-4/5'>
                 <EventsTab />
                 <div className='grid grid-cols-3 gap-3'>

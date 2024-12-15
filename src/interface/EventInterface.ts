@@ -15,7 +15,7 @@ export interface RightSideType{
 
 
 // for presenters
-export interface PresenterType{
-    presenterName: string,
-    presenterDiscription : string
-}
+// export interface PresenterType{
+//     presenterName: string,
+//     presenterDiscription : string
+// }

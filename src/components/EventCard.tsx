@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { EventType } from '../interfaces/EventInterface';
+import { EventType } from '../interface/EventInterface';
 import { Button } from 'primereact/button';
 import { LiaUserEditSolid } from "react-icons/lia";
 import { Rating } from "primereact/rating";

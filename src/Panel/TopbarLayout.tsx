@@ -8,8 +8,8 @@ const TopbarLayout: React.FC = () => {
 
     const topBarPophoverItems = [
         {
-            navName: 'Add Presenter',
-            navLink: '/add-presenter'
+            navName: 'Add New User',
+            navLink: '/add-new-user'
         },
         {
             navName: 'Add Event',
@@ -58,9 +58,9 @@ const TopbarLayout: React.FC = () => {
                                 </div>
                                 <ul className="py-1" role="none">
                                     {
-                                        topBarPophoverItems.map((items) => {
+                                        topBarPophoverItems.map((items, index) => {
                                             return (
-                                                <li>
+                                                <li key={index}>
                                                     <Link to={`${items.navLink}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
                                                         {items.navName}
                                                     </Link>

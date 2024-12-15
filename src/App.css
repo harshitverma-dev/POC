@@ -4,10 +4,9 @@
   box-sizing: border-box;
 }
 
-body{
-  font-family: 'circular';
-}
-
+/* body{
+  font-family: 'circular' !important;
+} */
 /* new */
 .mainCard {
   background-color: #fff;

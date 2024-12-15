@@ -5,7 +5,8 @@ import EditProfile from "../pages/EditProfile";
 import ChangePassword from "../pages/ChangePassword";
 import SeeAllPresentersMain from "../pages/SeeAllPresentersMain";
 import MyEevents from "../pages/MyEvents";
-import AddPresenter from "../pages/AddPresenter";
+import AddPresenter from "../pages/AddNewUser";
+import AddNewUser from "../pages/AddNewUser";
 
 const AppRoutes: React.FC = () => {
     const routesPath = [
@@ -34,8 +35,8 @@ const AppRoutes: React.FC = () => {
             element: <UpcomingEvents />
         },
         {
-            path: "/add-presenter",
-            element: <AddPresenter/>
+            path: "/add-new-user",
+            element: <AddNewUser/>
         },
         {
             path: "/presenters-list",

@@ -1,5 +1,5 @@
 import React from 'react'
-import { EventType } from '../interfaces/EventInterface';
+import { EventType } from '../interface/EventInterface';
 import { Button } from 'primereact/button';
 
 
