@@ -20,30 +20,12 @@ const SeeAllPresentersMain: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { getAllPresentersDataByApi, storeAllPresenters, presentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopupValue, setPresentersDetailsPopup } = context;
+    const { getAllPresentersDataByApi, storeAllPresenters, presentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopupValue, setPresentersDetailsPopup, storeAllUpcomingEvents, getAllUpcomingEventsDataByApi } = context;
     const navigate = useNavigate()
-
-    const PresentersSideData: RightSideType[] = [
-        {
-            name: "Porter's Five",
-            discription: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples"
-        },
-        {
-            name: "Porter's Five",
-            discription: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples"
-        },
-        {
-            name: "Porter's Five",
-            discription: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples"
-        },
-        {
-            name: "Porter's Five",
-            discription: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples"
-        }
-    ]
 
     useEffect(() => {
         getAllPresentersDataByApi();
+        getAllUpcomingEventsDataByApi();
     }, [])
 
 
@@ -52,7 +34,7 @@ const SeeAllPresentersMain: React.FC = () => {
             <Avatar label={String(presentersDetailsPopup?.name.split(' ')[0]).slice(0, 1).toUpperCase() + String(presentersDetailsPopup?.name.split(' ')[1]).slice(0, 1).toUpperCase()} size="large" shape="circle" />
             <div className='flex flex-col'>
                 <span className='flex items-center'>
-                    <span className="font-bold white-space-nowrap text-[22px]">{presentersDetailsPopup?.name}</span>
+                    <span className="capitalize font-bold white-space-nowrap text-[22px]">{presentersDetailsPopup?.name}</span>
                     <Badge className='ml-2' value={presentersDetailsPopup?.role} severity="contrast" />
                 </span>
                 <span className='text-[15px] font-medium text-[#ababab]'>{presentersDetailsPopup?.email}</span>
@@ -68,7 +50,7 @@ const SeeAllPresentersMain: React.FC = () => {
                         {
                             (storeAllPresenters !== null && storeAllPresenters?.length > 0) ? storeAllPresenters?.map((items, index) => {
                                 return (
-                                    <div className='mainCard border-solid border border-[#B1D4DF] rounded-[20px] p-3' key={index}>
+                                    <div className='mainCard border-solid border border-[#e6e6e6] rounded-[20px] p-3' key={index}>
                                         <PresentersCard
                                             // key={index}
                                             presentersData={items}
@@ -79,12 +61,12 @@ const SeeAllPresentersMain: React.FC = () => {
                         }
                     </div>
                 </div>
-                <div className='w-1/5 flex flex-col gap-3 px-[13px] border-l border-solid border-[#B1D4DF] '>
+                <div className='w-1/5 flex flex-col gap-3 px-[13px] border-l border-solid border-[#e6e6e6] '>
                     <div className=' sticky top-[70px]'>
                         {
-                            PresentersSideData.map((items) => {
+                            storeAllUpcomingEvents?.map((items) => {
                                 return (
-                                    <div className='mainCard rightCardContainer border-solid border border-[#B1D4DF] rounded-[20px] p-3 mb-3'>
+                                    <div className='mainCard rightCardContainer border-solid border border-[#e6e6e6] rounded-[20px] p-3 mb-3'>
                                         <RightSideCard rightSideData={items} />
                                     </div>
                                 )

@@ -1,4 +1,4 @@
-import { techExpertiesListI, userRoleListI } from "./userInterface"
+import { techExpertiesListI, userRoleListI } from "./presenterInterface"
 
 export const userRoleList: userRoleListI[] = [{
     label: 'Student',

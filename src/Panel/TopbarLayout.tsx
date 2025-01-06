@@ -1,15 +1,30 @@
-import React from 'react'
-import { Link} from 'react-router-dom'
+import React, { useContext } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 // import { CiLight, CiDark } from "react-icons/ci";
 // import { ProductContextData } from '../context/ContextData';
 import { IoIosLogOut } from "react-icons/io";
+import { ProductContextData } from '../context/ContextData';
 
 const TopbarLayout: React.FC = () => {
+    const navigate = useNavigate()
+    const context = useContext(ProductContextData);
+    if (!context) {
+        throw new Error('it should not be null');
+    }
+    const {loginUserDetail, setLoginUserDetail} = context
 
     const topBarPophoverItems = [
         {
-            navName: 'Add New User',
-            navLink: '/add-new-user'
+            navName: 'Add Presenter',
+            navLink: '/add-new-presenter'
+        },
+        {
+            navName: 'Presenter List',
+            navLink: '/presenters-table'
+        },
+        {
+            navName: 'Add Sub Admin',
+            navLink: '/add-sub-admin'
         },
         {
             navName: 'Add Event',
@@ -24,6 +39,13 @@ const TopbarLayout: React.FC = () => {
             navLink: '/change-password'
         }
     ]
+
+    const logoutUser = () => {
+        localStorage.clear();
+        setLoginUserDetail(null)
+        navigate('/')
+        window.history.go(0);
+    }
     return (
         <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
             <div className="px-3 py-3 lg:px-5 lg:pl-3">
@@ -47,33 +69,35 @@ const TopbarLayout: React.FC = () => {
                                     <img className="w-8 h-8 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-5.jpg" alt="user photo" />
                                 </button>
                             </div>
-                            <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
-                                <div className="px-4 py-3" role="none">
-                                    <p className="text-sm text-gray-900 dark:text-white" role="none">
-                                        Neil Sims
-                                    </p>
-                                    <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
-                                        neil.sims@flowbite.com
-                                    </p>
+                            {
+                                localStorage.getItem('userAccessToken') && <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
+                                    <div className="px-4 py-3" role="none">
+                                        <p className="text-sm text-gray-900 dark:text-white" role="none">
+                                           {loginUserDetail?.name}
+                                        </p>
+                                        <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                                           {loginUserDetail?.email}
+                                        </p>
+                                    </div>
+                                    <ul className="py-1" role="none">
+                                        {
+                                            topBarPophoverItems.map((items, index) => {
+                                                return (
+                                                    <li key={index}>
+                                                        <Link to={`${items.navLink}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
+                                                            {items.navName}
+                                                        </Link>
+                                                    </li>
+                                                )
+                                            })
+                                        }
+                                        <li className="block cursor-pointer flex justify-start items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white hover:bg-[#ff00000a] text-[#ff0000]">
+                                            <IoIosLogOut size={20} />
+                                            <div className='ml-2' onClick={logoutUser}>Logout</div>
+                                        </li>
+                                    </ul>
                                 </div>
-                                <ul className="py-1" role="none">
-                                    {
-                                        topBarPophoverItems.map((items, index) => {
-                                            return (
-                                                <li key={index}>
-                                                    <Link to={`${items.navLink}`} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white">
-                                                        {items.navName}
-                                                    </Link>
-                                                </li>
-                                            )
-                                        })
-                                    }
-                                    <li className="block cursor-pointer flex justify-start items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white hover:bg-[#ff00000a] text-[#ff0000]">
-                                        <IoIosLogOut size={20}/>
-                                        <div className='ml-2'>Logout</div>
-                                    </li>
-                                </ul>
-                            </div>
+                            }
                         </div>
                     </div>
                 </div>

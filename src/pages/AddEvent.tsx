@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { InputTextarea } from 'primereact/inputtextarea'
@@ -6,37 +6,115 @@ import { Calendar } from 'primereact/calendar';
 // import { FloatLabel } from 'primereact/floatlabel';
 import { Nullable } from "primereact/ts-helpers";
 import { Button } from 'primereact/button';
+import axios from 'axios';
+import { ProductContextData } from '../context/ContextData';
+import { useNavigate } from 'react-router-dom';
 
 const AddEvent: React.FC = () => {
-    const [date, setDate] = useState<Nullable<Date>>(null);
+    const [eventData, setEventDate] = useState<Nullable<Date>>(null);
+    const [createEventDetails, setCreateEventDetails] = useState({
+        eventName: '',
+        eventDescription: '',
+        eventPlace: '',
+        eventPrerequisite: ''
+    })
+    const [CreateEventErrors, setCreateEventErrors] = useState([])
+    const context = useContext(ProductContextData);
+    if (!context) {
+        throw new Error('it should not be null');
+    }
+    const {loginUserDetail} = context;
+    const navigate = useNavigate()
+
+    const onChangeFun = (e: any) => {
+        const { value, name } = e.target;
+        setCreateEventDetails({
+            ...createEventDetails,
+            [name]: value
+        })
+    }
+
+    const modifiedDateTime = eventData && eventData.getTime();
+
 
     // console.log(props, eventData)
-    const [selectedCity, setSelectedCity] = useState();
-    const cities = [
-        { name: 'New York', code: 'NY' },
-        { name: 'Rome', code: 'RM' },
-        { name: 'London', code: 'LDN' },
-        { name: 'Istanbul', code: 'IST' },
-        { name: 'Paris', code: 'PRS' }
-    ];
+    // const [selectedCity, setSelectedCity] = useState();
+    // const cities = [
+    //     { name: 'New York', code: 'NY' },
+    //     { name: 'Rome', code: 'RM' },
+    //     { name: 'London', code: 'LDN' },
+    //     { name: 'Istanbul', code: 'IST' },
+    //     { name: 'Paris', code: 'PRS' }
+    // ];
+
+    const saveEvent = () => {
+        let url = 'http://localhost:3000/university-student/events/v1/class';
+        let payload = {
+            eventName: createEventDetails.eventName,
+            description: createEventDetails.eventDescription,
+            place: createEventDetails.eventPlace,
+            fromDateTime: modifiedDateTime,
+            toDateTime: modifiedDateTime,
+            org: loginUserDetail.org
+        }
+
+        axios.post(url, payload, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
+            },
+        }).then((response) => {
+            console.log(response);
+            setCreateEventErrors([]);
+            navigate('/')
+        }).catch(err => {
+            console.log(err, 'err')
+            setCreateEventErrors(err?.response?.data?.message ?? []);
+
+        })
+    }
     return (
         // create
-        <div>
-            <Dropdown value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name"
-                placeholder="Select a City" className="w-full mb-3" checkmark={true} highlightOnSelect={false} />
-            <Dropdown value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name"
-                placeholder="Select a City" className="w-full mb-3" checkmark={true} highlightOnSelect={false} />
-            <InputText type="text" placeholder="Normal" className="p-inputtext-sm w-full mb-3" value={'sss'} />
-            <InputTextarea autoResize value={'ss'} rows={5} className='w-full mb-3' />
-            <InputText type="text" placeholder="Normal" className="p-inputtext-sm w-full mb-3" value={'ss'} />
-            {/* <FloatLabel> */}
-            <Calendar ariaLabel='bbbbb' showTime inputId="birth_date" hourFormat="12" value={date} onChange={(e) => setDate(e.value)} className='w-full mb-3' />
-            {/* <label htmlFor="birth_date">Birth Date</label> */}
-            {/* </FloatLabel> */}
-            <InputText type="text" placeholder="Normal" className="p-inputtext-sm w-full mb-3" value={'ss'} />
-            <div className='text-center'>
-                <Button label="Save As Draft" className='mr-3' outlined rounded />
-                <Button label="Post" outlined rounded />
+        // <div>
+        //     <InputText type="text" placeholder="Normal" className="p-inputtext-sm w-full mb-3" value={'sss'} />
+        //     <InputTextarea autoResize value={'ss'} rows={5} className='w-full mb-3' />
+        //     <InputText type="text" placeholder="Normal" className="p-inputtext-sm w-full mb-3" value={'ss'} />
+        //     <Calendar ariaLabel='bbbbb' showTime inputId="birth_date" hourFormat="12" value={date} onChange={(e) => setDate(e.value)} className='w-full mb-3' />
+        //     <label htmlFor="birth_date">Birth Date</label>
+        //     </FloatLabel>
+        //     <InputText type="text" placeholder="Normal" className="p-inputtext-sm w-full mb-3" value={'ss'} />
+        // </div>
+        <div className='md:w-1/2 m-auto addEventContainer rounded p-5'>
+            <div className="card">
+                <h3 className='text-[32px] mb-7 text-center border-b border-[#ddd] border-solid'>Create New Event</h3>
+                <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                    <label htmlFor="eventName" className="">Event Name:</label>
+                    <InputText id="eventName" value={createEventDetails.eventName} name='eventName' onChange={onChangeFun} placeholder="Enter the event name" className="mr-2 w-full" />
+                </div>
+                <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                    <label htmlFor="eventDescription" className="">Event Description:</label>
+                    <InputTextarea autoResize value={createEventDetails.eventDescription} name='eventDescription' onChange={onChangeFun} placeholder='Description..' rows={5} cols={30} className='mr-2 w-full' />
+                </div>
+                <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                    <label htmlFor="eventPlace" className="">Event Place:</label>
+                    <InputText id="eventPlace" value={createEventDetails.eventPlace} name='eventPlace' onChange={onChangeFun} placeholder="Enter the event place" className="mr-2 w-full" />
+                </div>
+                <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                    <label htmlFor="eventPrerequisite" className="">Event Pre-Requisite:</label>
+                    <InputText id="eventPrerequisite" value={createEventDetails.eventPrerequisite} name='eventPrerequisite' onChange={onChangeFun} placeholder="Enter Prerequisite for attendee" className="mr-2 w-full" />
+                </div>
+                <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                    <label htmlFor="eventDateTime" className="">Event Date/Time:</label>
+                    {/* <InputText id="eventDateTime" value={createEventDetails.eventPlace} name='eventDateTime' onChange={onChangeFun} placeholder="Enter " className="mr-2 w-full" /> */}
+                    <Calendar touchUI showTime numberOfMonths={1} hideOnDateTimeSelect readOnlyInput placeholder='Click to select date and time for event' hourFormat="12" value={eventData} onChange={(e) => setEventDate(e.value)} className='w-full mb-3' />
+                </div>
+                {
+                    CreateEventErrors?.map((items) => {
+                        return <div>
+                            {items}
+                        </div>
+                    })
+                }
+                <Button label='Submit' onClick={saveEvent} />
             </div>
         </div>
     )

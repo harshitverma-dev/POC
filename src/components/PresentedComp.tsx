@@ -20,8 +20,8 @@ const EventCard: React.FC<EventProps> = (props) => {
                     <span>{eventData.eventTime}</span>
                 </div> */}
             </div>
-            <p className='mt-4'>{eventData.eventInfo}</p>
-            <p className='my-3'>Presenter - {eventData.presenterInfo}</p>
+            <p className='mt-4 text-[15px] text-[#5e5e5e]'>{eventData.eventInfo}</p>
+            <p className='my-3 text-[15px] text-[#5e5e5e]'>Presenter - {eventData.presenterInfo}</p>
             <div className='eventBtnContainer flex justify-end items-center'>
                 <Button size='small' label="Attend" severity="secondary" />
             </div>

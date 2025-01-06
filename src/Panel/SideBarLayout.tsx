@@ -34,16 +34,16 @@ const SideBarLayout: React.FC = () => {
             navLink: '/',
             onClick: () => setIsFilterForm(false)
         },
-        {
-            navName: "Filters",
-            navIcon: <FiFilter size={35} color='#3a3a3a' />,
-            onClick: () => setIsFilterForm(!isFilterForm)
-        },
-        {
-            navName: "Add Product",
-            navIcon: <LiaMailBulkSolid size={35} color='#3a3a3a' />,
-            onClick: () => setIsFilterForm(false)
-        }
+        // {
+        //     navName: "Filters",
+        //     navIcon: <FiFilter size={35} color='#3a3a3a' />,
+        //     onClick: () => setIsFilterForm(!isFilterForm)
+        // },
+        // {
+        //     navName: "Add Product",
+        //     navIcon: <LiaMailBulkSolid size={35} color='#3a3a3a' />,
+        //     onClick: () => setIsFilterForm(false)
+        // }
     ]
     return (
         <>

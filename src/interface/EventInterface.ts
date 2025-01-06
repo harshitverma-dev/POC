@@ -1,16 +1,19 @@
 // for events 
 export interface EventType {
     eventName: string,
-    eventDate: string,
-    eventTime: string,
-    eventInfo: string,
-    presenterInfo: string,
-    eventRating?: number | undefined
+    description: string,
+    fromDateTime: string,
+    toDateTime: string,
+    presenterId?: string,
+    org?: string,
+    attendees : number | string
 }
 
 export interface RightSideType{
-    name : string,
-    discription: string
+    name? : string,
+    introduction?: string,
+    eventName? : string,
+    description? : string
 }
 
 

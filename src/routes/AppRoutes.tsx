@@ -5,8 +5,10 @@ import EditProfile from "../pages/EditProfile";
 import ChangePassword from "../pages/ChangePassword";
 import SeeAllPresentersMain from "../pages/SeeAllPresentersMain";
 import MyEevents from "../pages/MyEvents";
-import AddPresenter from "../pages/AddNewUser";
-import AddNewUser from "../pages/AddNewUser";
+import AddNewPresenter from "../pages/AddNewPresenter";
+import PresentersTableList from "../pages/PresentersTable";
+import AddSubAdmin from "../pages/AddSubAdmin";
+// import AddNewUser from "../pages/AddNewPresenter";
 
 const AppRoutes: React.FC = () => {
     const routesPath = [
@@ -35,12 +37,21 @@ const AppRoutes: React.FC = () => {
             element: <UpcomingEvents />
         },
         {
-            path: "/add-new-user",
-            element: <AddNewUser/>
+            path: "/add-new-presenter",
+            element: <AddNewPresenter/>
         },
         {
             path: "/presenters-list",
             element: <SeeAllPresentersMain />
+        },
+        {
+            path: "/presenters-table",
+            element: <PresentersTableList/>
+
+        },
+        {
+            path: "/add-sub-admin",
+            element: <AddSubAdmin/>
         },
         {
             path: 'my-events',

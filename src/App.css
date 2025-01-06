@@ -18,7 +18,7 @@
   box-shadow: none;
 }
 
-.p-inputtext {
+.addPresenterContainer .p-inputtext, .addSubAdminContainer .p-inputtext {
   padding: 0.5rem 0.75rem !important;
 }
 
@@ -37,12 +37,28 @@
 }
 
 .contentContainer{
-  background-color: #ededed !important;
+  background-color: #f2f6f7 !important;
   min-height: 100vh;
 }
 
-/* add presenter */
-.addPresenterContainer {
+/* main container */
+.addPresenterContainer, .addSubAdminContainer, .addEventContainer{
   box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   background: white;
+}
+
+
+/* table */
+.p-datatable-emptymessage > td{
+  text-align: center !important;
+}
+
+
+/* no data */
+.no-data {
+  color: #de7373;
+  border: 1px solid #de7373;
+  border-radius: 5px;
+  padding: 5px;
+  background: #ff767621;
 }
