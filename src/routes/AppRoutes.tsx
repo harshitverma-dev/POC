@@ -11,6 +11,7 @@ import AddSubAdmin from "../pages/AddSubAdmin";
 // import { AccessControl } from "../accessControl/AccessControl";
 import ProtectedRoute from "../components/ProtectedRoutes";
 import SubAdminTable from "../pages/SubAdminTable";
+import AddStudent from "../pages/AddStudent";
 // import AddNewUser from "../pages/AddNewPresenter";
 // AccessControl
 interface propsI{
@@ -70,6 +71,11 @@ const AppRoutes: React.FC<propsI> = ({userRole}) => {
             element: <SubAdminTable/>
 
         },
+        {
+            path: "/add-student",
+            element: <AddStudent/>
+
+        }
     ]
     return (
         <Routes>

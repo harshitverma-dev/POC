@@ -3,6 +3,8 @@ export interface createPresenterDetailsI {
     presenterEmail: string,
     presenterOrg: string,
     presenterIntroduction: string,
+    presenterIndustry?: string,
+    presenterSegment?: string,
     presenterRole: userRoleListI | string | any,
     presenterTechExperties: techExpertiesListI[]
 }

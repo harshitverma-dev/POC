@@ -109,7 +109,7 @@ const AddEvent: React.FC = () => {
                 </div>
                 {
                     CreateEventErrors?.map((items) => {
-                        return <div>
+                        return <div className="mb-3 text-red-500">
                             {items}
                         </div>
                     })

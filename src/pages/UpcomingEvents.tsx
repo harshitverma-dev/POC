@@ -10,6 +10,7 @@ import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
 import LoginForm from '../components/LoginForm';
 import PresentersListSkeleton from '../skeletons/PresentersListSkeleton';
 import LogInImg from '../assets/loginImg.gif'
+import { Image } from 'primereact/image';
 
 
 const UpcomingEvents: React.FC = () => {
@@ -17,7 +18,7 @@ const UpcomingEvents: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { activeEventSubTab, getAllPresentersDataByApi, storeAllPresenters, getAllUpcomingEventsDataByApi, storeAllUpcomingEvents, setLoginPopupValue, logInPopupValue, isStoreAllUpcomingEventsLoader } = context;
+    const { activeEventSubTab, getAllPresentersDataByApi, storeAllPresenters, getAllUpcomingEventsDataByApi, loginUserDetail,storeAllUpcomingEvents, setLoginPopupValue, logInPopupValue, isStoreAllUpcomingEventsLoader } = context;
     // const EventData: EventType[] = [
     //     {
     //         eventName: "Event1",
@@ -162,13 +163,13 @@ const UpcomingEvents: React.FC = () => {
         <div className='flex gap-3 w-full'>
             <div className='w-4/5'>
                 {
-                    localStorage.getItem('userAccessToken') ? <div>
+                    loginUserDetail ? <div>
                         <EventsTab />
                         <div className='grid grid-cols-3 gap-3'>
                             {
                                 storeAllUpcomingEvents.length > 0 ? storeAllUpcomingEvents.map((items, index) => {
                                     return (
-                                        <div className='mainCard border-solid border border-[#e6e6e6] rounded-[20px] p-3'>
+                                        <div className='mainCard border-solid border border-[#e6e6e6] rounded-[20px] p-3' key={index}>
                                             <EventCard
                                                 eventData={items}
                                                 index={index}
@@ -180,8 +181,8 @@ const UpcomingEvents: React.FC = () => {
                         </div>
                     </div> :
                         <div className='flex flex-col items-center bg-[#fff] rounded-[20px] border border-solid border-[#e6e6e6]'>
-                            <div style={{minWidth: '600px'}}>
-                                <img src={LogInImg} className='w-full'style={{marginBottom: '-60px'}}/>
+                            <div style={{minWidth: '500px', maxWidth: '500px'}}>
+                                <Image src={LogInImg} className='w-[100%] h-[100%]'style={{marginBottom: '-60px'}} loading='lazy'/>
                             </div>
                             <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login to the Application' onClick={() => { setLoginPopupValue(true) }} />
                         </div>
@@ -191,9 +192,9 @@ const UpcomingEvents: React.FC = () => {
             <div className='w-1/5 flex flex-col gap-3 px-[13px] border-l border-solid border-[#e6e6e6] '>
                 <div className=' sticky top-[70px]'>
                     {
-                        (storeAllPresenters !== null && storeAllPresenters.length > 0) ? storeAllPresenters?.map((items) => {
+                        (storeAllPresenters !== null && storeAllPresenters.length > 0) ? storeAllPresenters?.map((items,index) => {
                             return (
-                                <div className='mainCard rightCardContainer border-solid border border-[#e6e6e6] rounded-[20px] p-3 mb-3'>
+                                <div className='mainCard rightCardContainer border-solid border border-[#e6e6e6] rounded-[20px] p-3 mb-3' key={index}>
                                     <RightSideCard rightSideData={items} />
                                 </div>
                             )

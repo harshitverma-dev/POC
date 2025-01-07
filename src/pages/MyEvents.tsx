@@ -9,13 +9,14 @@ import { ProductContextData } from '../context/ContextData';
 import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
 import LoginForm from '../components/LoginForm';
 import LogInImg from '../assets/loginImg.gif'
+import { Image } from 'primereact/image';
 
 const MyEvents: React.FC = () => {
     const context = useContext(ProductContextData);
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { activeEventSubTab, getAllPresentersDataByApi, storeAllPresenters, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents } = context;
+    const { activeEventSubTab, getAllPresentersDataByApi, loginUserDetail, storeAllPresenters, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents } = context;
     // const EventData: EventType[] = [
     //     {
     //         eventName: "Event1",
@@ -180,7 +181,7 @@ const MyEvents: React.FC = () => {
         <div className='flex gap-3 w-full'>
             <div className='w-4/5'>
                 {
-                    localStorage.getItem('userAccessToken') ? <div>
+                    loginUserDetail ? <div>
                         <EventsTab />
                         <div className='grid grid-cols-3 gap-3'>
                             {
@@ -232,8 +233,8 @@ const MyEvents: React.FC = () => {
 
                         </div>
                     </div> : <div className='flex flex-col items-center bg-[#fff] rounded-[20px] border border-solid border-[#e6e6e6]'>
-                        <div style={{ minWidth: '600px' }}>
-                            <img src={LogInImg} className='w-full' style={{ marginBottom: '-60px' }} />
+                        <div style={{ minWidth: '500px', maxWidth: '500px' }}>
+                            <Image src={LogInImg} className='w-[100%] h-[100%]' style={{ marginBottom: '-60px' }} loading='lazy' />
                         </div>
                         <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login to the Application' onClick={() => { setLoginPopupValue(true) }} />
                     </div>

@@ -1,5 +1,5 @@
 import { InputText } from 'primereact/inputtext';
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Message } from 'primereact/message';
 import { InputTextarea } from 'primereact/inputtextarea';
 import { Dropdown } from 'primereact/dropdown';
@@ -8,6 +8,7 @@ import { createPresenterDetailsI } from '../interface/presenterInterface';
 import { MultiSelect } from 'primereact/multiselect';
 import { Button } from 'primereact/button';
 import axios from 'axios';
+import { Toast } from 'primereact/toast';
 
 const AddNewPresenter: React.FC = () => {
     const [createPresenterDetails, setCreatePresenterDetails] = useState<createPresenterDetailsI>({
@@ -15,6 +16,8 @@ const AddNewPresenter: React.FC = () => {
         presenterEmail: '',
         presenterOrg: '',
         presenterIntroduction: '',
+        presenterIndustry: '',
+        presenterSegment: '',
         presenterRole: {
             label: 'Professor',
             id: 'PROFESSOR'
@@ -26,10 +29,13 @@ const AddNewPresenter: React.FC = () => {
         presenterEmailError: false,
         presenterOrgError: false,
         presenterIntroductionError: false,
+        // presenterIndustryError: false,
+        // PresenterSegmentError: false,
         presenterRoleError: false,
         presenterTechExpertiesError: false
     })
     const [isLoadingForCreatePresenter, setisLoadingForCreatePresenter] = useState(false);
+    const toast = useRef<Toast>(null)
 
     const onChangeFun = (e: any) => {
         const { value, name } = e.target;
@@ -52,6 +58,8 @@ const AddNewPresenter: React.FC = () => {
                 presenterEmailError: !createPresenterDetails.presenterEmail ? true : false,
                 presenterOrgError: !createPresenterDetails.presenterOrg ? true : false,
                 presenterIntroductionError: !createPresenterDetails.presenterIntroduction ? true : false,
+                // presenterIndustryError: !createPresenterDetails.presenterIndustry ? true : false,
+                // PresenterSegmentError: !createPresenterDetails.PresenterSegment ? true : false,
                 presenterRoleError: !createPresenterDetails.presenterRole ? true : false,
                 presenterTechExpertiesError: correctFormatForTechExperties.length == 0 ? true : false
             })
@@ -66,6 +74,8 @@ const AddNewPresenter: React.FC = () => {
             email: createPresenterDetails.presenterEmail,
             org: createPresenterDetails.presenterOrg,
             introduction: createPresenterDetails.presenterIntroduction,
+            industry: createPresenterDetails.presenterIndustry,
+            segment : createPresenterDetails.presenterSegment,
             role: createPresenterDetails.presenterRole?.id,
             techExpertise: correctFormatForTechExperties
         }
@@ -78,6 +88,20 @@ const AddNewPresenter: React.FC = () => {
         }).then((res) => {
             console.log(res)
             setisLoadingForCreatePresenter(false);
+            toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Presenter created !' });
+            setCreatePresenterDetails({
+                presenterName: '',
+                presenterEmail: '',
+                presenterOrg: '',
+                presenterIntroduction: '',
+                presenterIndustry: '',
+                presenterSegment: '',
+                presenterRole: {
+                    label: 'Professor',
+                    id: 'PROFESSOR'
+                },
+                presenterTechExperties: []
+            })
         }).catch(err => {
             console.log(err)
             setisLoadingForCreatePresenter(false);
@@ -115,12 +139,23 @@ const AddNewPresenter: React.FC = () => {
                     {(createPresenterErrors.presenterRoleError && !createPresenterDetails.presenterRole) && <Message severity="error" className='p-1' text="Role is required" />}
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                    <label htmlFor="presenterIndustry" className="">Industry:</label>
+                    <InputText id="presenterIndustry" value={createPresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} placeholder="Enter Industry" className="mr-2 w-full" />
+                    {/* {(createPresenterErrors.presenterOrgError && !createPresenterDetails.presenterOrg) && <Message severity="error" className='p-1' text="Org is required" />} */}
+                </div>
+                <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                    <label htmlFor="presenterSegment" className="">Segment:</label>
+                    <InputText id="presenterSegment" value={createPresenterDetails.presenterSegment} name='presenterSegment' onChange={onChangeFun} placeholder="Enter Segment" className="mr-2 w-full" />
+                    {/* {(createPresenterErrors.presenterOrgError && !createPresenterDetails.presenterOrg) && <Message severity="error" className='p-1' text="Org is required" />} */}
+                </div>
+                <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterTechExperties" className="">Tech Experties:</label>
                     <MultiSelect invalid={createPresenterErrors.presenterTechExpertiesError && createPresenterDetails.presenterTechExperties.length == 0} options={techExpertiesList} name='presenterTechExperties' value={createPresenterDetails.presenterTechExperties} onChange={onChangeFun} optionLabel="label" placeholder='Select Experties' className="w-full sm:w-20rem" display="chip" />
                     {(createPresenterErrors.presenterTechExpertiesError && createPresenterDetails.presenterTechExperties.length == 0) && <Message severity="error" className='p-1' text="Tech Expertie is required" />}
                 </div>
                 <Button label="Submit" loading={isLoadingForCreatePresenter ? true : false} onClick={SavePresenterProfile} />
             </div>
+            <Toast ref={toast}/>
         </div>
     )
 }

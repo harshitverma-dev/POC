@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { EventType } from '../interface/EventInterface';
 import { Button } from 'primereact/button';
 import { LiaUserEditSolid } from "react-icons/lia";
-import { Rating } from "primereact/rating";
-import { Dialog } from 'primereact/dialog';
-import { Dropdown } from 'primereact/dropdown';
-import { InputText } from 'primereact/inputtext';
-import { InputTextarea } from 'primereact/inputtextarea'
-import { Calendar } from 'primereact/calendar';
+// import { Rating } from "primereact/rating";
+// import { Dialog } from 'primereact/dialog';
+// import { Dropdown } from 'primereact/dropdown';
+// import { InputText } from 'primereact/inputtext';
+// import { InputTextarea } from 'primereact/inputtextarea'
+// import { Calendar } from 'primereact/calendar';
 // import { FloatLabel } from 'primereact/floatlabel';
 import { AiOutlineDelete } from "react-icons/ai";
-import { Nullable } from "primereact/ts-helpers";
+import axios from 'axios';
+// import { Nullable } from "primereact/ts-helpers";
 
 
 interface EventProps {
@@ -41,7 +42,7 @@ const EventCard: React.FC<EventProps> = (props) => {
         // setEditEventBoolean(true);
     }
 
-    const getCorrectTime = (date:any) => {
+    const getCorrectTime = (date: any) => {
         let hours = date.getHours();
         const minutes = date.getMinutes();
         const ampm = hours >= 12 ? 'PM' : 'AM';
@@ -59,6 +60,18 @@ const EventCard: React.FC<EventProps> = (props) => {
         console.log(modifiedFormate, modifiedTrimFormate)
         return modifiedFormate;
     }
+
+    const postAttendEventByApi = () => {
+        axios.post(`http://localhost:3000/university-student/events/v1/attend/${eventData?._id}`,{}, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
+            },
+        }).then((response) => {
+            console.log(response)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
     return (
         <div className='flex flex-col justify-between'>
             <div className='flex justify-between items-center'>
@@ -72,7 +85,7 @@ const EventCard: React.FC<EventProps> = (props) => {
             <p className='my-3 text-[15px] text-[#5e5e5e]'>Presenter - {eventData.presenterId}</p>
             {
                 (eventDetails == 'Upcoming Events' || eventDetails == '/') && <div className='eventBtnContainer flex justify-end items-center'>
-                    <Button size='small' label="Attend" severity="secondary" />
+                    <Button size='small' onClick={postAttendEventByApi} label="Attend" severity="secondary" />
                 </div>
             }
             {

@@ -1,5 +1,6 @@
 // for events 
 export interface EventType {
+    _id?: string | any
     eventName: string,
     description: string,
     fromDateTime: string,
