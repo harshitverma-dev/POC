@@ -9,4 +9,5 @@ export interface userPresentersI {
     companiesPositions: string[],
     techExpertise: string[],
     projects: string[],
+    metaData : any
 }

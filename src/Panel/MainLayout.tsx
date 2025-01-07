@@ -4,14 +4,18 @@ import SideBarLayout from "./SideBarLayout";
 import TopbarLayout from "./TopbarLayout";
 import AppRoutes from "../routes/AppRoutes";
 
-const MainLayout: React.FC = () => {
+interface propsI{
+    userRole: string | any
+}
+
+const MainLayout: React.FC<propsI> = ({userRole}) => {
     return (
         <>
-            <TopbarLayout />
+            <TopbarLayout userRole={userRole}/>
             <SideBarLayout />
             <ContentLayout>
                 {/* <div className="w-70"> */}
-                    <AppRoutes />
+                    <AppRoutes userRole={userRole}/>
                 {/* </div> */}
             </ContentLayout>
         </>

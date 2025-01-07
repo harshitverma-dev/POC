@@ -1,9 +1,17 @@
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
 import { Message } from 'primereact/message';
-import React, { useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
+import { ProductContextData } from '../context/ContextData';
+import axios from 'axios';
+import { Toast } from 'primereact/toast';
 
 const AddSubAdmin: React.FC = () => {
+    const context = useContext(ProductContextData);
+    if (!context) {
+        throw new Error('it should not be null');
+    }
+    const { loginUserDetail } = context
     const [createSubAdminDetails, setCreateSubAdminDetails] = useState({
         subAdminName: '',
         subAdminContactNo: '',
@@ -25,6 +33,7 @@ const AddSubAdmin: React.FC = () => {
         subAdminLocationError: false
     })
     const [isLoadingForCreateSubAdmin, setisLoadingForCreateSubAdmin] = useState(false);
+    const toast = useRef<Toast>(null);
 
     const onChangeFun = (e: any) => {
         const { value, name } = e.target;
@@ -40,7 +49,7 @@ const AddSubAdmin: React.FC = () => {
         if (!createSubAdminDetails.subAdminName || !createSubAdminDetails.subAdminContactNo || !createSubAdminDetails.subAdminEmailId || !createSubAdminDetails.subAdminCollege || !createSubAdminDetails.subAdminCourse || !createSubAdminDetails.subAdminStream || !createSubAdminDetails.subAdminGraduationYear || !createSubAdminDetails.subAdminLocation) {
             setCreateSubAdminErrors({
                 subAdminNameError: !createSubAdminDetails.subAdminName ? true : false,
-                subAdminContactNoError: !createSubAdminDetails.subAdminContactNo ? true: false,
+                subAdminContactNoError: !createSubAdminDetails.subAdminContactNo ? true : false,
                 subAdminEmailIdError: !createSubAdminDetails.subAdminEmailId ? true : false,
                 subAdminCollegeError: !createSubAdminDetails.subAdminCollege ? true : false,
                 subAdminCourseError: !createSubAdminDetails.subAdminCourse ? true : false,
@@ -52,10 +61,44 @@ const AddSubAdmin: React.FC = () => {
             return false
         }
 
-        // let url = "",
-        // let payload = {
+        let url = "http://localhost:3000/university-student/profile/v1/user";
+        let payload = {
+            name: createSubAdminDetails.subAdminName,
+            email: createSubAdminDetails.subAdminEmailId,
+            role: "SUBADMIN",
+            org: loginUserDetail?.role,
+            metaData: {
+                contact_no: createSubAdminDetails.subAdminContactNo,
+                college: createSubAdminDetails.subAdminCollege,
+                stream: createSubAdminDetails.subAdminStream,
+                course: createSubAdminDetails.subAdminCourse,
+                graduation_year: createSubAdminDetails.subAdminGraduationYear,
+                location: createSubAdminDetails.subAdminLocation
+            }
+        }
 
-        // }
+        axios.post(url, payload, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
+            },
+        }).then((response)=>{
+            console.log(response);
+            toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Sub Admin created !' });
+            setisLoadingForCreateSubAdmin(false);
+            setCreateSubAdminDetails({
+                subAdminName: '',
+                subAdminContactNo: '',
+                subAdminEmailId: '',
+                subAdminCollege: '',
+                subAdminCourse: '',
+                subAdminStream: '',
+                subAdminGraduationYear: '',
+                subAdminLocation: ''
+            })
+        }).catch((err)=>{
+            console.log(err)
+            setisLoadingForCreateSubAdmin(false);
+        })
     }
 
 
@@ -103,8 +146,9 @@ const AddSubAdmin: React.FC = () => {
                     <InputText id="subAdminLocation" type='text' value={createSubAdminDetails.subAdminLocation} onChange={onChangeFun} name='subAdminLocation' placeholder="Enter the location" className="mr-2 w-full" />
                     {(createSubAdminErrors.subAdminLocationError && !createSubAdminDetails.subAdminLocation) && <Message severity="error" className='p-1' text="Location is required" />}
                 </div>
-                <Button label="Submit" onClick={saveSubAdminProfile} />
+                <Button loading={isLoadingForCreateSubAdmin} label="Submit" onClick={saveSubAdminProfile} />
             </div>
+            <Toast ref={toast} />
         </div>
     )
 }

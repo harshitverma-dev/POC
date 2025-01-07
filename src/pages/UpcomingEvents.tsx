@@ -9,6 +9,8 @@ import { ProductContextData } from '../context/ContextData';
 import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
 import LoginForm from '../components/LoginForm';
 import PresentersListSkeleton from '../skeletons/PresentersListSkeleton';
+import LogInImg from '../assets/loginImg.gif'
+
 
 const UpcomingEvents: React.FC = () => {
     const context = useContext(ProductContextData);
@@ -173,12 +175,15 @@ const UpcomingEvents: React.FC = () => {
                                                 eventDetails="Upcoming Events" />
                                         </div >
                                     )
-                                }): storeAllUpcomingEvents.length === 0 && isStoreAllUpcomingEventsLoader ? <PresentersListSkeleton /> : storeAllUpcomingEvents.length === 0 && !isStoreAllUpcomingEventsLoader ? <div className='no-data'>No Upcoming Events Avaliable.</div> : null
+                                }) : storeAllUpcomingEvents.length === 0 && isStoreAllUpcomingEventsLoader ? <PresentersListSkeleton /> : storeAllUpcomingEvents.length === 0 && !isStoreAllUpcomingEventsLoader ? <div className='no-data'>No Upcoming Events Avaliable.</div> : null
                             }
                         </div>
                     </div> :
-                        <div>
-                            <Button label='Login to the application' onClick={() => { setLoginPopupValue(true) }} />
+                        <div className='flex flex-col items-center bg-[#fff] rounded-[20px] border border-solid border-[#e6e6e6]'>
+                            <div style={{minWidth: '600px'}}>
+                                <img src={LogInImg} className='w-full'style={{marginBottom: '-60px'}}/>
+                            </div>
+                            <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login to the Application' onClick={() => { setLoginPopupValue(true) }} />
                         </div>
                 }
 

@@ -1,19 +1,21 @@
 import React, { useContext, useEffect } from 'react'
 import EventCard from '../components/EventCard';
-import { EventType, RightSideType } from '../interface/EventInterface';
+// import { EventType, RightSideType } from '../interface/EventInterface';
 import RightSideCard from '../components/RightSideCard';
 import EventsTab from '../components/EventsTab';
 import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom';
 import { ProductContextData } from '../context/ContextData';
 import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
+import LoginForm from '../components/LoginForm';
+import LogInImg from '../assets/loginImg.gif'
 
 const MyEvents: React.FC = () => {
     const context = useContext(ProductContextData);
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { activeEventSubTab, getAllPresentersDataByApi, storeAllPresenters, getAllUpcomingEventsDataByApi, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents } = context;
+    const { activeEventSubTab, getAllPresentersDataByApi, storeAllPresenters, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents } = context;
     // const EventData: EventType[] = [
     //     {
     //         eventName: "Event1",
@@ -178,7 +180,7 @@ const MyEvents: React.FC = () => {
         <div className='flex gap-3 w-full'>
             <div className='w-4/5'>
                 {
-                    localStorage.getItem('userAccessToken') && <div>
+                    localStorage.getItem('userAccessToken') ? <div>
                         <EventsTab />
                         <div className='grid grid-cols-3 gap-3'>
                             {
@@ -201,7 +203,7 @@ const MyEvents: React.FC = () => {
                                                 </div>
                                             )
                                         }
-                                        ) : activeEventSubTab === 'Presented' ? 
+                                        ) : activeEventSubTab === 'Presented' ?
                                             storeAllPastEvents?.map((items, index) => {
                                                 return (
                                                     <div
@@ -216,7 +218,7 @@ const MyEvents: React.FC = () => {
                                                     </div>
                                                 )
                                             }
-                                        ) : null
+                                            ) : null
 
                                 // else if(activeEventSubTab === 'To Present'){
                                 //     // return 'to present'
@@ -229,6 +231,11 @@ const MyEvents: React.FC = () => {
                             }
 
                         </div>
+                    </div> : <div className='flex flex-col items-center bg-[#fff] rounded-[20px] border border-solid border-[#e6e6e6]'>
+                        <div style={{ minWidth: '600px' }}>
+                            <img src={LogInImg} className='w-full' style={{ marginBottom: '-60px' }} />
+                        </div>
+                        <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login to the Application' onClick={() => { setLoginPopupValue(true) }} />
                     </div>
                 }
             </div>
@@ -250,6 +257,7 @@ const MyEvents: React.FC = () => {
                     </div>
                 </div>
             </div>
+            {logInPopupValue && <LoginForm />}
         </div>
     )
 }

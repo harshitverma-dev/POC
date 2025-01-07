@@ -32,7 +32,10 @@ export interface createContextType {
     setLoginUserDetail: React.Dispatch<React.SetStateAction<any | null>>,
     getAllPastEventsDataByApi: () => void,
     storeAllPastEvents: EventType[] | [],
-    setStoreAllPastEvents:React.Dispatch<React.SetStateAction<any>>
+    setStoreAllPastEvents:React.Dispatch<React.SetStateAction<any>>,
+    getAllSubAdminListDataByApi: ()=> void,
+    storeAllSubAdminList: userPresentersI[] | [],
+    setStoreAllSubAdminList :React.Dispatch<React.SetStateAction<userPresentersI[] | []>>
 }
 
 interface props {
@@ -64,6 +67,7 @@ const ContextData: React.FC<props> = ({ children }) => {
     const [isStoreAllUpcomingEventsLoader, setIsStoreAllUpcomingEventsLoader] = useState<boolean>(false)
     const [loginUserDetail, setLoginUserDetail] = useState<any | null>(null);
     const [storeAllPastEvents, setStoreAllPastEvents] = useState<EventType[] | []>([])
+    const [storeAllSubAdminList, setStoreAllSubAdminList] = useState<userPresentersI[] | []>([]);
 
     // get All Presenters ->>
     const getAllPresentersDataByApi = () => {
@@ -113,6 +117,20 @@ const ContextData: React.FC<props> = ({ children }) => {
         })
     }
 
+    // get sub admin list ->>
+    const getAllSubAdminListDataByApi = () =>{
+        axios.get('http://localhost:3000/university-student/profile/v1/users?limit=0&skip=1&role=SUBADMIN', {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
+            },
+        }).then((response)=>{
+            setStoreAllSubAdminList(response.data)
+            console.log(response);
+        }).catch(err=>{
+            console.log(err)
+        })
+    }
+
     useEffect(() => {
         let getLoginUserData = localStorage.getItem('userProfile')
         if (getLoginUserData) {
@@ -126,7 +144,7 @@ const ContextData: React.FC<props> = ({ children }) => {
 
 
     return (
-        <ProductContextData.Provider value={{ storeAllUpcomingEvents, setStoreAllUpcomingEvents, isFilterForm, setIsFilterForm, toggleEventTabs, setToggleEventTabs, activeMainTab, setActiveMainTab, activeEventSubTab, setEventSubTab, getAllPresentersDataByApi, storeAllPresenters, setStoreAllPresenters, presentersDetailsPopupValue, setPresentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopup, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, loginForm, setLoginForm, isStoreAllUpcomingEventsLoader, loginUserDetail, setLoginUserDetail, getAllPastEventsDataByApi, storeAllPastEvents, setStoreAllPastEvents }}>
+        <ProductContextData.Provider value={{ storeAllUpcomingEvents, setStoreAllUpcomingEvents, isFilterForm, setIsFilterForm, toggleEventTabs, setToggleEventTabs, activeMainTab, setActiveMainTab, activeEventSubTab, setEventSubTab, getAllPresentersDataByApi, storeAllPresenters, setStoreAllPresenters, presentersDetailsPopupValue, setPresentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopup, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, loginForm, setLoginForm, isStoreAllUpcomingEventsLoader, loginUserDetail, setLoginUserDetail, getAllPastEventsDataByApi, storeAllPastEvents, setStoreAllPastEvents, getAllSubAdminListDataByApi, storeAllSubAdminList, setStoreAllSubAdminList }}>
             {children}
         </ProductContextData.Provider>
     )

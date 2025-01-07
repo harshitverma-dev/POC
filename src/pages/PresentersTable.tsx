@@ -11,30 +11,6 @@ import { ProductContextData } from '../context/ContextData';
 import { Badge } from 'primereact/badge';
 import { Chip } from 'primereact/chip';
 import { userPresentersI } from '../interface/Presenters';
-// import { CustomerService } from './service/CustomerService';
-
-// interface Representative {
-//   name: string;
-//   image: string;
-// }
-
-// interface Country {
-//     name: string;
-//     code: string;
-// }
-
-// interface Customer {
-//   id: number;
-//   name: string;
-//   country: Country;
-//   company: string;
-//   date: string;
-//   status: string;
-//   verified: boolean;
-//   activity: number;
-//   representative: Representative;
-//   balance: number;
-// }
 
 const defaultFilters: DataTableFilterMeta = {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -65,33 +41,7 @@ const PresenterTableList: React.FC = () => {
 
     useEffect(() => {
         getAllPresentersDataByApi();
-        // console.log(storeAllPresenters)
     }, []);
-
-    // const getCustomers = (data: Customer[]) => {
-    //     return [...(data || [])].map((d) => {
-    //         // @ts-ignore
-    //         d.date = new Date(d.date);
-
-    //         return d;
-    //     });
-    // };
-
-    // const formatDate = (value: Date) => {
-    //     return value.toLocaleDateString('en-US', {
-    //         day: '2-digit',
-    //         month: '2-digit',
-    //         year: 'numeric'
-    //     });
-    // };
-
-    // const formatCurrency = (value: number) => {
-    //     return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-    // };
-
-    // const clearFilter = () => {
-    //     initFilters();
-    // };
 
     const onGlobalFilterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
@@ -176,110 +126,6 @@ const PresenterTableList: React.FC = () => {
             </div>
         );
     };
-
-    // const countryBodyTemplate = (rowData: Customer) => {
-    //     return (
-    //         <div className="flex align-items-center gap-2">
-    //             <img alt="flag" src="https://primefaces.org/cdn/primereact/images/flag/flag_placeholder.png" className={`flag flag-${rowData.country.code}`} style={{ width: '24px' }} />
-    //             <span>{rowData.country.name}</span>
-    //         </div>
-    //     );
-    // };
-
-    // const filterClearTemplate = (options: ColumnFilterClearTemplateOptions) => {
-    //     return <Button type="button" icon="pi pi-times" onClick={options.filterClearCallback} severity="secondary"></Button>;
-    // };
-
-    // const filterApplyTemplate = (options: ColumnFilterApplyTemplateOptions) => {
-    //     return <Button type="button" icon="pi pi-check" onClick={options.filterApplyCallback} severity="success"></Button>;
-    // };
-
-    // const filterFooterTemplate = () => {
-    //     return <div className="px-3 pt-0 pb-3 text-center">Filter by Country</div>;
-    // };
-
-    // const representativeBodyTemplate = (rowData: Customer) => {
-    //     const representative = rowData.representative;
-
-    //     return (
-    //         <div className="flex align-items-center gap-2">
-    //             <img alt={representative.name} src={`https://primefaces.org/cdn/primereact/images/avatar/${representative.image}`} width="32" />
-    //             <span>{representative.name}</span>
-    //         </div>
-    //     );
-    // };
-
-    // const representativeFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
-    //     return <MultiSelect value={options.value} options={representatives} itemTemplate={representativesItemTemplate} onChange={(e: MultiSelectChangeEvent) => options.filterCallback(e.value)} optionLabel="name" placeholder="Any" className="p-column-filter" />;
-    // };
-
-    // const representativesItemTemplate = (option: Representative) => {
-    //     return (
-    //         <div className="flex align-items-center gap-2">
-    //             <img alt={option.name} src={`https://primefaces.org/cdn/primereact/images/avatar/${option.image}`} width="32" />
-    //             <span>{option.name}</span>
-    //         </div>
-    //     );
-    // };
-
-    // const dateBodyTemplate = (rowData: Customer) => {
-    //     return formatDate(new Date(rowData.date));
-    // };
-
-    // const dateFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
-    //     return <Calendar value={options.value} onChange={(e) => options.filterCallback(e.value, options.index)} dateFormat="mm/dd/yy" placeholder="mm/dd/yyyy" mask="99/99/9999" />;
-    // };
-
-    // const balanceBodyTemplate = (rowData: Customer) => {
-    //     return formatCurrency(rowData.balance);
-    // };
-
-    // const balanceFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
-    //     return <InputNumber value={options.value} onChange={(e: InputNumberChangeEvent) => options.filterCallback(e.value, options.index)} mode="currency" currency="USD" locale="en-US" />;
-    // };
-
-    // const statusBodyTemplate = (rowData: Customer) => {
-    //     return <Tag value={rowData.status} severity={getSeverity(rowData.status)} />;
-    // };
-
-    // const statusFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
-    //     return <Dropdown value={options.value} options={statuses} onChange={(e: DropdownChangeEvent) => options.filterCallback(e.value, options.index)} itemTemplate={statusItemTemplate} placeholder="Select One" className="p-column-filter" showClear />;
-    // };
-
-    // const statusItemTemplate = (option: string) => {
-    //     return <Tag value={option} severity={getSeverity(option)} />;
-    // };
-
-    // const activityBodyTemplate = (rowData: Customer) => {
-    //     return <ProgressBar value={rowData.activity} showValue={false} style={{ height: '6px' }}></ProgressBar>;
-    // };
-
-    // const activityFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
-    //     return (
-    //         <React.Fragment>
-    //             <Slider value={options.value} onChange={(e: SliderChangeEvent) => options.filterCallback(e.value)} range className="m-3"></Slider>
-    //             <div className="flex align-items-center justify-content-between px-2">
-    //                 <span>{options.value ? options.value[0] : 0}</span>
-    //                 <span>{options.value ? options.value[1] : 100}</span>
-    //             </div>
-    //         </React.Fragment>
-    //     );
-    // };
-
-    // const verifiedBodyTemplate = (rowData: Customer) => {
-    //     return <i className={classNames('pi', { 'text-green-500 pi-check-circle': rowData.verified, 'text-red-500 pi-times-circle': !rowData.verified })}></i>;
-    // };
-
-    // const verifiedFilterTemplate = (options: ColumnFilterElementTemplateOptions) => {
-    //     return (
-    //         <div className="flex align-items-center gap-2">
-    //             <label htmlFor="verified-filter" className="font-bold">
-    //                 Verified
-    //             </label>
-    //             <TriStateCheckbox id="verified-filter" value={options.value} onChange={(e: TriStateCheckboxChangeEvent) => options.filterCallback(e.value)} />
-    //         </div>
-    //     );
-    // };
 
     const roleTemplate = (rowData: any) => {
         return (

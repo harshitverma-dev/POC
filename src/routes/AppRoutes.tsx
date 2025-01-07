@@ -8,18 +8,34 @@ import MyEevents from "../pages/MyEvents";
 import AddNewPresenter from "../pages/AddNewPresenter";
 import PresentersTableList from "../pages/PresentersTable";
 import AddSubAdmin from "../pages/AddSubAdmin";
+// import { AccessControl } from "../accessControl/AccessControl";
+import ProtectedRoute from "../components/ProtectedRoutes";
+import SubAdminTable from "../pages/SubAdminTable";
 // import AddNewUser from "../pages/AddNewPresenter";
-
-const AppRoutes: React.FC = () => {
-    const routesPath = [
+// AccessControl
+interface propsI{
+    userRole: string | any
+}
+const AppRoutes: React.FC<propsI> = ({userRole}) => {
+    const publicPath = [
         {
             path: "/",
             element: <UpcomingEvents />
         },
         {
+            path: "/presenters-list",
+            element: <SeeAllPresentersMain />
+        },
+        {
+            path: '/my-events',
+            element : <MyEevents/>
+        },
+        {
             path: "/upcoming-events",
             element: <UpcomingEvents />
         },
+    ];
+    const protectedPath = [
         {
             path: "/add-event",
             element: <AddEvent />
@@ -41,10 +57,6 @@ const AppRoutes: React.FC = () => {
             element: <AddNewPresenter/>
         },
         {
-            path: "/presenters-list",
-            element: <SeeAllPresentersMain />
-        },
-        {
             path: "/presenters-table",
             element: <PresentersTableList/>
 
@@ -54,17 +66,24 @@ const AppRoutes: React.FC = () => {
             element: <AddSubAdmin/>
         },
         {
-            path: 'my-events',
-            element : <MyEevents/>
-        }
+            path: "/sub-admin-table",
+            element: <SubAdminTable/>
+
+        },
     ]
     return (
         <Routes>
             {
-                routesPath?.map((items, index) => {
+                protectedPath?.map((items, index) => {
+                    return <Route key={index} path={items.path} element={<ProtectedRoute path={items.path} userRole={userRole}> {items.element} </ProtectedRoute>} />
+                })
+            }
+   {
+                publicPath?.map((items, index) => {
                     return <Route key={index} path={items.path} element={items.element} />
                 })
             }
+
         </Routes>
     )
 }
