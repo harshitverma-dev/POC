@@ -10,13 +10,15 @@ import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
 import LoginForm from '../components/LoginForm';
 import LogInImg from '../assets/loginImg.gif'
 import { Image } from 'primereact/image';
+import PresentersListSkeleton from '../skeletons/PresentersListSkeleton';
+import { Paginator } from 'primereact/paginator';
 
 const MyEvents: React.FC = () => {
     const context = useContext(ProductContextData);
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { activeEventSubTab, getAllPresentersDataByApi, loginUserDetail, storeAllPresenters, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents } = context;
+    const { activeEventSubTab, getAllPresentersDataByApi, loginUserDetail, storeAllPresenters, storeAllToAttendEvents, getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents, isStoreAllToAttendEventsLoader, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, limitForUpcomingEvents, skipForPastEvents, limitForPastEvents, storeLengthOfPastEvents, setLimitForPastEvent, setSkipForPastEvent, isStoreAllUpcomingEventsLoader, isstoreAllPastEventsLoader } = context;
     // const EventData: EventType[] = [
     //     {
     //         eventName: "Event1",
@@ -174,23 +176,33 @@ const MyEvents: React.FC = () => {
     useEffect(() => {
         getAllPresentersDataByApi();
         getAllUpcomingEventsDataByApi();
-        getAllPastEventsDataByApi()
+        getAllPastEventsDataByApi();
+        getAllToAttendEventsDataByApi()
         // console.log(storeAllPresenters)
     }, [])
+
+
+    const onPageChangeForPast = (event: any) => {
+        setLimitForPastEvent(event.rows);
+        setSkipForPastEvent(event.first)
+    }
+
+    useEffect(() => {
+        getAllPastEventsDataByApi();
+    }, [limitForPastEvents, skipForPastEvents])
     return (
         <div className='flex gap-3 w-full'>
             <div className='w-4/5'>
                 {
-                    loginUserDetail ? <div>
+                    loginUserDetail && localStorage.getItem('userAccessToken') && <div>
                         <EventsTab />
-                        <div className='grid grid-cols-3 gap-3'>
+                        <div className='grid grid-cols-3 gap-3 bg-white p-4 rounded-[15px_15px_0_0]'>
                             {
 
                                 activeEventSubTab === 'To Attend' ?
-                                    (
-                                        <div>To Attend</div>
-                                    ) : activeEventSubTab === 'To Present' ?
-                                        storeAllUpcomingEvents?.map((items, index) => {
+                                    isStoreAllToAttendEventsLoader ?
+                                        <PresentersListSkeleton /> :
+                                        (storeAllToAttendEvents && storeAllToAttendEvents.length > 0) ? storeAllToAttendEvents?.map((items, index) => {
                                             return (
                                                 <div
                                                     key={index}
@@ -203,9 +215,12 @@ const MyEvents: React.FC = () => {
                                                     />
                                                 </div>
                                             )
-                                        }
-                                        ) : activeEventSubTab === 'Presented' ?
-                                            storeAllPastEvents?.map((items, index) => {
+                                        }) : <div className='no-data'>No Events Avaliable.</div>
+
+                                    : activeEventSubTab === 'To Present' ?
+                                        isStoreAllUpcomingEventsLoader ?
+                                            <PresentersListSkeleton /> :
+                                            (storeAllUpcomingEvents && storeAllUpcomingEvents.length > 0) ? storeAllUpcomingEvents?.map((items, index) => {
                                                 return (
                                                     <div
                                                         key={index}
@@ -218,21 +233,44 @@ const MyEvents: React.FC = () => {
                                                         />
                                                     </div>
                                                 )
-                                            }
-                                            ) : null
-
-                                // else if(activeEventSubTab === 'To Present'){
-                                //     // return 'to present'
-                                //     console.log('return to present')
-                                // }else if (activeEventSubTab === 'Presented'){
-                                //     // return 'Presented'
-                                //     console.log('Presented')
-                                // }
-                                // return null;
+                                            }) : <div className='no-data'>No Events Avaliable.</div>
+                                        : activeEventSubTab === 'Presented' ?
+                                            isstoreAllPastEventsLoader ?
+                                                <PresentersListSkeleton /> :
+                                                (storeAllPastEvents && storeAllPastEvents.length > 0) ? storeAllPastEvents?.map((items, index) => {
+                                                    return (
+                                                        <div
+                                                            key={index}
+                                                            className='mainCard border-solid border border-[#e6e6e6] rounded-[20px] p-3'
+                                                        >
+                                                            <EventCard
+                                                                eventData={items}
+                                                                index={index}
+                                                                eventDetails={activeEventSubTab}
+                                                            />
+                                                        </div>
+                                                    )
+                                                }
+                                                ) : <div className='no-data'>No Events Avaliable.</div> : null
                             }
 
                         </div>
-                    </div> : <div className='flex flex-col items-center bg-[#fff] rounded-[20px] border border-solid border-[#e6e6e6]'>
+                        {
+                            // <>
+                            (activeEventSubTab === 'To Present' && storeAllUpcomingEvents.length > 0) && <div className='rounded-[0_0_15px_15px]'>
+                                <Paginator className='rounded-[0_0_15px_15px]' first={skipForUpcomingEvents} rows={limitForUpcomingEvents} totalRecords={storeLengthOfUpcomingEvents} rowsPerPageOptions={[6, 12, 18]} onPageChange={onPageChangeForUpcoming} />
+                            </div>
+                        }
+                        {
+                            (activeEventSubTab === 'Presented' && storeAllPastEvents.length > 0) && <div className='rounded-[0_0_15px_15px]'>
+                                <Paginator className='rounded-[0_0_15px_15px]' first={skipForPastEvents} rows={limitForPastEvents} totalRecords={storeLengthOfPastEvents} rowsPerPageOptions={[6, 12, 18]} onPageChange={onPageChangeForPast} />
+                            </div>
+                        }
+
+                    </div>
+                }
+                {
+                    !loginUserDetail && !localStorage.getItem('userAccessToken') && <div className='flex flex-col items-center bg-[#fff] rounded-[20px]'>
                         <div style={{ minWidth: '500px', maxWidth: '500px' }}>
                             <Image src={LogInImg} className='w-[100%] h-[100%]' style={{ marginBottom: '-60px' }} loading='lazy' />
                         </div>
@@ -240,7 +278,7 @@ const MyEvents: React.FC = () => {
                     </div>
                 }
             </div>
-            <div className='w-1/5 flex flex-col gap-3 px-[13px] border-l border-solid border-[#e6e6e6] '>
+            <div className='w-1/5 flex flex-col gap-3 p-[13px] thin-scrollbar bg-white rounded-[15px_15px_15px_15px]'>
                 <div className=' sticky top-[70px]'>
                     {
                         (storeAllPresenters !== null && storeAllPresenters.length > 0) ? storeAllPresenters?.map((items) => {

@@ -53,7 +53,7 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
         // window.history.go(0);
     }
     return (
-        <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+        <nav className="fixed top-0 z-50 w-full bg-white">
             <div className="px-3 py-3 lg:px-5 lg:pl-3">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center justify-start rtl:justify-end">
@@ -79,7 +79,7 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
                             {
                                 localStorage.getItem('userAccessToken') && <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
                                     <div className="px-4 py-3" role="none">
-                                        <p className="text-sm text-gray-900 dark:text-white flex items-center justify-center" role="none">
+                                        <p className="text-sm text-gray-900 dark:text-white flex items-center justify-start capitalize" role="none">
                                             {loginUserDetail?.name}<Badge className='ml-2 text-[10px]' value={loginUserDetail?.role}/>
                                         </p>
                                         <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">

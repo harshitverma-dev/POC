@@ -30,7 +30,7 @@ const LoginForm: React.FC = () => {
         }
 
         axios.post(url, payload).then((response) => {
-            console.log(response, 'dddddddddddd');
+            // console.log(response, 'dddddddddddd');
             setLoginUserDetail(response.data.custProfile)
             localStorage.setItem('userProfile', JSON.stringify(response.data.custProfile));
             // setUserProfieData()

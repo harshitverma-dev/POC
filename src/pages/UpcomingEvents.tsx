@@ -11,6 +11,10 @@ import LoginForm from '../components/LoginForm';
 import PresentersListSkeleton from '../skeletons/PresentersListSkeleton';
 import LogInImg from '../assets/loginImg.gif'
 import { Image } from 'primereact/image';
+import { ProgressSpinner } from 'primereact/progressspinner';
+import Spinner from '../components/Spinner';
+import { Paginator } from 'primereact/paginator';
+import InitateForgetPasswordForm from '../components/IniateForgetPasswordForm';
 
 
 const UpcomingEvents: React.FC = () => {
@@ -18,7 +22,7 @@ const UpcomingEvents: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { activeEventSubTab, getAllPresentersDataByApi, storeAllPresenters, getAllUpcomingEventsDataByApi, loginUserDetail,storeAllUpcomingEvents, setLoginPopupValue, logInPopupValue, isStoreAllUpcomingEventsLoader } = context;
+    const { activeEventSubTab, getAllPresentersDataByApi, storeAllPresenters, getAllUpcomingEventsDataByApi, loginUserDetail, storeAllUpcomingEvents, setLoginPopupValue, logInPopupValue, isStoreAllUpcomingEventsLoader, setLimitForUpcomingEvent, setSkipForUpcomingEvent, limitForUpcomingEvents, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
     // const EventData: EventType[] = [
     //     {
     //         eventName: "Event1",
@@ -159,15 +163,19 @@ const UpcomingEvents: React.FC = () => {
         getAllUpcomingEventsDataByApi();
         // console.log(storeAllPresenters)
     }, [])
+
+
+
+
     return (
         <div className='flex gap-3 w-full'>
             <div className='w-4/5'>
                 {
-                    loginUserDetail ? <div>
+                    loginUserDetail && localStorage.getItem('userAccessToken') && <div>
                         <EventsTab />
-                        <div className='grid grid-cols-3 gap-3'>
+                        <div className='grid grid-cols-3 gap-3 bg-white p-4 rounded-[15px_15px_0_0]'>
                             {
-                                storeAllUpcomingEvents.length > 0 ? storeAllUpcomingEvents.map((items, index) => {
+                                isStoreAllUpcomingEventsLoader ? <PresentersListSkeleton /> : (storeAllUpcomingEvents && storeAllUpcomingEvents.length > 0) ? storeAllUpcomingEvents.map((items, index) => {
                                     return (
                                         <div className='mainCard border-solid border border-[#e6e6e6] rounded-[20px] p-3' key={index}>
                                             <EventCard
@@ -176,23 +184,33 @@ const UpcomingEvents: React.FC = () => {
                                                 eventDetails="Upcoming Events" />
                                         </div >
                                     )
-                                }) : storeAllUpcomingEvents.length === 0 && isStoreAllUpcomingEventsLoader ? <PresentersListSkeleton /> : storeAllUpcomingEvents.length === 0 && !isStoreAllUpcomingEventsLoader ? <div className='no-data'>No Upcoming Events Avaliable.</div> : null
+                                }) : <div className='no-data'>No Upcoming Events Avaliable.</div>
                             }
                         </div>
-                    </div> :
-                        <div className='flex flex-col items-center bg-[#fff] rounded-[20px] border border-solid border-[#e6e6e6]'>
-                            <div style={{minWidth: '500px', maxWidth: '500px'}}>
-                                <Image src={LogInImg} className='w-[100%] h-[100%]'style={{marginBottom: '-60px'}} loading='lazy'/>
+                        {
+                            storeAllUpcomingEvents.length > 0 && <div className='rounded-[0_0_15px_15px]'>
+                                <Paginator className='rounded-[0_0_15px_15px]' first={skipForUpcomingEvents} rows={limitForUpcomingEvents} totalRecords={storeLengthOfUpcomingEvents} rowsPerPageOptions={[6, 12, 18]} onPageChange={onPageChangeForUpcoming} />
                             </div>
-                            <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login to the Application' onClick={() => { setLoginPopupValue(true) }} />
-                        </div>
-                }
+                        }
 
+                    </div>
+                }
+                {
+                    !loginUserDetail && !localStorage.getItem('userAccessToken') && <div className='flex flex-col items-center bg-[#fff] rounded-[20px]'>
+                        <div style={{ minWidth: '500px', maxWidth: '500px' }}>
+                            <Image src={LogInImg} className='w-[100%] h-[100%]' style={{ marginBottom: '-60px' }} loading='lazy' />
+                        </div>
+                        <div className='flex items-center justify-center'>
+                            <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login to the Application' onClick={() => { setLoginPopupValue(true) }} />
+                            <Button label="Forget Password" link onClick={() => { setInitateForgetPasswordPopupValue(true) }} />
+                        </div>
+                    </div>
+                }
             </div>
-            <div className='w-1/5 flex flex-col gap-3 px-[13px] border-l border-solid border-[#e6e6e6] '>
+            <div className='w-1/5 flex flex-col gap-3 p-[13px] thin-scrollbar bg-white rounded-[15px_15px_15px_15px]'>
                 <div className=' sticky top-[70px]'>
                     {
-                        (storeAllPresenters !== null && storeAllPresenters.length > 0) ? storeAllPresenters?.map((items,index) => {
+                        (storeAllPresenters !== null && storeAllPresenters.length > 0) ? storeAllPresenters?.map((items, index) => {
                             return (
                                 <div className='mainCard rightCardContainer border-solid border border-[#e6e6e6] rounded-[20px] p-3 mb-3' key={index}>
                                     <RightSideCard rightSideData={items} />
@@ -202,13 +220,16 @@ const UpcomingEvents: React.FC = () => {
                         ) : <RightSideCardSkeleton />
                     }
                     <div className='flex justify-end'>
-                        <Link to="/presenters-list">
-                            <Button className='px-0 pb-0' label="See all Presenters" link />
+                        <Link to="/presenters-list" className='flex justify-start items-center'>
+                            <Button className='px-0 pb-0' iconPos='right' icon='pi pi-angle-double-right' label="See all Presenters" link />
+                            {/* <i className='pi pi-angle-double-right'/> */}
                         </Link>
                     </div>
                 </div>
             </div>
             {logInPopupValue && <LoginForm />}
+            {initateForgetPasswordPopupValue && <InitateForgetPasswordForm />}
+            {/* <ProgressSpinner style={{width: '50px', height: '50px'}} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" /> */}
         </div>
     )
 }

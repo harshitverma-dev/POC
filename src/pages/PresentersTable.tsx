@@ -11,6 +11,8 @@ import { ProductContextData } from '../context/ContextData';
 import { Badge } from 'primereact/badge';
 import { Chip } from 'primereact/chip';
 import { userPresentersI } from '../interface/Presenters';
+import axios from 'axios';
+import { Toast } from 'primereact/toast';
 
 const defaultFilters: DataTableFilterMeta = {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -36,7 +38,7 @@ const PresenterTableList: React.FC = () => {
         { field: 'introduction', header: 'Introduction' },
         { field: 'techExpertise', header: 'Tech Expertise' },
     ];
-
+    const toast = useRef<Toast>(null)
 
 
     useEffect(() => {
@@ -150,6 +152,26 @@ const PresenterTableList: React.FC = () => {
     const header = renderHeader();
     // const header = 'kkkk'
 
+    const deleteSinglePresenter = (id: any) => {
+        console.log(id)
+        axios.delete(`http://localhost:3000/university-student/profile/v1/profile?deletionId=${id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
+            }
+        }).then((response) => {
+            console.log(response);
+            getAllPresentersDataByApi();
+            toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Profile deleted !' });
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    const actionTemplate = (items: any) => {
+        // console.log('ddd', items._id),
+        return <i className='pi pi-trash text-lg text-orange-600 cursor-pointer' onClick={() => deleteSinglePresenter(items._id)} />
+    }
+
     return (
         <div className="card w-full">
             <DataTable ref={dt} value={storeAllPresenters} paginator showGridlines rows={4} dataKey="id" filters={filters} globalFilterFields={['name', 'email', 'role', 'org', 'introduction']} header={header} emptyMessage="No presenters found." className='text-center'>
@@ -168,8 +190,9 @@ const PresenterTableList: React.FC = () => {
 
                 {/* <Column field="activity" header="Activity" showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={activityBodyTemplate} filter filterElement={activityFilterTemplate} /> */}
 
-                {/* <Column field="verified" header="Verified" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '8rem' }} /> */}
+                <Column field="action" header="Action" bodyClassName="text-center" style={{ maxWidth: '4rem' }} body={actionTemplate} />
             </DataTable>
+            <Toast ref={toast}/>
         </div>
     );
 }

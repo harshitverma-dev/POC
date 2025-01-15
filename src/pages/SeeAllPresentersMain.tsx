@@ -46,7 +46,7 @@ const SeeAllPresentersMain: React.FC = () => {
             <div className='flex gap-3 w-full'>
                 <div className='w-4/5'>
                     {/* <EventsTab /> */}
-                    <div className='grid grid-cols-3 gap-3'>
+                    <div className='grid grid-cols-3 gap-3 bg-white p-4 rounded-[15px_15px_0_0]'>
                         {
                             (storeAllPresenters !== null && storeAllPresenters?.length > 0) ? storeAllPresenters?.map((items, index) => {
                                 return (
@@ -61,7 +61,7 @@ const SeeAllPresentersMain: React.FC = () => {
                         }
                     </div>
                 </div>
-                <div className='w-1/5 flex flex-col gap-3 px-[13px] border-l border-solid border-[#e6e6e6] '>
+                <div className='w-1/5 flex flex-col gap-3 p-[13px] thin-scrollbar bg-white rounded-[15px_15px_15px_15px]'>
                     <div className=' sticky top-[70px]'>
                         {
                             storeAllUpcomingEvents?.map((items) => {

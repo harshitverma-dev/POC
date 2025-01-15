@@ -11,6 +11,8 @@ import { ProductContextData } from '../context/ContextData';
 import { Badge } from 'primereact/badge';
 import { Chip } from 'primereact/chip';
 import { userPresentersI } from '../interface/Presenters';
+import axios from 'axios';
+import { Toast } from 'primereact/toast';
 
 const defaultFilters: DataTableFilterMeta = {
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
@@ -39,6 +41,7 @@ const SubAdminTable: React.FC = () => {
         { field: 'metaData.graduation_year', header: 'Graduation Year' },
         { field: 'metaData.location', header: 'Location' },
     ];
+    const toast = useRef<Toast>(null)
 
 
 
@@ -73,7 +76,7 @@ const SubAdminTable: React.FC = () => {
             }
         });
     };
-    
+
     const exportExcel = () => {
         import('xlsx').then((xlsx) => {
             // Prepare data with nested fields resolved
@@ -90,17 +93,17 @@ const SubAdminTable: React.FC = () => {
                     return acc;
                 }, {})
             );
-    
+
             // Create worksheet and workbook
             const worksheet = xlsx.utils.json_to_sheet(data);
             const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
-    
+
             // Write workbook and save as Excel file
             const excelBuffer = xlsx.write(workbook, { bookType: 'xlsx', type: 'array' });
             saveAsExcelFile(excelBuffer, 'subadmin-table');
         });
     };
-    
+
 
     const exportPdf = () => {
         import('jspdf').then((jsPDFModule) => {
@@ -176,6 +179,27 @@ const SubAdminTable: React.FC = () => {
     const header = renderHeader();
     // const header = 'kkkk'
 
+
+    const deleteSinglePresenter = (id: any) => {
+        console.log(id)
+        axios.delete(`http://localhost:3000/university-student/profile/v1/profile?deletionId=${id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
+            }
+        }).then((response) => {
+            console.log(response);
+            getAllSubAdminListDataByApi();
+            toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Profile deleted !' });
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
+    const actionTemplate = (items: any) => {
+        // console.log('ddd', items._id),
+        return <i className='pi pi-trash text-lg text-orange-600 cursor-pointer' onClick={() => deleteSinglePresenter(items._id)} />
+    }
+
     return (
         <div className="card w-full">
             <DataTable ref={dt} value={storeAllSubAdminList} paginator showGridlines rows={4} dataKey="id" filters={filters} globalFilterFields={['name', 'email', 'role', 'metaData.contact_no', 'metaData.college', 'metaData.course', 'metaData.stream', 'metaData.graduation_year', 'metaData.location']} header={header} emptyMessage="No sub Admin found." className='text-center'>
@@ -199,7 +223,9 @@ const SubAdminTable: React.FC = () => {
                 {/* <Column field="activity" header="Activity" showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={activityBodyTemplate} filter filterElement={activityFilterTemplate} /> */}
 
                 {/* <Column field="verified" header="Verified" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '8rem' }} /> */}
+                <Column field="action" header="Action" bodyClassName="text-center" style={{ maxWidth: '4rem' }} body={actionTemplate} />
             </DataTable>
+            <Toast ref={toast} />
         </div>
     );
 }

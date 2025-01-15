@@ -1,5 +1,5 @@
 // import { Button } from 'primereact/button';
-import React, { useContext, useEffect} from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { HiArrowLongRight } from "react-icons/hi2";
@@ -13,7 +13,7 @@ const EventsTab: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { toggleEventTabs, setToggleEventTabs, activeMainTab, setActiveMainTab, activeEventSubTab, setEventSubTab } = context;
+    const { toggleEventTabs, setToggleEventTabs, activeMainTab, setActiveMainTab, activeEventSubTab, setEventSubTab, loginUserDetail } = context;
     const navigate = useNavigate();
     const location = useLocation();
     const toggleMyEventsTabs = () => {
@@ -21,10 +21,10 @@ const EventsTab: React.FC = () => {
         navigate('/my-events')
 
     }
-    console.log(location)
-    // const toAttendedTab = () => {
-    //     setEventSubTab('To Attend');
-    // }
+    // console.log(location)
+    const toAttendedTab = () => {
+        setEventSubTab('To Attend');
+    }
     const toPresentTab = () => {
         setEventSubTab('To Present')
     }
@@ -50,9 +50,16 @@ const EventsTab: React.FC = () => {
                 {toggleEventTabs && <HiArrowLongRight className='mr-2' />}
                 {
                     toggleEventTabs && <ul className='flex justify-start items-center'>
-                        {/* <li className={`border border-solid border-[#e6e6e6] rounded-[15px] px-3 py-1 mr-2 cursor-pointer ${activeEventSubTab == 'To Attend' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={toAttendedTab} >To Attend</li> */}
-                        <li className={`border border-solid border-[#e6e6e6] rounded-[15px] px-3 py-1 mr-2 cursor-pointer ${activeEventSubTab == 'To Present' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={toPresentTab}>To Present</li>
-                        <li className={`border border-solid border-[#e6e6e6] rounded-[15px] px-3 py-1 cursor-pointer ${activeEventSubTab == 'Presented' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={PresentedTab}>Presented</li>
+                        <li className={`border border-solid border-[#e6e6e6] rounded-[15px] px-3 py-1 mr-2 cursor-pointer ${activeEventSubTab == 'To Attend' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={toAttendedTab} >To Attend</li>
+                        {
+                            loginUserDetail.role !== 'STUDENT' && loginUserDetail.role !== 'SUBADMIN' && (
+                                <>
+                                    <li className={`border border-solid border-[#e6e6e6] rounded-[15px] px-3 py-1 mr-2 cursor-pointer ${activeEventSubTab == 'To Present' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={toPresentTab}>To Present</li>
+                                    <li className={`border border-solid border-[#e6e6e6] rounded-[15px] px-3 py-1 cursor-pointer ${activeEventSubTab == 'Presented' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={PresentedTab}>Presented</li>
+                                </>
+                            )
+                        }
+
                     </ul>
                 }
 

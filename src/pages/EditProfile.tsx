@@ -16,28 +16,27 @@ const EditProfile: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { loginUserDetail } = context
+    const { loginUserDetail, setLoginUserDetail } = context
     const [updatePresenterDetails, setUpdatePresenterDetails] = useState<createPresenterDetailsI>({
         presenterName: '',
         presenterEmail: '',
+        presenterContactNo: '',
         presenterOrg: '',
         presenterIntroduction: '',
         presenterIndustry: '',
         presenterSegment: '',
-        presenterRole: {
-            label: 'Professor',
-            id: 'PROFESSOR'
-        },
+        // presenterRole: 'PROFESSOR'
         presenterTechExperties: []
     })
     const [updatePresenterErrors, setUpdatePresenterErrors] = useState({
         presenterNameError: false,
         presenterEmailError: false,
+        presenterContactNoError: false,
         presenterOrgError: false,
         presenterIntroductionError: false,
         // presenterIndustryError: false,
         // PresenterSegmentError: false,
-        presenterRoleError: false,
+        // presenterRoleError: false,
         presenterTechExpertiesError: false
     })
     const [isLoadingForUpdatePresenter, setisLoadingForUpdatePresenter] = useState(false);
@@ -52,18 +51,16 @@ const EditProfile: React.FC = () => {
     }
 
     useEffect(() => {
-        if(loginUserDetail){
+        if (loginUserDetail) {
             setUpdatePresenterDetails({
                 presenterName: loginUserDetail?.name,
                 presenterEmail: loginUserDetail?.email,
+                presenterContactNo: loginUserDetail?.metaData?.professor_contact_no,
                 presenterOrg: loginUserDetail?.org,
                 presenterIntroduction: loginUserDetail?.introduction,
                 presenterIndustry: loginUserDetail?.industry,
                 presenterSegment: loginUserDetail?.segment,
-                presenterRole: {
-                    label: 'Professor',
-                    id: 'PROFESSOR'
-                },
+                // presenterRole: 'PROFESSOR'
                 presenterTechExperties: loginUserDetail?.techExpertise.map((items: string) => {
                     return (
                         {
@@ -83,13 +80,14 @@ const EditProfile: React.FC = () => {
             correctFormatForTechExperties.push(items.id);
         });
 
-        if (!updatePresenterDetails.presenterName || !updatePresenterDetails.presenterEmail || !updatePresenterDetails.presenterOrg || !updatePresenterDetails.presenterIntroduction || !updatePresenterDetails.presenterRole || correctFormatForTechExperties.length == 0) {
+        if (!updatePresenterDetails.presenterName || !updatePresenterDetails.presenterEmail || !updatePresenterDetails.presenterContactNo || !updatePresenterDetails.presenterOrg || !updatePresenterDetails.presenterIntroduction || correctFormatForTechExperties.length == 0) {
             setUpdatePresenterErrors({
                 presenterNameError: !updatePresenterDetails.presenterName ? true : false,
                 presenterEmailError: !updatePresenterDetails.presenterEmail ? true : false,
+                presenterContactNoError: !updatePresenterDetails.presenterContactNo ? true : false,
                 presenterOrgError: !updatePresenterDetails.presenterOrg ? true : false,
                 presenterIntroductionError: !updatePresenterDetails.presenterIntroduction ? true : false,
-                presenterRoleError: !updatePresenterDetails.presenterRole ? true : false,
+                // presenterRoleError: !updatePresenterDetails.presenterRole ? true : false,
                 presenterTechExpertiesError: correctFormatForTechExperties.length == 0 ? true : false
             })
             setisLoadingForUpdatePresenter(false);
@@ -106,8 +104,11 @@ const EditProfile: React.FC = () => {
             introduction: updatePresenterDetails.presenterIntroduction,
             industry: updatePresenterDetails.presenterIndustry,
             segment: updatePresenterDetails.presenterSegment,
-            role: updatePresenterDetails.presenterRole?.id,
-            techExpertise: correctFormatForTechExperties
+            role: 'PROFESSOR',
+            techExpertise: correctFormatForTechExperties,
+            metaData : {
+                professor_contact_no : updatePresenterDetails.presenterContactNo
+            }
         }
         // console.log(payload, 'kp')
         axios.put(url, payload, {
@@ -117,6 +118,8 @@ const EditProfile: React.FC = () => {
             // withCredentials: false
         }).then((res) => {
             console.log(res)
+            setLoginUserDetail(res.data)
+            localStorage.setItem('userProfile', JSON.stringify(res.data))
             setisLoadingForUpdatePresenter(false);
             toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Profile updated !' });
             // setUpdatePresenterDetails({
@@ -153,6 +156,11 @@ const EditProfile: React.FC = () => {
                     {(updatePresenterErrors.presenterEmailError && !updatePresenterDetails.presenterEmail) && <Message severity="error" className='p-1' text="Email is required" />}
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                    <label htmlFor="presenterContactNo" className="">Contact Number:</label>
+                    <InputText invalid={updatePresenterErrors.presenterContactNoError && !updatePresenterDetails.presenterContactNo} id="presenterContactNo" value={updatePresenterDetails.presenterContactNo} name='presenterContactNo' onChange={onChangeFun} placeholder="Enter the contact number" className="mr-2 w-full" />
+                    {(updatePresenterErrors.presenterContactNoError && !updatePresenterDetails.presenterContactNo) && <Message severity="error" className='p-1' text="Contact number is required" />}
+                </div>
+                <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterOrg" className="">Organization:</label>
                     <InputText invalid={updatePresenterErrors.presenterOrgError && !updatePresenterDetails.presenterOrg} id="presenterOrg" value={updatePresenterDetails.presenterOrg} name='presenterOrg' onChange={onChangeFun} placeholder="Enter org" className="mr-2 w-full" />
                     {(updatePresenterErrors.presenterOrgError && !updatePresenterDetails.presenterOrg) && <Message severity="error" className='p-1' text="Org is required" />}
@@ -162,12 +170,12 @@ const EditProfile: React.FC = () => {
                     <InputTextarea invalid={updatePresenterErrors.presenterIntroductionError && !updatePresenterDetails.presenterIntroduction} autoResize value={updatePresenterDetails.presenterIntroduction} name='presenterIntroduction' onChange={onChangeFun} placeholder='About..' rows={5} cols={30} className='mr-2 w-full' />
                     {(updatePresenterErrors.presenterIntroductionError && !updatePresenterDetails.presenterIntroduction) && <Message severity="error" className='p-1' text="Introduction is required" />}
                 </div>
-                <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                {/* <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterRole" className="">Select a Role:</label>
                     <Dropdown invalid={updatePresenterErrors.presenterRoleError && !updatePresenterDetails.presenterRole} options={userRoleList.filter((items) => items.id == 'PROFESSOR')} name='presenterRole' value={updatePresenterDetails.presenterRole} onChange={onChangeFun} optionLabel="label"
                         showClear placeholder="Choose one" className="w-full md:w-14rem" />
                     {(updatePresenterErrors.presenterRoleError && !updatePresenterDetails.presenterRole) && <Message severity="error" className='p-1' text="Role is required" />}
-                </div>
+                </div> */}
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterIndustry" className="">Industry:</label>
                     <InputText id="presenterIndustry" value={updatePresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} placeholder="Enter Industry" className="mr-2 w-full" />

@@ -9,6 +9,7 @@ import { Button } from 'primereact/button';
 import axios from 'axios';
 import { ProductContextData } from '../context/ContextData';
 import { useNavigate } from 'react-router-dom';
+import { IndustryList, SegmentList } from '../interface/IndustryAndSegment';
 
 const AddEvent: React.FC = () => {
     const [eventData, setEventDate] = useState<Nullable<Date>>(null);
@@ -16,14 +17,17 @@ const AddEvent: React.FC = () => {
         eventName: '',
         eventDescription: '',
         eventPlace: '',
-        eventPrerequisite: ''
+        eventPrerequisite: '',
+        eventIndustry: '',
+        eventSegment: ''
     })
+    // const []
     const [CreateEventErrors, setCreateEventErrors] = useState([])
     const context = useContext(ProductContextData);
     if (!context) {
         throw new Error('it should not be null');
     }
-    const {loginUserDetail} = context;
+    const { loginUserDetail, getAllToAttendEventsDataByApi } = context;
     const navigate = useNavigate()
 
     const onChangeFun = (e: any) => {
@@ -53,6 +57,9 @@ const AddEvent: React.FC = () => {
             eventName: createEventDetails.eventName,
             description: createEventDetails.eventDescription,
             place: createEventDetails.eventPlace,
+            eventPrerequisite: createEventDetails.eventPrerequisite,
+            industry: createEventDetails.eventIndustry,
+            segment: createEventDetails.eventSegment,
             fromDateTime: modifiedDateTime,
             toDateTime: modifiedDateTime,
             org: loginUserDetail.org
@@ -63,7 +70,7 @@ const AddEvent: React.FC = () => {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
         }).then((response) => {
-            console.log(response);
+            console.log(response, 'save event');
             setCreateEventErrors([]);
             navigate('/')
         }).catch(err => {
@@ -72,6 +79,7 @@ const AddEvent: React.FC = () => {
 
         })
     }
+
     return (
         // create
         // <div>
@@ -101,6 +109,15 @@ const AddEvent: React.FC = () => {
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="eventPrerequisite" className="">Event Pre-Requisite:</label>
                     <InputText id="eventPrerequisite" value={createEventDetails.eventPrerequisite} name='eventPrerequisite' onChange={onChangeFun} placeholder="Enter Prerequisite for attendee" className="mr-2 w-full" />
+                </div>
+                <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                    <label htmlFor="eventIndustry" className="">Event Industry:</label>
+                    {/* <InputText id="eventIndustry" value={createEventDetails.eventIndustry} name='eventIndustry' onChange={onChangeFun} placeholder="Enter Industry" className="mr-2 w-full" /> */}
+                    <Dropdown value={createEventDetails.eventIndustry} name='eventIndustry' onChange={onChangeFun} options={IndustryList} placeholder="Select Industry" filter className="w-full md:w-14rem" />
+                </div>
+                <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                    <label htmlFor="eventSegment" className="">Event Segment:</label>
+                    <Dropdown value={createEventDetails.eventSegment} name='eventSegment' onChange={onChangeFun} options={SegmentList} placeholder="Select Segment" filter className="w-full md:w-14rem" />
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="eventDateTime" className="">Event Date/Time:</label>

@@ -66,7 +66,8 @@ const AddSubAdmin: React.FC = () => {
             name: createSubAdminDetails.subAdminName,
             email: createSubAdminDetails.subAdminEmailId,
             role: "SUBADMIN",
-            org: loginUserDetail?.role,
+            // org: loginUserDetail?.role,
+            org: createSubAdminDetails.subAdminCollege,
             metaData: {
                 contact_no: createSubAdminDetails.subAdminContactNo,
                 college: createSubAdminDetails.subAdminCollege,

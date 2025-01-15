@@ -14,24 +14,26 @@ const AddNewPresenter: React.FC = () => {
     const [createPresenterDetails, setCreatePresenterDetails] = useState<createPresenterDetailsI>({
         presenterName: '',
         presenterEmail: '',
+        presenterContactNo: '',
         presenterOrg: '',
         presenterIntroduction: '',
         presenterIndustry: '',
         presenterSegment: '',
-        presenterRole: {
-            label: 'Professor',
-            id: 'PROFESSOR'
-        },
+        // presenterRole: {
+        //     label: 'Professor',
+        //     id: 'PROFESSOR'
+        // },
         presenterTechExperties: []
     })
     const [createPresenterErrors, setCreatePresenterErrors] = useState({
         presenterNameError: false,
         presenterEmailError: false,
+        presenterContactNoError: false,
         presenterOrgError: false,
         presenterIntroductionError: false,
         // presenterIndustryError: false,
         // PresenterSegmentError: false,
-        presenterRoleError: false,
+        // presenterRoleError: false,
         presenterTechExpertiesError: false
     })
     const [isLoadingForCreatePresenter, setisLoadingForCreatePresenter] = useState(false);
@@ -52,15 +54,16 @@ const AddNewPresenter: React.FC = () => {
             correctFormatForTechExperties.push(items.id);
         });
 
-        if (!createPresenterDetails.presenterName || !createPresenterDetails.presenterEmail || !createPresenterDetails.presenterOrg || !createPresenterDetails.presenterIntroduction || !createPresenterDetails.presenterRole || correctFormatForTechExperties.length == 0) {
+        if (!createPresenterDetails.presenterName || !createPresenterDetails.presenterEmail || !createPresenterDetails.presenterContactNo || !createPresenterDetails.presenterOrg || !createPresenterDetails.presenterIntroduction || correctFormatForTechExperties.length == 0) {
             setCreatePresenterErrors({
                 presenterNameError: !createPresenterDetails.presenterName ? true : false,
                 presenterEmailError: !createPresenterDetails.presenterEmail ? true : false,
+                presenterContactNoError: !createPresenterDetails.presenterContactNo ? true : false,
                 presenterOrgError: !createPresenterDetails.presenterOrg ? true : false,
                 presenterIntroductionError: !createPresenterDetails.presenterIntroduction ? true : false,
                 // presenterIndustryError: !createPresenterDetails.presenterIndustry ? true : false,
                 // PresenterSegmentError: !createPresenterDetails.PresenterSegment ? true : false,
-                presenterRoleError: !createPresenterDetails.presenterRole ? true : false,
+                // presenterRoleError: !createPresenterDetails.presenterRole ? true : false,
                 presenterTechExpertiesError: correctFormatForTechExperties.length == 0 ? true : false
             })
             setisLoadingForCreatePresenter(false);
@@ -76,8 +79,11 @@ const AddNewPresenter: React.FC = () => {
             introduction: createPresenterDetails.presenterIntroduction,
             industry: createPresenterDetails.presenterIndustry,
             segment : createPresenterDetails.presenterSegment,
-            role: createPresenterDetails.presenterRole?.id,
-            techExpertise: correctFormatForTechExperties
+            role: 'PROFESSOR',
+            techExpertise: correctFormatForTechExperties,
+            metaData: {
+                professor_contact_no: createPresenterDetails.presenterContactNo,
+            }
         }
         // console.log(payload, 'kp')
         axios.post(url, payload, {
@@ -92,14 +98,12 @@ const AddNewPresenter: React.FC = () => {
             setCreatePresenterDetails({
                 presenterName: '',
                 presenterEmail: '',
+                presenterContactNo: '',
                 presenterOrg: '',
                 presenterIntroduction: '',
                 presenterIndustry: '',
                 presenterSegment: '',
-                presenterRole: {
-                    label: 'Professor',
-                    id: 'PROFESSOR'
-                },
+                // presenterRole: 'PROFESSOR',
                 presenterTechExperties: []
             })
         }).catch(err => {
@@ -119,8 +123,13 @@ const AddNewPresenter: React.FC = () => {
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterEmail" className="">Email:</label>
-                    <InputText invalid={createPresenterErrors.presenterEmailError && !createPresenterDetails.presenterEmail} id="presenterEmail" value={createPresenterDetails.presenterEmail} name='presenterEmail' onChange={onChangeFun} placeholder="Enter the Email" className="mr-2 w-full" />
+                    <InputText type='email' invalid={createPresenterErrors.presenterEmailError && !createPresenterDetails.presenterEmail} id="presenterEmail" value={createPresenterDetails.presenterEmail} name='presenterEmail' onChange={onChangeFun} placeholder="Enter the Email" className="mr-2 w-full" />
                     {(createPresenterErrors.presenterEmailError && !createPresenterDetails.presenterEmail) && <Message severity="error" className='p-1' text="Email is required" />}
+                </div>
+                <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                    <label htmlFor="presenterContactNo" className="">Contact Number:</label>
+                    <InputText invalid={createPresenterErrors.presenterContactNoError && !createPresenterDetails.presenterContactNo} id="presenterContactNo" value={createPresenterDetails.presenterContactNo} name='presenterContactNo' onChange={onChangeFun} placeholder="Enter the Contact Number" className="mr-2 w-full" />
+                    {(createPresenterErrors.presenterContactNoError && !createPresenterDetails.presenterContactNo) && <Message severity="error" className='p-1' text="Contact number is required" />}
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterOrg" className="">Organization:</label>
@@ -132,12 +141,12 @@ const AddNewPresenter: React.FC = () => {
                     <InputTextarea invalid={createPresenterErrors.presenterIntroductionError && !createPresenterDetails.presenterIntroduction} autoResize value={createPresenterDetails.presenterIntroduction} name='presenterIntroduction' onChange={onChangeFun} placeholder='About..' rows={5} cols={30} className='mr-2 w-full' />
                     {(createPresenterErrors.presenterIntroductionError && !createPresenterDetails.presenterIntroduction) && <Message severity="error" className='p-1' text="Introduction is required" />}
                 </div>
-                <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                {/* <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterRole" className="">Select a Role:</label>
                     <Dropdown invalid={createPresenterErrors.presenterRoleError && !createPresenterDetails.presenterRole} options={userRoleList.filter((items) => items.id == 'PROFESSOR')} name='presenterRole' value={createPresenterDetails.presenterRole} onChange={onChangeFun} optionLabel="label"
                         showClear placeholder="Choose one" className="w-full md:w-14rem" />
                     {(createPresenterErrors.presenterRoleError && !createPresenterDetails.presenterRole) && <Message severity="error" className='p-1' text="Role is required" />}
-                </div>
+                </div> */}
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterIndustry" className="">Industry:</label>
                     <InputText id="presenterIndustry" value={createPresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} placeholder="Enter Industry" className="mr-2 w-full" />

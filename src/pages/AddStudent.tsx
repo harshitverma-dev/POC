@@ -66,7 +66,8 @@ const AddStudent: React.FC = () => {
             name: createStudentDetails.StudentName,
             email: createStudentDetails.StudentEmailId,
             role: "STUDENT",
-            org: loginUserDetail?.role,
+            // org: loginUserDetail?.role,
+            org: createStudentDetails.StudentCollege,
             metaData: {
                 contact_no: createStudentDetails.StudentContactNo,
                 college: createStudentDetails.StudentCollege,

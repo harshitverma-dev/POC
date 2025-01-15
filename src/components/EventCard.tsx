@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { EventType } from '../interface/EventInterface';
 import { Button } from 'primereact/button';
 import { LiaUserEditSolid } from "react-icons/lia";
@@ -11,6 +11,10 @@ import { LiaUserEditSolid } from "react-icons/lia";
 // import { FloatLabel } from 'primereact/floatlabel';
 import { AiOutlineDelete } from "react-icons/ai";
 import axios from 'axios';
+import { Toast } from 'primereact/toast';
+import { ProductContextData } from '../context/ContextData';
+// import { ProductContextData } from '../context/ContextData';
+// import { useNavigate } from 'react-router-dom';
 // import { Nullable } from "primereact/ts-helpers";
 
 
@@ -22,9 +26,18 @@ interface EventProps {
 
 const EventCard: React.FC<EventProps> = (props) => {
     // const [value, setValue] = useState<any>(null);
+    const context = useContext(ProductContextData);
+    if (!context) {
+        throw new Error('it should not be null');
+    }
+    const {getAllToAttendEventsDataByApi} = context;
+    const toast = useRef<Toast>(null)
+    // const navigate = useNavigate()
 
 
     const { eventData, eventDetails } = props;
+    const [isLoadingForPostAttendEvent, setIsLoadingForPostAttendEvent] = useState<boolean>(false)
+    const [isLoadingForWithdrawAttendEvent, setIsLoadingForWithdrawAttendEvent] = useState<boolean>(false)
     // const [editEventBoolean, setEditEventBoolean] = useState(false);
     // const [date, setDate] = useState<Nullable<Date>>(null);
 
@@ -37,6 +50,10 @@ const EventCard: React.FC<EventProps> = (props) => {
     //     { name: 'Istanbul', code: 'IST' },
     //     { name: 'Paris', code: 'PRS' }
     // ];
+
+    // useEffect(() => {
+    //     getAllToAttendEventsDataByApi()
+    // }, [])
 
     const openDialogFun = () => {
         // setEditEventBoolean(true);
@@ -57,19 +74,40 @@ const EventCard: React.FC<EventProps> = (props) => {
         let modifiedTrimFormate = updatedDate.toString().split(' ').slice(0, 5);
 
         let modifiedFormate = `${modifiedTrimFormate[0]}, ${modifiedTrimFormate[2]} ${modifiedTrimFormate[1]} ${modifiedTrimFormate[3]}, ${getCorrectTime(updatedDate)}`;
-        console.log(modifiedFormate, modifiedTrimFormate)
+        // console.log(modifiedFormate, modifiedTrimFormate)
         return modifiedFormate;
     }
 
     const postAttendEventByApi = () => {
-        axios.post(`http://localhost:3000/university-student/events/v1/attend/${eventData?._id}`,{}, {
+        setIsLoadingForPostAttendEvent(true)
+        axios.post(`http://localhost:3000/university-student/events/v1/attend/${eventData?._id}`, {}, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
         }).then((response) => {
             console.log(response)
+            toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Added Event to attend !' });
+            setIsLoadingForPostAttendEvent(false)
         }).catch(err => {
             console.log(err)
+            setIsLoadingForPostAttendEvent(false)
+        })
+    }
+
+    const withdrawAttendEventByApi = () => {
+        setIsLoadingForWithdrawAttendEvent(true)
+        axios.post(`http://localhost:3000/university-student/events/v1/withdraw/${eventData?._id}`, {}, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
+            },
+        }).then((response) => {
+            console.log(response)
+            toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Event Withdrawal Done !' });
+            setIsLoadingForWithdrawAttendEvent(false)
+            getAllToAttendEventsDataByApi();
+        }).catch(err => {
+            console.log(err)
+            setIsLoadingForWithdrawAttendEvent(false)
         })
     }
     return (
@@ -85,13 +123,13 @@ const EventCard: React.FC<EventProps> = (props) => {
             <p className='my-3 text-[15px] text-[#5e5e5e]'>Presenter - {eventData.presenterId}</p>
             {
                 (eventDetails == 'Upcoming Events' || eventDetails == '/') && <div className='eventBtnContainer flex justify-end items-center'>
-                    <Button size='small' onClick={postAttendEventByApi} label="Attend" severity="secondary" />
+                    <Button size='small' loading={isLoadingForPostAttendEvent ? true : false} onClick={postAttendEventByApi} label="Attend" severity="secondary" />
                 </div>
             }
             {
                 eventDetails == 'To Attend' ? <div className='flex justify-between items-center text-[#474747]'>
                     <div>Attendee - <span>115</span></div>
-                    <Button size='small' label="Withdraw" severity="secondary" />
+                    <Button size='small' loading={isLoadingForWithdrawAttendEvent ? true : false} label="Withdraw" severity="secondary" onClick={withdrawAttendEventByApi} />
                 </div> : eventDetails == 'To Present' ? <div className='flex justify-between items-center cursor-pointer text-[#474747]'>
                     <div>Attendee - <span>115</span></div>
                     <div className='flex text-[#474747]'> <LiaUserEditSolid size={23} onClick={openDialogFun} className='mr-2' /> <AiOutlineDelete size={23} color='red' /></div> </div> : eventDetails == 'Presented' && <div className='flex justify-between items-center cursor-pointer'>
@@ -121,6 +159,7 @@ const EventCard: React.FC<EventProps> = (props) => {
                     </p>
                 </Dialog>
             } */}
+            <Toast ref={toast} />
         </div>
     )
 }

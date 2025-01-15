@@ -12,6 +12,7 @@ import AddSubAdmin from "../pages/AddSubAdmin";
 import ProtectedRoute from "../components/ProtectedRoutes";
 import SubAdminTable from "../pages/SubAdminTable";
 import AddStudent from "../pages/AddStudent";
+import ForgotPassword from "../pages/ForgotPassword";
 // import AddNewUser from "../pages/AddNewPresenter";
 // AccessControl
 interface propsI{
@@ -35,6 +36,10 @@ const AppRoutes: React.FC<propsI> = ({userRole}) => {
             path: "/upcoming-events",
             element: <UpcomingEvents />
         },
+        {
+            path: `/profile/forgot-password-reset`,
+            element: <ForgotPassword />
+        }
     ];
     const protectedPath = [
         {
