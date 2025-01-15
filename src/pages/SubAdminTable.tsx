@@ -9,7 +9,7 @@ import { InputIcon } from 'primereact/inputicon';
 import { Button } from 'primereact/button';
 import { ProductContextData } from '../context/ContextData';
 import { Badge } from 'primereact/badge';
-import { Chip } from 'primereact/chip';
+// import { Chip } from 'primereact/chip';
 import { userPresentersI } from '../interface/Presenters';
 import axios from 'axios';
 import { Toast } from 'primereact/toast';

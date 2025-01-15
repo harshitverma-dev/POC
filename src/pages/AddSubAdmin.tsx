@@ -11,7 +11,7 @@ const AddSubAdmin: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { loginUserDetail } = context
+    // const { loginUserDetail } = context
     const [createSubAdminDetails, setCreateSubAdminDetails] = useState({
         subAdminName: '',
         subAdminContactNo: '',

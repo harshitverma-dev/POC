@@ -11,10 +11,10 @@ const ForgotPassword: React.FC = () => {
         newPassword: '',
         confirmNewPassword: ''
     })
-    const [URLSearchParams, SetURLSearchParams] = useSearchParams();
+    const [URLSearchParams] = useSearchParams();
     // console.log(URLSearchParams.get('refrenceId'), URLSearchParams)
     const [newPasswordError, setNewPasswordError] = useState({
-        emptyPassword:false,
+        emptyPassword: false,
         notBothFieldsSame: false
     })
     const [isLoadingForNewPassword, setisLoadingForNewPassword] = useState(false)
@@ -26,7 +26,7 @@ const ForgotPassword: React.FC = () => {
             [name]: value
         })
         setNewPasswordError({
-            emptyPassword:false,
+            emptyPassword: false,
             notBothFieldsSame: false
         })
     }
@@ -42,7 +42,7 @@ const ForgotPassword: React.FC = () => {
             setisLoadingForNewPassword(false);
             return false;
         }
-        if(newPassword.newPassword !== newPassword.confirmNewPassword){
+        if (newPassword.newPassword !== newPassword.confirmNewPassword) {
             setNewPasswordError({
                 ...newPasswordError,
                 notBothFieldsSame: true
@@ -57,6 +57,10 @@ const ForgotPassword: React.FC = () => {
             console.log(res)
             setisLoadingForNewPassword(false)
             toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Updated !' });
+            setNewPassword({
+                newPassword: '',
+                confirmNewPassword: ''
+            })
         }).catch(err => {
             console.log(err)
             setisLoadingForNewPassword(false)
@@ -79,7 +83,7 @@ const ForgotPassword: React.FC = () => {
                 {
                     newPasswordError.emptyPassword && <div className='text-red-500 mb-2'>Both fields are required.</div>
                 }
-                  {
+                {
                     newPasswordError.notBothFieldsSame && <div className='text-red-500 mb-2'>new password and confirm new password should be same.</div>
                 }
                 <Button loading={isLoadingForNewPassword ? true : false} label="Update" onClick={newPasswordFun} />

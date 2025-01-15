@@ -27,7 +27,7 @@ const AddEvent: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { loginUserDetail, getAllToAttendEventsDataByApi } = context;
+    const { loginUserDetail} = context;
     const navigate = useNavigate()
 
     const onChangeFun = (e: any) => {

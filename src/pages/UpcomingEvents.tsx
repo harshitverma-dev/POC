@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import EventCard from '../components/EventCard';
-import { EventType, RightSideType } from '../interface/EventInterface';
+// import { EventType, RightSideType } from '../interface/EventInterface';
 import RightSideCard from '../components/RightSideCard';
 import EventsTab from '../components/EventsTab';
 import { Button } from 'primereact/button';
@@ -11,8 +11,8 @@ import LoginForm from '../components/LoginForm';
 import PresentersListSkeleton from '../skeletons/PresentersListSkeleton';
 import LogInImg from '../assets/loginImg.gif'
 import { Image } from 'primereact/image';
-import { ProgressSpinner } from 'primereact/progressspinner';
-import Spinner from '../components/Spinner';
+// import { ProgressSpinner } from 'primereact/progressspinner';
+// import Spinner from '../components/Spinner';
 import { Paginator } from 'primereact/paginator';
 import InitateForgetPasswordForm from '../components/IniateForgetPasswordForm';
 
@@ -22,142 +22,8 @@ const UpcomingEvents: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { activeEventSubTab, getAllPresentersDataByApi, storeAllPresenters, getAllUpcomingEventsDataByApi, loginUserDetail, storeAllUpcomingEvents, setLoginPopupValue, logInPopupValue, isStoreAllUpcomingEventsLoader, setLimitForUpcomingEvent, setSkipForUpcomingEvent, limitForUpcomingEvents, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
-    // const EventData: EventType[] = [
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     }
-    // ];
+    const { getAllPresentersDataByApi, storeAllPresenters, getAllUpcomingEventsDataByApi, loginUserDetail, storeAllUpcomingEvents, setLoginPopupValue, logInPopupValue, isStoreAllUpcomingEventsLoader, limitForUpcomingEvents, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
+
     useEffect(() => {
         getAllPresentersDataByApi();
         getAllUpcomingEventsDataByApi();

@@ -2,8 +2,8 @@ import { InputText } from 'primereact/inputtext';
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Message } from 'primereact/message';
 import { InputTextarea } from 'primereact/inputtextarea';
-import { Dropdown } from 'primereact/dropdown';
-import { techExpertiesList, userRoleList } from '../interface/ListOptions';
+// import { Dropdown } from 'primereact/dropdown';
+import { techExpertiesList } from '../interface/ListOptions';
 import { createPresenterDetailsI } from '../interface/presenterInterface';
 import { MultiSelect } from 'primereact/multiselect';
 import { Button } from 'primereact/button';
@@ -106,8 +106,8 @@ const EditProfile: React.FC = () => {
             segment: updatePresenterDetails.presenterSegment,
             role: 'PROFESSOR',
             techExpertise: correctFormatForTechExperties,
-            metaData : {
-                professor_contact_no : updatePresenterDetails.presenterContactNo
+            metaData: {
+                professor_contact_no: updatePresenterDetails.presenterContactNo
             }
         }
         // console.log(payload, 'kp')
