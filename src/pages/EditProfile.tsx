@@ -93,7 +93,7 @@ const EditProfile: React.FC = () => {
             setisLoadingForUpdatePresenter(false);
             return false;
         }
-        let url = 'http://localhost:3000/university-student/profile/v1/update-profile';
+        let url = `${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/update-profile`;
 
 
         let payload = {

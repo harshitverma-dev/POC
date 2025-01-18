@@ -4,6 +4,7 @@ import { InputText } from 'primereact/inputtext'
 import React, { useContext, useState } from 'react'
 import { ProductContextData } from '../context/ContextData'
 import axios from 'axios'
+import { Password } from 'primereact/password'
 
 const LoginForm: React.FC = () => {
     const [loginErrMsg, storeLoginErrMsg] = useState([])
@@ -19,11 +20,13 @@ const LoginForm: React.FC = () => {
             ...loginForm,
             [name]: value
         })
+        storeLoginErrMsg([]);
     }
 
     // log in user
     const loginUserApi = () => {
-        let url = 'http://localhost:3000/university-student/profile/v1/login'
+        console.log(import.meta, 'kp')
+        let url = `${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/login`
         let payload = {
             email: loginForm.userEmail,
             password: loginForm.userPassword
@@ -45,7 +48,7 @@ const LoginForm: React.FC = () => {
         })
     }
     return (
-        <Dialog header="Log in" visible={logInPopupValue} position={'top'} style={{ width: '30vw' }} onHide={() => { if (!logInPopupValue) return; setLoginPopupValue(false); }} draggable={false} resizable={false}>
+        <Dialog header="Log in" dismissableMask visible={logInPopupValue} position={'top'} style={{ width: '30vw' }} onHide={() => { if (!logInPopupValue) return; setLoginPopupValue(false); }} draggable={false} resizable={false}>
             <p className="m-0">
                 <div className='logInFormContainer'>
                     <div className="card">
@@ -56,7 +59,7 @@ const LoginForm: React.FC = () => {
                         </div>
                         <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                             <label htmlFor="userPassword" className="">Password :</label>
-                            <InputText value={loginForm.userPassword} onChange={onchangeFun} id="userPassword" name='userPassword' placeholder="Enter the password" className="mr-2 w-full" />
+                            <Password value={loginForm.userPassword} onChange={onchangeFun} id="userPassword" name='userPassword' placeholder="Enter the password" className="mr-2 !w-full" feedback={false} toggleMask/>
                         </div>
                         {
                            Array.isArray(loginErrMsg) ?  loginErrMsg?.map((items) => {

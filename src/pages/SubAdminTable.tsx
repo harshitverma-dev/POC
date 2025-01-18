@@ -182,7 +182,7 @@ const SubAdminTable: React.FC = () => {
 
     const deleteSinglePresenter = (id: any) => {
         console.log(id)
-        axios.delete(`http://localhost:3000/university-student/profile/v1/profile?deletionId=${id}`, {
+        axios.delete(`${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/profile?deletionId=${id}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             }

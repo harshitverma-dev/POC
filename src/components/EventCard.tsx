@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { EventType } from '../interface/EventInterface';
 import { Button } from 'primereact/button';
 import { LiaUserEditSolid } from "react-icons/lia";
@@ -30,7 +30,7 @@ const EventCard: React.FC<EventProps> = (props) => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const {getAllToAttendEventsDataByApi} = context;
+    const { getAllToAttendEventsDataByApi } = context;
     const toast = useRef<Toast>(null)
     // const navigate = useNavigate()
 
@@ -80,7 +80,7 @@ const EventCard: React.FC<EventProps> = (props) => {
 
     const postAttendEventByApi = () => {
         setIsLoadingForPostAttendEvent(true)
-        axios.post(`http://localhost:3000/university-student/events/v1/attend/${eventData?._id}`, {}, {
+        axios.post(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/attend/${eventData?._id}`, {}, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
@@ -96,7 +96,7 @@ const EventCard: React.FC<EventProps> = (props) => {
 
     const withdrawAttendEventByApi = () => {
         setIsLoadingForWithdrawAttendEvent(true)
-        axios.post(`http://localhost:3000/university-student/events/v1/withdraw/${eventData?._id}`, {}, {
+        axios.post(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/withdraw/${eventData?._id}`, {}, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
@@ -111,33 +111,40 @@ const EventCard: React.FC<EventProps> = (props) => {
         })
     }
     return (
-        <div className='flex flex-col justify-between'>
-            <div className='flex justify-between items-center'>
-                <h3 className='text-[20px] text-xl font-medium text-[#474747] capitalize w-1/2'>{eventData.eventName ?? 'sdsd'}</h3>
-                <div className='flex flex-col text-[15px] text-[#5e5e5e] w-1/2 items-end'>
-                    <span>{modifiedEventDate(eventData.toDateTime)}</span>
-                    {/* <span>{eventData.eventTime}</span> */}
-                </div>
-            </div>
-            <p className='mt-4 text-[15px] text-[#5e5e5e]'>{eventData.description}</p>
-            <p className='my-3 text-[15px] text-[#5e5e5e]'>Presenter - {eventData.presenterId}</p>
-            {
-                (eventDetails == 'Upcoming Events' || eventDetails == '/') && <div className='eventBtnContainer flex justify-end items-center'>
-                    <Button size='small' loading={isLoadingForPostAttendEvent ? true : false} onClick={postAttendEventByApi} label="Attend" severity="secondary" />
-                </div>
-            }
-            {
-                eventDetails == 'To Attend' ? <div className='flex justify-between items-center text-[#474747]'>
-                    <div>Attendee - <span>115</span></div>
-                    <Button size='small' loading={isLoadingForWithdrawAttendEvent ? true : false} label="Withdraw" severity="secondary" onClick={withdrawAttendEventByApi} />
-                </div> : eventDetails == 'To Present' ? <div className='flex justify-between items-center cursor-pointer text-[#474747]'>
-                    <div>Attendee - <span>115</span></div>
-                    <div className='flex text-[#474747]'> <LiaUserEditSolid size={23} onClick={openDialogFun} className='mr-2' /> <AiOutlineDelete size={23} color='red' /></div> </div> : eventDetails == 'Presented' && <div className='flex justify-between items-center cursor-pointer'>
-                        <div className='text-[#474747]'>Attendee - <span>115</span></div>
-                        {/* <Rating value={eventData.eventRating} cancel={false} /> */}
+        <div className='flex flex-col justify-between h-full'>
+            <div>
+                <div className='flex justify-between items-center'>
+                    <h3 className='text-[20px] text-xl font-medium text-[#474747] capitalize w-1/2'>{eventData.eventName ?? 'sdsd'}</h3>
+                    <div className='flex flex-col text-[15px] text-[#5e5e5e] w-1/2 items-end'>
+                        <span>{modifiedEventDate(eventData.toDateTime)}</span>
+                        {/* <span>{eventData.eventTime}</span> */}
                     </div>
-                //  onChange={(e: RatingChangeEvent) => setValue(e.value)} 
-            }
+                </div>
+                <p className='mt-4 text-[15px] text-[#5e5e5e] textinThreeLineSix'>{eventData.description}</p>
+                <p className='my-3 text-[15px] text-[#5e5e5e]'>Presenter - {eventData.presenterId}</p>
+            </div>
+            <div>
+                {
+                    (eventDetails == 'Upcoming Events' || eventDetails == '/') && <div className='eventBtnContainer flex justify-end items-center'>
+                        <Button size='small' loading={isLoadingForPostAttendEvent ? true : false} onClick={postAttendEventByApi} label="Attend" severity="secondary" />
+                    </div>
+                }
+                {
+                    eventDetails == 'To Attend' ? <div className='flex justify-between items-center text-[#474747]'>
+                        <div>Attendee - <span>{eventData.attendees}</span></div>
+                        <Button size='small' loading={isLoadingForWithdrawAttendEvent ? true : false} label="Withdraw" severity="secondary" onClick={withdrawAttendEventByApi} />
+                    </div> : eventDetails == 'To Present' ? <div className='flex justify-between items-center cursor-pointer text-[#474747]'>
+                        <div>Attendee - <span>{eventData.attendees}</span></div>
+                        <div className='flex text-[#474747]'> 
+                            {/* <LiaUserEditSolid size={23} onClick={openDialogFun} className='mr-2' /> 
+                            <AiOutlineDelete size={23} color='red' /> */}
+                            </div> </div> : eventDetails == 'Presented' && <div className='flex justify-between items-center cursor-pointer'>
+                            <div className='text-[#474747]'>Attendee - <span>{eventData.attendees}</span></div>
+                            {/* <Rating value={eventData.eventRating} cancel={false} /> */}
+                        </div>
+                    //  onChange={(e: RatingChangeEvent) => setValue(e.value)} 
+                }
+            </div>
             {/* 
             {
                 editEventBoolean &&

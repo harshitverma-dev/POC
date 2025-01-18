@@ -6,6 +6,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { ProductContextData } from '../context/ContextData';
 import { AccessControl } from '../accessControl/AccessControl';
 import { Badge } from 'primereact/badge';
+import Logo from '../assets/POC.png'
 
 interface propsI {
     userRole: keyof typeof AccessControl,
@@ -17,7 +18,7 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { loginUserDetail, setLoginUserDetail } = context
+    const { loginUserDetail, setLoginUserDetail, setStoreAllUpcomingEvents } = context
 
     // const topBarPophoverItems = [
     //     {
@@ -49,6 +50,8 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
     const logoutUser = () => {
         localStorage.clear();
         setLoginUserDetail(null)
+        // getAllUpcomingEventsDataByApi()
+        setStoreAllUpcomingEvents([])
         navigate('/')
         // window.history.go(0);
     }
@@ -64,7 +67,7 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
                             </svg>
                         </button>
                         <a href="https://flowbite.com" className="flex ms-2 md:me-24">
-                            <img src="https://flowbite.com/images/logo.svg" className="h-8 me-3" alt="FlowBite Logo" />
+                            <img src={Logo} className="h-8 me-3" alt="FlowBite Logo" />
                         </a>
                     </div>
                     <div className="flex items-center">
@@ -80,7 +83,7 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
                                 localStorage.getItem('userAccessToken') && <div className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600" id="dropdown-user">
                                     <div className="px-4 py-3" role="none">
                                         <p className="text-sm text-gray-900 dark:text-white flex items-center justify-start capitalize" role="none">
-                                            {loginUserDetail?.name}<Badge className='ml-2 text-[10px]' value={loginUserDetail?.role}/>
+                                            {loginUserDetail?.name}<Badge className='ml-2 text-[10px]' value={loginUserDetail?.role} />
                                         </p>
                                         <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
                                             {loginUserDetail?.email}

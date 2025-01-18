@@ -15,6 +15,8 @@ import { Image } from 'primereact/image';
 // import Spinner from '../components/Spinner';
 import { Paginator } from 'primereact/paginator';
 import InitateForgetPasswordForm from '../components/IniateForgetPasswordForm';
+import PresenterDetailPopup from '../components/PresenterDetailPopup';
+import EventRatingPopup from '../components/EventRatingPopup';
 
 
 const UpcomingEvents: React.FC = () => {
@@ -74,7 +76,7 @@ const UpcomingEvents: React.FC = () => {
                 }
             </div>
             <div className='w-1/5 flex flex-col gap-3 p-[13px] thin-scrollbar bg-white rounded-[15px_15px_15px_15px]'>
-                <div className=' sticky top-[70px]'>
+                <div className=' sticky top-0'>
                     {
                         (storeAllPresenters !== null && storeAllPresenters.length > 0) ? storeAllPresenters?.map((items, index) => {
                             return (
@@ -95,6 +97,8 @@ const UpcomingEvents: React.FC = () => {
             </div>
             {logInPopupValue && <LoginForm />}
             {initateForgetPasswordPopupValue && <InitateForgetPasswordForm />}
+            <PresenterDetailPopup />
+            {/* {loginUserDetail?.role === 'STUDENT' && <EventRatingPopup />} */}
             {/* <ProgressSpinner style={{width: '50px', height: '50px'}} strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" /> */}
         </div>
     )

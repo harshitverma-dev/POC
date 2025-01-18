@@ -4,9 +4,9 @@
   box-sizing: border-box;
 }
 
-/* body{
-  font-family: 'circular' !important;
-} */
+body{
+  font-family: 'poppins' !important;
+}
 /* new */
 .mainCard {
   /* background-color: #fff; */
@@ -73,7 +73,7 @@
 
 .thin-scrollbar{
   overflow-y: auto !important ;
-  max-height: 85vh !important;
+  max-height: 88vh !important;
 }
 
 
@@ -97,6 +97,34 @@
 .thin-scrollbar::-webkit-scrollbar-thumb:hover {
   background: #8b8d94;
   cursor: pointer
+}
+
+.p-password-input, .p-password .p-icon-field{
+  width: 100%;
+}
+
+.p-password .p-icon-field > .p-input-icon {
+  margin-top: -0.8rem !important; 
+}
+
+svg:focus{
+  outline: none !important;
+}
+
+.textinThreeLine{
+    display: -webkit-box!important;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.textinThreeLineSix{
+  display: -webkit-box!important;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 @-webkit-keyframes spinner {

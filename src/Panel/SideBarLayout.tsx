@@ -1,13 +1,13 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 // import { HiOutlineHome } from "react-icons/hi2";
 // import { IoAddCircleOutline } from "react-icons/io5";
 // import { BsBookmarks } from "react-icons/bs";
 import { FiFilter } from "react-icons/fi";
 import { IoHomeOutline } from "react-icons/io5";
-import { LiaMailBulkSolid } from "react-icons/lia";
+// import { LiaMailBulkSolid } from "react-icons/lia";
 import { Dialog } from 'primereact/dialog';
 import { Dropdown } from 'primereact/dropdown';
-import { InputText } from 'primereact/inputtext';
+// import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom';
 import { ProductContextData } from '../context/ContextData';
@@ -19,7 +19,7 @@ const SideBarLayout: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { isFilterForm, setIsFilterForm, filterFields, setFilterFields, applyFilterData } = context;
+    const { isFilterForm, setIsFilterForm, filterFields, setFilterFields, applyFilterData, removeFilter, loginUserDetail } = context;
 
     // const [selectedCity, setSelectedCity] = useState(null);
     // const cities = [
@@ -55,6 +55,8 @@ const SideBarLayout: React.FC = () => {
             [name]: value
         })
     }
+
+
     return (
         <>
             <aside id="logo-sidebar" className="fixed top-0 left-0 z-40 w-20 h-screen pt-20 transition-transform -translate-x-full bg-white sm:translate-x-0" aria-label="Sidebar">
@@ -68,10 +70,10 @@ const SideBarLayout: React.FC = () => {
                                             <Link to={`${items.navLink}`}>
                                                 {items.navIcon}
                                             </Link>
-                                        </li> :
-                                        <li key={index} onClick={items.onClick} className='py-2 px-2 cursor-pointer hover:bg-[#f3f3f3] rounded-full'>
-                                            {items.navIcon}
-                                        </li>
+                                        </li> : (loginUserDetail && localStorage.getItem('userAccessToken')) ?
+                                            <li key={index} onClick={items.onClick} className='py-2 px-2 cursor-pointer hover:bg-[#f3f3f3] rounded-full'>
+                                                {items.navIcon}
+                                            </li> : null
                                 )
                             })
                         }
@@ -79,23 +81,24 @@ const SideBarLayout: React.FC = () => {
                 </div>
             </aside>
             {
-                isFilterForm && <Dialog header="Filter" draggable={false} visible={isFilterForm} style={{ width: '30vw' }} onHide={() => { if (!isFilterForm) return; setIsFilterForm(false); }}>
+                isFilterForm && <Dialog position={'top'} draggable={false} header="Filter" visible={isFilterForm} style={{ width: '30vw' }} onHide={() => { if (!isFilterForm) return; setIsFilterForm(false); }}>
                     <p className="m-0">
                         <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                             <label htmlFor="eventPrerequisite" className="">Industry:</label>
-                            <Dropdown value={filterFields.industry} name='industry' onChange={filterOnChange} options={IndustryList}
+                            <Dropdown filter value={filterFields.industry} name='industry' onChange={filterOnChange} options={IndustryList}
                                 placeholder="Select Industry" className="w-full md:w-14rem mb-3" highlightOnSelect={false} />
                         </div>
                         <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                             <label htmlFor="eventPrerequisite" className="">Segment:</label>
-                            <Dropdown value={filterFields.segment} name='segment' onChange={filterOnChange} options={SegmentList}
+                            <Dropdown filter value={filterFields.segment} name='segment' onChange={filterOnChange} options={SegmentList}
                                 placeholder="Select Segement" className="w-full md:w-14rem mb-3" highlightOnSelect={false} />
                         </div>
 
                         {/* placeholder="Select a City" className="w-full md:w-14rem mb-3" highlightOnSelect={false} /> */}
                         {/* <InputText type="text" placeholder="Normal" className="p-inputtext-sm w-full mb-3" /> */}
                         <div className='text-center'>
-                            <Button label="Apply Filters" outlined rounded onClick={applyFilterData}/>
+                            <Button label="Apply Filters" className='mr-3' outlined rounded onClick={applyFilterData} />
+                            <Button label="Remove Filters" outlined rounded onClick={removeFilter} />
                         </div>
                     </p>
                 </Dialog>

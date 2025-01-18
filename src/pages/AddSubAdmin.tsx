@@ -61,7 +61,7 @@ const AddSubAdmin: React.FC = () => {
             return false
         }
 
-        let url = "http://localhost:3000/university-student/profile/v1/user";
+        let url = `${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/user`;
         let payload = {
             name: createSubAdminDetails.subAdminName,
             email: createSubAdminDetails.subAdminEmailId,

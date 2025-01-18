@@ -12,13 +12,15 @@ import LogInImg from '../assets/loginImg.gif'
 import { Image } from 'primereact/image';
 import PresentersListSkeleton from '../skeletons/PresentersListSkeleton';
 import { Paginator } from 'primereact/paginator';
+import InitateForgetPasswordForm from '../components/IniateForgetPasswordForm';
+import PresenterDetailPopup from '../components/PresenterDetailPopup';
 
 const MyEvents: React.FC = () => {
     const context = useContext(ProductContextData);
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { activeEventSubTab, getAllPresentersDataByApi, loginUserDetail, storeAllPresenters, storeAllToAttendEvents, getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents, isStoreAllToAttendEventsLoader, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, limitForUpcomingEvents, skipForPastEvents, limitForPastEvents, storeLengthOfPastEvents, setLimitForPastEvent, setSkipForPastEvent, isStoreAllUpcomingEventsLoader, isstoreAllPastEventsLoader } = context;
+    const { activeEventSubTab, getAllPresentersDataByApi, loginUserDetail, storeAllPresenters, storeAllToAttendEvents, getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents, isStoreAllToAttendEventsLoader, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, limitForUpcomingEvents, skipForPastEvents, limitForPastEvents, storeLengthOfPastEvents, setLimitForPastEvent, setSkipForPastEvent, isStoreAllUpcomingEventsLoader, isstoreAllPastEventsLoader, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
     // const EventData: EventType[] = [
     //     {
     //         eventName: "Event1",
@@ -274,20 +276,25 @@ const MyEvents: React.FC = () => {
                         <div style={{ minWidth: '500px', maxWidth: '500px' }}>
                             <Image src={LogInImg} className='w-[100%] h-[100%]' style={{ marginBottom: '-60px' }} loading='lazy' />
                         </div>
-                        <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login to the Application' onClick={() => { setLoginPopupValue(true) }} />
+                        {/* <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login to the Application' onClick={() => { setLoginPopupValue(true) }} /> */}
+                        <div className='flex items-center justify-center'>
+                            <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login to the Application' onClick={() => { setLoginPopupValue(true) }} />
+                            <Button label="Forget Password" link onClick={() => { setInitateForgetPasswordPopupValue(true) }} />
+                        </div>
                     </div>
                 }
             </div>
             <div className='w-1/5 flex flex-col gap-3 p-[13px] thin-scrollbar bg-white rounded-[15px_15px_15px_15px]'>
-                <div className=' sticky top-[70px]'>
+                <div className=' sticky top-0'>
                     {
-                        (storeAllPresenters !== null && storeAllPresenters.length > 0) ? storeAllPresenters?.map((items) => {
+                        (storeAllPresenters !== null && storeAllPresenters.length > 0) ? storeAllPresenters?.map((items, index) => {
                             return (
-                                <div className='mainCard rightCardContainer border-solid border border-[#e6e6e6] rounded-[20px] p-3 mb-3'>
+                                <div className='mainCard rightCardContainer border-solid border border-[#e6e6e6] rounded-[20px] p-3 mb-3' key={index}>
                                     <RightSideCard rightSideData={items} />
                                 </div>
                             )
                         }) : <RightSideCardSkeleton />
+                        
                     }
                     <div className='flex justify-end'>
                         <Link to="/presenters-list">
@@ -297,6 +304,8 @@ const MyEvents: React.FC = () => {
                 </div>
             </div>
             {logInPopupValue && <LoginForm />}
+            {initateForgetPasswordPopupValue && <InitateForgetPasswordForm />}
+            <PresenterDetailPopup />
         </div>
     )
 }

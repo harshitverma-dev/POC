@@ -26,10 +26,12 @@ const InitateForgetPasswordForm: React.FC = () => {
             setValidEmailError(true)
             return false;
         }
-        axios.get(`http://localhost:3000/university-student/profile/v1/forgot-passowrd-initiate?email=${forgetPasswordForEmail}`).then((res) => {
+        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/forgot-passowrd-initiate?email=${forgetPasswordForEmail}`).then((res) => {
             console.log(res)
             if (res.data.refrenceId) {
-                navigate(`/profile/forgot-password-reset?refrenceId=${res.data.refrenceId}`)
+                navigate(`/profile/forgot-password-reset?refrenceId=${res.data.refrenceId}`);
+                setInitateForgetPasswordPopupValue(false);
+                setForgetPasswordForEmail('')
             }
         }).catch(err => {
             console.log(err);
@@ -44,7 +46,7 @@ const InitateForgetPasswordForm: React.FC = () => {
     }
     return (
         <>
-            <Dialog header="Forget Password" visible={initateForgetPasswordPopupValue} position={'top'} style={{ width: '30vw' }} onHide={() => { if (!initateForgetPasswordPopupValue) return; setInitateForgetPasswordPopupValue(false); }} draggable={false} resizable={false}>
+            <Dialog header="Forget Password" dismissableMask visible={initateForgetPasswordPopupValue} position={'top'} style={{ width: '30vw' }} onHide={() => { if (!initateForgetPasswordPopupValue) return; setInitateForgetPasswordPopupValue(false); }} draggable={false} resizable={false}>
                 <p className="m-0">
                     <div className='logInFormContainer'>
                         <div className="card">
@@ -55,7 +57,7 @@ const InitateForgetPasswordForm: React.FC = () => {
                             {
                                 vaildEmailError && <div className='text-red-500'>Please enter void email</div>
                             }
-                            <Button label='Submit' onClick={initiateLoginPasswordFun} className='mt-2' />
+                            <Button disabled={forgetPasswordForEmail? false : true} label='Submit' onClick={initiateLoginPasswordFun} className='mt-2' />
                         </div>
                     </div>
                 </p>

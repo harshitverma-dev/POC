@@ -52,7 +52,7 @@ const AddEvent: React.FC = () => {
     // ];
 
     const saveEvent = () => {
-        let url = 'http://localhost:3000/university-student/events/v1/class';
+        let url = `${import.meta.env.VITE_BASE_URL}/university-student/events/v1/class`;
         let payload = {
             eventName: createEventDetails.eventName,
             description: createEventDetails.eventDescription,

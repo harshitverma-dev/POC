@@ -1,16 +1,18 @@
 import axios from 'axios';
 import { Button } from 'primereact/button';
 import { InputText } from 'primereact/inputtext';
+import { Password } from 'primereact/password';
 // import { Message } from 'primereact/message';
 import { Toast } from 'primereact/toast';
 import React, { useRef, useState } from 'react'
-import { useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const ForgotPassword: React.FC = () => {
     const [newPassword, setNewPassword] = useState({
         newPassword: '',
         confirmNewPassword: ''
     })
+    const navigate = useNavigate()
     const [URLSearchParams] = useSearchParams();
     // console.log(URLSearchParams.get('refrenceId'), URLSearchParams)
     const [newPasswordError, setNewPasswordError] = useState({
@@ -50,7 +52,7 @@ const ForgotPassword: React.FC = () => {
             setisLoadingForNewPassword(false);
             return false;
         }
-        axios.post('http://localhost:3000/university-student/profile/v1/forgot-passowrd-reset', {
+        axios.post(`${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/forgot-passowrd-reset`, {
             refrenceId: URLSearchParams.get('refrenceId'),
             newPassword: newPassword.confirmNewPassword
         }).then((res) => {
@@ -61,6 +63,9 @@ const ForgotPassword: React.FC = () => {
                 newPassword: '',
                 confirmNewPassword: ''
             })
+            setTimeout(()=>{
+                navigate('/')
+            },2000)
         }).catch(err => {
             console.log(err)
             setisLoadingForNewPassword(false)
@@ -72,12 +77,12 @@ const ForgotPassword: React.FC = () => {
                 {/* <h3 className='text-[32px] mb-7 text-center border-b border-[#ddd] border-solid'>Update Password</h3> */}
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="currentPassword" className="">Enter new Password:</label>
-                    <InputText id="currentPassword" type='text' value={newPassword.newPassword} onChange={onChangeFun} name='newPassword' placeholder="Enter new password" className="mr-2 w-full" />
+                    <Password id="currentPassword" type='text' value={newPassword.newPassword} onChange={onChangeFun} name='newPassword' placeholder="Enter new password" className="mr-2 w-full" toggleMask/>
                     {/* {(updatePasswordError.currentPasswordError && !updatePassword.currentPassword) && <Message severity="error" className='p-1' text="Current password is required" />} */}
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="newPassword" className="">Enter confirm new Passowrd:</label>
-                    <InputText id="newPassword" type='text' value={newPassword.confirmNewPassword} onChange={onChangeFun} name='confirmNewPassword' placeholder="Enter new confirm password" className="mr-2 w-full" />
+                    <Password id="newPassword" type='text' value={newPassword.confirmNewPassword} onChange={onChangeFun} name='confirmNewPassword' placeholder="Enter new confirm password" className="mr-2 w-full" toggleMask/>
                     {/* {(updatePasswordError.newPasswordError && !updatePassword.newPassword) && <Message severity="error" className='p-1' text="New Password is required" />} */}
                 </div>
                 {

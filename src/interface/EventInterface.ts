@@ -7,7 +7,8 @@ export interface EventType {
     toDateTime: string,
     presenterId?: string,
     org?: string,
-    attendees : number | string
+    attendees : number | string,
+    rating?: string | number
 }
 
 export interface RightSideType{
