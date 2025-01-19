@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react'
-import { RightSideType } from '../interface/EventInterface';
+// import { RightSideType } from '../interface/EventInterface';
 import RightSideCard from '../components/RightSideCard';
 // import EventsTab from '../components/EventsTab';
 import { Button } from 'primereact/button';
@@ -15,7 +15,7 @@ import PresentersListSkeleton from '../skeletons/PresentersListSkeleton';
 // import { Badge } from 'primereact/badge';
 import PresenterDetailPopup from '../components/PresenterDetailPopup';
 import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
-import { Messages } from 'primereact/messages';
+// import { Messages } from 'primereact/messages';
 import { Message } from 'primereact/message';
 
 

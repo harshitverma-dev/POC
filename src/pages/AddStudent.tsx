@@ -11,7 +11,7 @@ const AddStudent: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { loginUserDetail } = context
+    // const { loginUserDetail } = context
     const [createStudentDetails, setCreateStudentDetails] = useState({
         StudentName: '',
         StudentContactNo: '',

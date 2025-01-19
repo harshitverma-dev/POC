@@ -9,7 +9,7 @@ const EventRatingPopup: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { storeAllUnratedEvents, setStoreAllUnratedEvents, ratingPopupVisible, setRatingPopupVisible } = context;
+    const { ratingPopupVisible, setRatingPopupVisible } = context;
     const [storeGivenRating, setStoreEventRating] = useState<number | null>(null)
 
     useEffect(() => {

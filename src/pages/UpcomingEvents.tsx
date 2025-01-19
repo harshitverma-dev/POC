@@ -16,7 +16,7 @@ import { Image } from 'primereact/image';
 import { Paginator } from 'primereact/paginator';
 import InitateForgetPasswordForm from '../components/IniateForgetPasswordForm';
 import PresenterDetailPopup from '../components/PresenterDetailPopup';
-import EventRatingPopup from '../components/EventRatingPopup';
+// import EventRatingPopup from '../components/EventRatingPopup';
 
 
 const UpcomingEvents: React.FC = () => {

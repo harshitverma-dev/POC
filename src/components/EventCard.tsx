@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react'
 import { EventType } from '../interface/EventInterface';
 import { Button } from 'primereact/button';
-import { LiaUserEditSolid } from "react-icons/lia";
+// import { LiaUserEditSolid } from "react-icons/lia";
 // import { Rating } from "primereact/rating";
 // import { Dialog } from 'primereact/dialog';
 // import { Dropdown } from 'primereact/dropdown';
@@ -9,7 +9,7 @@ import { LiaUserEditSolid } from "react-icons/lia";
 // import { InputTextarea } from 'primereact/inputtextarea'
 // import { Calendar } from 'primereact/calendar';
 // import { FloatLabel } from 'primereact/floatlabel';
-import { AiOutlineDelete } from "react-icons/ai";
+// import { AiOutlineDelete } from "react-icons/ai";
 import axios from 'axios';
 import { Toast } from 'primereact/toast';
 import { ProductContextData } from '../context/ContextData';
@@ -55,9 +55,9 @@ const EventCard: React.FC<EventProps> = (props) => {
     //     getAllToAttendEventsDataByApi()
     // }, [])
 
-    const openDialogFun = () => {
-        // setEditEventBoolean(true);
-    }
+    // const openDialogFun = () => {
+    //     setEditEventBoolean(true);
+    // }
 
     const getCorrectTime = (date: any) => {
         let hours = date.getHours();
