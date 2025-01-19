@@ -30,9 +30,10 @@ export interface createContextType {
     setInitateForgetPasswordPopupValue: React.Dispatch<React.SetStateAction<boolean>>,
     loginForm: loginFormI,
     setLoginForm: React.Dispatch<React.SetStateAction<loginFormI>>,
-    isStoreAllUpcomingEventsLoader: boolean,
-    isStoreAllToAttendEventsLoader: boolean
-    isstoreAllPastEventsLoader: boolean
+    appLoader: boolean,
+    // isStoreAllToAttendEventsLoader: boolean,
+    // isstoreAllPastEventsLoader: boolean,
+    // isStoreAllToPresentersLoader: boolean
     loginUserDetail: any | null,
     setLoginUserDetail: React.Dispatch<React.SetStateAction<any | null>>,
     getAllPastEventsDataByApi: () => void,
@@ -62,12 +63,12 @@ export interface createContextType {
     removeFilter: ()=> void
     forgetPasswordForEmail: string
     setForgetPasswordForEmail: React.Dispatch<React.SetStateAction<string>>,
-    storeAllUnratedEvents: EventType[] | [],
-    setStoreAllUnratedEvents: React.Dispatch<React.SetStateAction<EventType[] | []>>,
-    currentEventToRate : EventType | null,
-    setCurrentEventToRate: React.Dispatch<React.SetStateAction<EventType | null>>,
-    ratingPopupVisible: boolean,
-    setRatingPopupVisible: React.Dispatch<React.SetStateAction<boolean>>,
+    // storeAllUnratedEvents: EventType[] | [],
+    // setStoreAllUnratedEvents: React.Dispatch<React.SetStateAction<EventType[] | []>>,
+    // currentEventToRate : EventType | null,
+    // setCurrentEventToRate: React.Dispatch<React.SetStateAction<EventType | null>>,
+    // ratingPopupVisible: boolean,
+    // setRatingPopupVisible: React.Dispatch<React.SetStateAction<boolean>>,
 }
 
 interface props {
@@ -97,9 +98,10 @@ const ContextData: React.FC<props> = ({ children }) => {
         userEmail: '',
         userPassword: ''
     })
-    const [isStoreAllUpcomingEventsLoader, setIsStoreAllUpcomingEventsLoader] = useState<boolean>(true);
-    const [isStoreAllToAttendEventsLoader, setIsStoreAllToAttendEventsLoader] = useState<boolean>(true);
-    const [isstoreAllPastEventsLoader, setIsStoreAllPastEventLoader] = useState<boolean>(true);
+    const [appLoader, setAppLoader] = useState<boolean>(true);
+    // const [isStoreAllToAttendEventsLoader, setIsStoreAllToAttendEventsLoader] = useState<boolean>(true);
+    // const [isStoreAllToPresentersLoader, setIsStoreAllToPresentersLoader] = useState<boolean>(true)
+    // const [isstoreAllPastEventsLoader, setIsStoreAllPastEventLoader] = useState<boolean>(true);
     const [loginUserDetail, setLoginUserDetail] = useState<any | null>(null);
     const [storeAllPastEvents, setStoreAllPastEvents] = useState<EventType[] | []>([])
     const [storeAllSubAdminList, setStoreAllSubAdminList] = useState<userPresentersI[] | []>([]);
@@ -116,26 +118,29 @@ const ContextData: React.FC<props> = ({ children }) => {
     })
     const [forgetPasswordForEmail, setForgetPasswordForEmail] = useState<string>('')
     // for event Rating
-    const [storeAllUnratedEvents, setStoreAllUnratedEvents] = useState<EventType[] | []>([])
-    const [currentEventToRate, setCurrentEventToRate] = useState<EventType | null>(null);
-    const [ratingPopupVisible, setRatingPopupVisible] = useState<boolean>(false);
+    // const [storeAllUnratedEvents, setStoreAllUnratedEvents] = useState<EventType[] | []>([])
+    // const [currentEventToRate, setCurrentEventToRate] = useState<EventType | null>(null);
+    // const [ratingPopupVisible, setRatingPopupVisible] = useState<boolean>(false);
     // IndustrySegemntType
 
     // const [UpcomingE]
 
     // get All Presenters ->>
     const getAllPresentersDataByApi = () => {
+        setAppLoader(true);
         axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/presentrs?limit=0&skip=0`).then((response) => {
-            console.log(response);
+            // console.log(response);
+            setAppLoader(false);
             setStoreAllPresenters(response.data.presenters);
         }).catch(err => {
-            console.log(err)
+            console.log(err);
+            setAppLoader(false);
         })
     }
 
     // get Upcoming all Events ->>
     const getLengthOfAllUpcomingEventsByApi = () => {
-        setIsStoreAllUpcomingEventsLoader(true);
+        setAppLoader(true);
         axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=0&skip=0&industry=''&segment=''`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
@@ -143,14 +148,14 @@ const ContextData: React.FC<props> = ({ children }) => {
         }).then((response) => {
             console.log('pk')
             setStoreLengthOfUpcomingEvent(response.data.events.length);
-            setIsStoreAllUpcomingEventsLoader(false)
+            setAppLoader(false)
         }).catch((err) => {
             console.log(err, 'err');
-            setIsStoreAllUpcomingEventsLoader(false)
+            setAppLoader(false)
         })
     }
     const getAllUpcomingEventsDataByApi = () => {
-        setIsStoreAllUpcomingEventsLoader(true);
+        setAppLoader(true);
         axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=${limitForUpcomingEvents}&skip=${skipForUpcomingEvents}&industry=${filterFields.industry}&segment=${filterFields.segment}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
@@ -158,12 +163,12 @@ const ContextData: React.FC<props> = ({ children }) => {
         }).then((response) => {
             // console.log(response, `${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=${limitForUpcomingEvents}&skip=${skipForUpcomingEvents}&industry=${filterFields.industry}&segment=${filterFields.segment}`);
             setStoreAllUpcomingEvents(response.data.events)
-            setIsStoreAllUpcomingEventsLoader(false)
+            setAppLoader(false)
             console.log('pk1')
         }).catch((err) => {
             console.log(err, 'err')
             // setTimeout(()=>{
-            setIsStoreAllUpcomingEventsLoader(false)
+                setAppLoader(false)
             // }, 5000)
         })
     }
@@ -172,52 +177,55 @@ const ContextData: React.FC<props> = ({ children }) => {
 
     // get Past all Events ->> 
     const getLengthOfAllPastEventsByApi = () => {
-        setIsStoreAllPastEventLoader(true);
+        setAppLoader(true);
         axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/past-events?limit=0&skip=0&industry=''&segment=''`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
         }).then((response) => {
             setStoreLengthOfPastEvent(response.data.length);
-            setIsStoreAllPastEventLoader(false)
+            setAppLoader(false)
             console.log(response, 'kp')
         }).catch((err) => {
             console.log(err, 'err')
-            setIsStoreAllPastEventLoader(false)
+            setAppLoader(false)
         })
     }
     const getAllPastEventsDataByApi = () => {
-        setIsStoreAllPastEventLoader(true)
+        setAppLoader(true)
         axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/past-events?limit=${limitForPastEvents}&skip=${skipForPastEvents}&industry=${filterFields.industry}&segment=${filterFields.segment}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
         }).then((response) => {
             setStoreAllPastEvents(response.data)
-            setIsStoreAllPastEventLoader(false)
+            setAppLoader(false)
         }).catch((err) => {
             console.log(err, 'err')
-            setIsStoreAllPastEventLoader(false)
+            setAppLoader(false)
         })
     }
 
     // get sub admin list ->>
     const getAllSubAdminListDataByApi = () => {
+        setAppLoader(true);
         axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/users?limit=0&skip=0&role=SUBADMIN`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
         }).then((response) => {
             setStoreAllSubAdminList(response.data)
-            console.log(response);
+            // console.log(response);
+            setAppLoader(false);
         }).catch(err => {
             console.log(err)
+            setAppLoader(false);
         })
     }
 
     // get all to attend Events list ->> 
     const getAllToAttendEventsDataByApi = () => {
-        setIsStoreAllToAttendEventsLoader(true)
+        setAppLoader(true)
         axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/to-attend`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
@@ -225,17 +233,16 @@ const ContextData: React.FC<props> = ({ children }) => {
         }).then((response) => {
             console.log(response, 'to attend');
             setStoreAllToAttendEvents(response.data);
-            setIsStoreAllToAttendEventsLoader(false);
-            let unratedEvents = response.data.filter((event:EventType)=> !event.rating)
-            // console.log(unratedEvents, 'unratedEvents')
-            if(unratedEvents.length > 0){
-                setStoreAllUnratedEvents(unratedEvents)
-                setCurrentEventToRate(unratedEvents[0])
-                setRatingPopupVisible(true);
-            }
+            setAppLoader(false);
+            // let unratedEvents = response.data.filter((event:EventType)=> !event.rating)
+            // if(unratedEvents.length > 0){
+            //     setStoreAllUnratedEvents(unratedEvents)
+            //     setCurrentEventToRate(unratedEvents[0])
+            //     setRatingPopupVisible(true);
+            // }
         }).catch(err => {
             console.log(err)
-            setIsStoreAllToAttendEventsLoader(false);
+            setAppLoader(false);
         })
     }
 
@@ -293,7 +300,7 @@ const ContextData: React.FC<props> = ({ children }) => {
 
 
     return (
-        <ProductContextData.Provider value={{ storeAllUpcomingEvents, setStoreAllUpcomingEvents, isFilterForm, setIsFilterForm, toggleEventTabs, setToggleEventTabs, activeMainTab, setActiveMainTab, activeEventSubTab, setEventSubTab, getAllPresentersDataByApi, storeAllPresenters, setStoreAllPresenters, presentersDetailsPopupValue, setPresentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopup, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, loginForm, setLoginForm, isStoreAllUpcomingEventsLoader, loginUserDetail, setLoginUserDetail, getAllPastEventsDataByApi, storeAllPastEvents, setStoreAllPastEvents, getAllSubAdminListDataByApi, storeAllSubAdminList, setStoreAllSubAdminList, getAllToAttendEventsDataByApi, storeAllToAttendEvents, setLimitForUpcomingEvent, setSkipForUpcomingEvent, limitForUpcomingEvents, skipForUpcomingEvents, getLengthOfAllUpcomingEventsByApi, storeLengthOfUpcomingEvents, isStoreAllToAttendEventsLoader, onPageChangeForUpcoming, getLengthOfAllPastEventsByApi, storeLengthOfPastEvents, skipForPastEvents, limitForPastEvents, setLimitForPastEvent, setSkipForPastEvent, isstoreAllPastEventsLoader, filterFields, setFilterFields, applyFilterData, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue, forgetPasswordForEmail, setForgetPasswordForEmail,storeAllUnratedEvents, setStoreAllUnratedEvents, ratingPopupVisible, setRatingPopupVisible, currentEventToRate, setCurrentEventToRate, removeFilter }}>
+        <ProductContextData.Provider value={{ storeAllUpcomingEvents, setStoreAllUpcomingEvents, isFilterForm, setIsFilterForm, toggleEventTabs, setToggleEventTabs, activeMainTab, setActiveMainTab, activeEventSubTab, setEventSubTab, getAllPresentersDataByApi, storeAllPresenters, setStoreAllPresenters, presentersDetailsPopupValue, setPresentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopup, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, loginForm, setLoginForm, loginUserDetail, setLoginUserDetail, getAllPastEventsDataByApi, storeAllPastEvents, setStoreAllPastEvents, getAllSubAdminListDataByApi, storeAllSubAdminList, setStoreAllSubAdminList, getAllToAttendEventsDataByApi, storeAllToAttendEvents, setLimitForUpcomingEvent, setSkipForUpcomingEvent, limitForUpcomingEvents, skipForUpcomingEvents, getLengthOfAllUpcomingEventsByApi, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, getLengthOfAllPastEventsByApi, storeLengthOfPastEvents, skipForPastEvents, limitForPastEvents, setLimitForPastEvent, setSkipForPastEvent, filterFields, setFilterFields, applyFilterData, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue, forgetPasswordForEmail, setForgetPasswordForEmail, removeFilter, appLoader }}>
             {children}
         </ProductContextData.Provider>
     )

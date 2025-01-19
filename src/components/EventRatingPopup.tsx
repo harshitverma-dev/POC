@@ -9,7 +9,7 @@ const EventRatingPopup: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { ratingPopupVisible, setRatingPopupVisible } = context;
+    // const { ratingPopupVisible, setRatingPopupVisible } = context;
     const [storeGivenRating, setStoreEventRating] = useState<number | null>(null)
 
     useEffect(() => {
@@ -18,7 +18,7 @@ const EventRatingPopup: React.FC = () => {
 
 
     return (
-        <Dialog header="Event Rating" dismissableMask visible={ratingPopupVisible} position={'top'} style={{ width: '30vw' }} onHide={() => { if (!ratingPopupVisible) return; setRatingPopupVisible(false); }} draggable={false} resizable={false}>
+        <Dialog header="Event Rating" dismissableMask visible={false} position={'top'} style={{ width: '30vw' }} onHide={() => { if (!false) return }} draggable={false} resizable={false}>
             <p className="m-0">
                 <div className='logInFormContainer'>
                     <div className="card">

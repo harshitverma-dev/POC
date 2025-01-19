@@ -6,9 +6,9 @@ import EventsTab from '../components/EventsTab';
 import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom';
 import { ProductContextData } from '../context/ContextData';
-import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
+// import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
 import LoginForm from '../components/LoginForm';
-import PresentersListSkeleton from '../skeletons/PresentersListSkeleton';
+// import PresentersListSkeleton from '../skeletons/PresentersListSkeleton';
 import LogInImg from '../assets/loginImg.gif'
 import { Image } from 'primereact/image';
 // import { ProgressSpinner } from 'primereact/progressspinner';
@@ -16,6 +16,7 @@ import { Image } from 'primereact/image';
 import { Paginator } from 'primereact/paginator';
 import InitateForgetPasswordForm from '../components/IniateForgetPasswordForm';
 import PresenterDetailPopup from '../components/PresenterDetailPopup';
+// import Spinner from '../components/Spinner';
 // import EventRatingPopup from '../components/EventRatingPopup';
 
 
@@ -24,7 +25,7 @@ const UpcomingEvents: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { getAllPresentersDataByApi, storeAllPresenters, getAllUpcomingEventsDataByApi, loginUserDetail, storeAllUpcomingEvents, setLoginPopupValue, logInPopupValue, isStoreAllUpcomingEventsLoader, limitForUpcomingEvents, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
+    const { getAllPresentersDataByApi, appLoader, storeAllPresenters, getAllUpcomingEventsDataByApi, loginUserDetail, storeAllUpcomingEvents, setLoginPopupValue, logInPopupValue, limitForUpcomingEvents, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
 
     useEffect(() => {
         getAllPresentersDataByApi();
@@ -36,14 +37,14 @@ const UpcomingEvents: React.FC = () => {
 
 
     return (
-        <div className='flex gap-3 w-full'>
+        <div className='flex gap-3 w-full items-start'>
             <div className='w-4/5'>
                 {
                     loginUserDetail && localStorage.getItem('userAccessToken') && <div>
                         <EventsTab />
                         <div className='grid grid-cols-3 gap-3 bg-white p-4 rounded-[15px_15px_0_0]'>
                             {
-                                isStoreAllUpcomingEventsLoader ? <PresentersListSkeleton /> : (storeAllUpcomingEvents && storeAllUpcomingEvents.length > 0) ? storeAllUpcomingEvents.map((items, index) => {
+                                appLoader ? <div>Data is beening loaded ...</div> : (storeAllUpcomingEvents && storeAllUpcomingEvents.length > 0) ? storeAllUpcomingEvents.map((items, index) => {
                                     return (
                                         <div className='mainCard border-solid border border-[#e6e6e6] rounded-[20px] p-3' key={index}>
                                             <EventCard
@@ -78,14 +79,14 @@ const UpcomingEvents: React.FC = () => {
             <div className='w-1/5 flex flex-col gap-3 p-[13px] thin-scrollbar bg-white rounded-[15px_15px_15px_15px]'>
                 <div className=' sticky top-0'>
                     {
-                        (storeAllPresenters !== null && storeAllPresenters.length > 0) ? storeAllPresenters?.map((items, index) => {
+                        appLoader ? <div>Data is beening loaded ...</div> : (storeAllPresenters !== null && storeAllPresenters.length > 0) ? storeAllPresenters?.map((items, index) => {
                             return (
                                 <div className='mainCard rightCardContainer border-solid border border-[#e6e6e6] rounded-[20px] p-3 mb-3' key={index}>
                                     <RightSideCard rightSideData={items} />
                                 </div>
                             )
                         }
-                        ) : <RightSideCardSkeleton />
+                        ) : <div className='no-data'>No Presenter Avaliable.</div>
                     }
                     <div className='flex justify-end'>
                         <Link to="/presenters-list" className='flex justify-start items-center'>

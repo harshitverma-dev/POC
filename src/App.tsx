@@ -1,16 +1,18 @@
+import { useContext } from 'react';
 import './App.css'
+import Spinner from './components/Spinner';
+import { ProductContextData } from './context/ContextData';
 import MainLayout from './Panel/MainLayout';
-import {BrowserRouter as Router} from "react-router-dom";
-// import 'react-image-upload/dist/index.css'
-// interface props{
-//   userRole: 'ADMIN'
+import { BrowserRouter as Router } from "react-router-dom";
 
-// }
 function App() {
-  // const [count, setCount] = useState(0)
   let getUserRole: string | null = null;
 
-  // Safely parse the user profile from local storage
+  const context = useContext(ProductContextData)
+  if (!context) {
+    throw new Error('it should not be null');
+  }
+  const { appLoader } = context
   const storedProfile = localStorage.getItem('userProfile');
   if (storedProfile) {
     try {
@@ -20,11 +22,12 @@ function App() {
       console.error('Error parsing user profile from local storage:', error);
     }
   }
-  
+
 
   return (
     <Router>
-      <MainLayout userRole={getUserRole}/>
+      <MainLayout userRole={getUserRole} />
+      {appLoader && <Spinner />}
     </Router>
   )
 }

@@ -10,17 +10,18 @@ import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
 import LoginForm from '../components/LoginForm';
 import LogInImg from '../assets/loginImg.gif'
 import { Image } from 'primereact/image';
-import PresentersListSkeleton from '../skeletons/PresentersListSkeleton';
+// import PresentersListSkeleton from '../skeletons/PresentersListSkeleton';
 import { Paginator } from 'primereact/paginator';
 import InitateForgetPasswordForm from '../components/IniateForgetPasswordForm';
 import PresenterDetailPopup from '../components/PresenterDetailPopup';
+// import Spinner from '../components/Spinner';
 
 const MyEvents: React.FC = () => {
     const context = useContext(ProductContextData);
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { activeEventSubTab, getAllPresentersDataByApi, loginUserDetail, storeAllPresenters, storeAllToAttendEvents, getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents, isStoreAllToAttendEventsLoader, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, limitForUpcomingEvents, skipForPastEvents, limitForPastEvents, storeLengthOfPastEvents, setLimitForPastEvent, setSkipForPastEvent, isStoreAllUpcomingEventsLoader, isstoreAllPastEventsLoader, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
+    const { activeEventSubTab, getAllPresentersDataByApi, loginUserDetail, storeAllPresenters, storeAllToAttendEvents, getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, limitForUpcomingEvents, skipForPastEvents, limitForPastEvents, storeLengthOfPastEvents, setLimitForPastEvent, setSkipForPastEvent, appLoader, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
     // const EventData: EventType[] = [
     //     {
     //         eventName: "Event1",
@@ -193,7 +194,7 @@ const MyEvents: React.FC = () => {
         getAllPastEventsDataByApi();
     }, [limitForPastEvents, skipForPastEvents])
     return (
-        <div className='flex gap-3 w-full'>
+        <div className='flex gap-3 w-full items-start'>
             <div className='w-4/5'>
                 {
                     loginUserDetail && localStorage.getItem('userAccessToken') && <div>
@@ -202,8 +203,8 @@ const MyEvents: React.FC = () => {
                             {
 
                                 activeEventSubTab === 'To Attend' ?
-                                    isStoreAllToAttendEventsLoader ?
-                                        <PresentersListSkeleton /> :
+                                    appLoader ?
+                                        <div>Data is beening loaded ...</div> :
                                         (storeAllToAttendEvents && storeAllToAttendEvents.length > 0) ? storeAllToAttendEvents?.map((items, index) => {
                                             return (
                                                 <div
@@ -220,8 +221,8 @@ const MyEvents: React.FC = () => {
                                         }) : <div className='no-data'>No Events Avaliable.</div>
 
                                     : activeEventSubTab === 'To Present' ?
-                                        isStoreAllUpcomingEventsLoader ?
-                                            <PresentersListSkeleton /> :
+                                        appLoader ?
+                                            <div>Data is beening loaded ...</div> :
                                             (storeAllUpcomingEvents && storeAllUpcomingEvents.length > 0) ? storeAllUpcomingEvents?.map((items, index) => {
                                                 return (
                                                     <div
@@ -237,8 +238,8 @@ const MyEvents: React.FC = () => {
                                                 )
                                             }) : <div className='no-data'>No Events Avaliable.</div>
                                         : activeEventSubTab === 'Presented' ?
-                                            isstoreAllPastEventsLoader ?
-                                                <PresentersListSkeleton /> :
+                                            appLoader ?
+                                                <div>Data is beening loaded ...</div> :
                                                 (storeAllPastEvents && storeAllPastEvents.length > 0) ? storeAllPastEvents?.map((items, index) => {
                                                     return (
                                                         <div
@@ -287,14 +288,14 @@ const MyEvents: React.FC = () => {
             <div className='w-1/5 flex flex-col gap-3 p-[13px] thin-scrollbar bg-white rounded-[15px_15px_15px_15px]'>
                 <div className=' sticky top-0'>
                     {
-                        (storeAllPresenters !== null && storeAllPresenters.length > 0) ? storeAllPresenters?.map((items, index) => {
+                        appLoader ? <div>Data is beening loaded ...</div> : (storeAllPresenters !== null && storeAllPresenters.length > 0) ? storeAllPresenters?.map((items, index) => {
                             return (
                                 <div className='mainCard rightCardContainer border-solid border border-[#e6e6e6] rounded-[20px] p-3 mb-3' key={index}>
                                     <RightSideCard rightSideData={items} />
                                 </div>
                             )
-                        }) : <RightSideCardSkeleton />
-                        
+                        }) : <div className='no-data'>No Presenter Avaliable.</div>
+
                     }
                     <div className='flex justify-end'>
                         <Link to="/presenters-list">

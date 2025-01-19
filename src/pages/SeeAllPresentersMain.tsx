@@ -6,7 +6,7 @@ import { Button } from 'primereact/button';
 import PresentersCard from '../components/PresentersCard';
 import { useNavigate } from 'react-router-dom';
 import { ProductContextData } from '../context/ContextData';
-import PresentersListSkeleton from '../skeletons/PresentersListSkeleton';
+// import PresentersListSkeleton from '../skeletons/PresentersListSkeleton';
 // import { userPresentersI } from '../interface/Presenters';
 // import { Dialog } from 'primereact/dialog';
 // import { Avatar } from 'primereact/avatar';
@@ -17,6 +17,7 @@ import PresenterDetailPopup from '../components/PresenterDetailPopup';
 import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
 // import { Messages } from 'primereact/messages';
 import { Message } from 'primereact/message';
+// import Spinner from '../components/Spinner';
 
 
 const SeeAllPresentersMain: React.FC = () => {
@@ -24,7 +25,7 @@ const SeeAllPresentersMain: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { getAllPresentersDataByApi, storeAllPresenters, loginUserDetail, isStoreAllUpcomingEventsLoader, storeAllUpcomingEvents, getAllUpcomingEventsDataByApi } = context;
+    const { getAllPresentersDataByApi, appLoader, storeAllPresenters, loginUserDetail, storeAllUpcomingEvents, getAllUpcomingEventsDataByApi } = context;
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -47,12 +48,12 @@ const SeeAllPresentersMain: React.FC = () => {
     // );
     return (
         <>
-            <div className='flex gap-3 w-full'>
+            <div className='flex gap-3 w-full items-start'>
                 <div className='w-4/5'>
                     {/* <EventsTab /> */}
                     <div className='grid grid-cols-3 gap-3 bg-white p-4 rounded-[15px_15px_0_0]'>
                         {
-                            (storeAllPresenters !== null && storeAllPresenters?.length > 0) ? storeAllPresenters?.map((items, index) => {
+                            appLoader ? <div>Data is beening loaded ...</div> : (storeAllPresenters !== null && storeAllPresenters?.length > 0) ? storeAllPresenters?.map((items, index) => {
                                 return (
                                     <div className='mainCard border-solid border border-[#e6e6e6] rounded-[20px] p-3' key={index}>
                                         <PresentersCard
@@ -61,15 +62,15 @@ const SeeAllPresentersMain: React.FC = () => {
                                             index={index} />
                                     </div >
                                 )
-                            }) : <PresentersListSkeleton />
+                            }) : <div className='no-data'>No Presenter Avaliable.</div>
                         }
                     </div>
                 </div>
                 <div className='w-1/5 flex flex-col gap-3 p-[13px] thin-scrollbar bg-white rounded-[15px_15px_15px_15px]'>
                     <div className=' sticky top-0'>
                         {
-                            isStoreAllUpcomingEventsLoader ?
-                                <RightSideCardSkeleton /> : storeAllUpcomingEvents.length > 0 ? storeAllUpcomingEvents?.map((items) => {
+                            appLoader ?
+                                <div>Data is beening loaded ...</div> : storeAllUpcomingEvents.length > 0 ? storeAllUpcomingEvents?.map((items) => {
                                     return (
                                         <div className='mainCard rightCardContainer border-solid border border-[#e6e6e6] rounded-[20px] p-3 mb-3'>
                                             <RightSideCard rightSideData={items} />

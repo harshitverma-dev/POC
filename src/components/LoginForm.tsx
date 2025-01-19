@@ -8,11 +8,12 @@ import { Password } from 'primereact/password'
 
 const LoginForm: React.FC = () => {
     const [loginErrMsg, storeLoginErrMsg] = useState([])
+    const [loginLoader, setLoginLoader] = useState(false);
     const context = useContext(ProductContextData);
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { logInPopupValue, setLoginPopupValue, setLoginForm, loginForm, setLoginUserDetail } = context;
+    const { logInPopupValue, setLoginPopupValue, setLoginForm, getAllUpcomingEventsDataByApi,loginForm, setLoginUserDetail } = context;
 
     const onchangeFun = (e: any) => {
         const { name, value } = e.target;
@@ -25,7 +26,8 @@ const LoginForm: React.FC = () => {
 
     // log in user
     const loginUserApi = () => {
-        console.log(import.meta, 'kp')
+        // console.log(import.meta, 'kp')
+        setLoginLoader(true);
         let url = `${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/login`
         let payload = {
             email: loginForm.userEmail,
@@ -40,9 +42,11 @@ const LoginForm: React.FC = () => {
             localStorage.setItem('userAccessToken', response.data.token);
             storeLoginErrMsg([]);
             setLoginPopupValue(false);
-            window.location.reload();
+            setLoginLoader(false)
+            getAllUpcomingEventsDataByApi();
         }).catch(err => {
             console.log(err, 'err')
+            setLoginLoader(false)
             // alert(err.response.data.message)
             storeLoginErrMsg(err.response.data.message)
         })
@@ -59,16 +63,16 @@ const LoginForm: React.FC = () => {
                         </div>
                         <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                             <label htmlFor="userPassword" className="">Password :</label>
-                            <Password value={loginForm.userPassword} onChange={onchangeFun} id="userPassword" name='userPassword' placeholder="Enter the password" className="mr-2 !w-full" feedback={false} toggleMask/>
+                            <Password value={loginForm.userPassword} onChange={onchangeFun} id="userPassword" name='userPassword' placeholder="Enter the password" className="mr-2 !w-full" feedback={false} toggleMask />
                         </div>
                         {
-                           Array.isArray(loginErrMsg) ?  loginErrMsg?.map((items) => {
-                            return (
-                                <div className='text-red-500'>{items}</div>
-                            )
-                        }):  <div className='text-red-500'>{loginErrMsg}</div>
+                            Array.isArray(loginErrMsg) ? loginErrMsg?.map((items) => {
+                                return (
+                                    <div className='text-red-500'>{items}</div>
+                                )
+                            }) : <div className='text-red-500'>{loginErrMsg}</div>
                         }
-                         <Button label='Login' onClick={loginUserApi} className='mt-2'/>
+                        <Button label='Login' loading={loginLoader ? true : false} onClick={loginUserApi} className='mt-2' />
                     </div>
                 </div>
             </p>
