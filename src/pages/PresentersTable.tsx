@@ -153,7 +153,7 @@ const PresenterTableList: React.FC = () => {
     // const header = 'kkkk'
 
     const deleteSinglePresenter = (id: any) => {
-        console.log(id)
+        // console.log(id)
         axios.delete(`${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/profile?deletionId=${id}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`

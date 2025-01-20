@@ -37,8 +37,8 @@ const UpcomingEvents: React.FC = () => {
 
 
     return (
-        <div className='flex gap-3 w-full items-start'>
-            <div className='w-4/5'>
+        <div className='flex flex-col md:flex-row gap-3 w-full items-start'>
+            <div className='w-[100%] md:w-[65%] lg:w-[70%] xl:w-[75%] 2xl:w-4/5'>
                 {
                     loginUserDetail && localStorage.getItem('userAccessToken') && <div>
                         <EventsTab />
@@ -66,34 +66,34 @@ const UpcomingEvents: React.FC = () => {
                 }
                 {
                     !loginUserDetail && !localStorage.getItem('userAccessToken') && <div className='flex flex-col items-center bg-[#fff] rounded-[20px]'>
-                        <div style={{ minWidth: '500px', maxWidth: '500px' }}>
+                        <div>
                             <Image src={LogInImg} className='w-[100%] h-[100%]' style={{ marginBottom: '-60px' }} loading='lazy' />
                         </div>
                         <div className='flex items-center justify-center'>
-                            <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login to the Application' onClick={() => { setLoginPopupValue(true) }} />
-                            <Button label="Forget Password" link onClick={() => { setInitateForgetPasswordPopupValue(true) }} />
+                            <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login' onClick={() => { setLoginPopupValue(true) }} />
+                            <Button label="Reset Password" link onClick={() => { setInitateForgetPasswordPopupValue(true) }} />
                         </div>
                     </div>
                 }
             </div>
-            <div className='w-1/5 flex flex-col gap-3 p-[13px] thin-scrollbar bg-white rounded-[15px_15px_15px_15px]'>
-                <div className=' sticky top-0'>
+            <div className='w-[100%] md:w-[35%] lg:w-[30%] xl:w-[25%] 2xl:w-1/5 pt-[13px] pb-0 pl-[13px] pr-[5px]  bg-white rounded-[15px_15px_15px_15px]'>
+                <div className='flex flex-row md:flex-col gap-3 thin-scrollbar pb-3 md:pb-0'>
                     {
                         appLoader ? <div>Data is beening loaded ...</div> : (storeAllPresenters !== null && storeAllPresenters.length > 0) ? storeAllPresenters?.map((items, index) => {
                             return (
-                                <div className='mainCard rightCardContainer border-solid border border-[#e6e6e6] rounded-[20px] p-3 mb-3' key={index}>
+                                <div className='mainCard rightCardContainer min-w-[60%] md:w-[100%] border-solid border border-[#e6e6e6] rounded-[20px] p-3' key={index}>
                                     <RightSideCard rightSideData={items} />
                                 </div>
                             )
                         }
                         ) : <div className='no-data'>No Presenter Avaliable.</div>
                     }
-                    <div className='flex justify-end'>
-                        <Link to="/presenters-list" className='flex justify-start items-center'>
-                            <Button className='px-0 pb-0' iconPos='right' icon='pi pi-angle-double-right' label="See all Presenters" link />
-                            {/* <i className='pi pi-angle-double-right'/> */}
-                        </Link>
-                    </div>
+                </div>
+                <div className='flex justify-end py-0 md:py-2'>
+                    <Link to="/presenters-list" className='flex justify-start items-center'>
+                        <Button className='!px-0 pb-0' iconPos='right' icon='pi pi-angle-double-right' label="See All Presenters" link />
+                        {/* <i className='pi pi-angle-double-right'/> */}
+                    </Link>
                 </div>
             </div>
             {logInPopupValue && <LoginForm />}

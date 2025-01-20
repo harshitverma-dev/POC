@@ -46,7 +46,7 @@ const InitateForgetPasswordForm: React.FC = () => {
     }
     return (
         <>
-            <Dialog header="Forget Password" dismissableMask visible={initateForgetPasswordPopupValue} position={'top'} style={{ width: '30vw' }} onHide={() => { if (!initateForgetPasswordPopupValue) return; setInitateForgetPasswordPopupValue(false); }} draggable={false} resizable={false}>
+            <Dialog header="Reset Password" dismissableMask visible={initateForgetPasswordPopupValue} position={'top'} style={{ minWidth: '30vw' }} onHide={() => { if (!initateForgetPasswordPopupValue) return; setInitateForgetPasswordPopupValue(false); }} draggable={false} resizable={false}>
                 <p className="m-0">
                     <div className='logInFormContainer'>
                         <div className="card">

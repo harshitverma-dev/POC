@@ -274,12 +274,12 @@ const MyEvents: React.FC = () => {
                 }
                 {
                     !loginUserDetail && !localStorage.getItem('userAccessToken') && <div className='flex flex-col items-center bg-[#fff] rounded-[20px]'>
-                        <div style={{ minWidth: '500px', maxWidth: '500px' }}>
+                        <div>
                             <Image src={LogInImg} className='w-[100%] h-[100%]' style={{ marginBottom: '-60px' }} loading='lazy' />
                         </div>
                         {/* <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login to the Application' onClick={() => { setLoginPopupValue(true) }} /> */}
                         <div className='flex items-center justify-center'>
-                            <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login to the Application' onClick={() => { setLoginPopupValue(true) }} />
+                            <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login' onClick={() => { setLoginPopupValue(true) }} />
                             <Button label="Forget Password" link onClick={() => { setInitateForgetPasswordPopupValue(true) }} />
                         </div>
                     </div>
@@ -299,7 +299,7 @@ const MyEvents: React.FC = () => {
                     }
                     <div className='flex justify-end'>
                         <Link to="/presenters-list">
-                            <Button className='px-0 pb-0' label="See All Presenters" link />
+                            <Button className='px-0 pb-0' label="See All Presenters"  iconPos='right' icon='pi pi-angle-double-right' link />
                         </Link>
                     </div>
                 </div>

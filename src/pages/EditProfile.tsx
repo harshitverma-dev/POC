@@ -117,7 +117,7 @@ const EditProfile: React.FC = () => {
             },
             // withCredentials: false
         }).then((res) => {
-            console.log(res)
+            // console.log(res)
             setLoginUserDetail(res.data)
             localStorage.setItem('userProfile', JSON.stringify(res.data))
             setisLoadingForUpdatePresenter(false);

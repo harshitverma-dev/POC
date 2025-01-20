@@ -73,7 +73,8 @@ body{
 
 .thin-scrollbar{
   overflow-y: auto !important ;
-  max-height: 88vh !important;
+  max-height: 75vh !important;
+  padding-right: 10px !important;
 }
 
 

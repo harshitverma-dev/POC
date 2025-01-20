@@ -48,8 +48,8 @@ const SeeAllPresentersMain: React.FC = () => {
     // );
     return (
         <>
-            <div className='flex gap-3 w-full items-start'>
-                <div className='w-4/5'>
+            <div className='flex flex-col md:flex-row gap-3 w-full items-start'>
+                <div className='w-[100%] md:w-[65%] lg:w-[70%] xl:w-[75%] 2xl:w-4/5'>
                     {/* <EventsTab /> */}
                     <div className='grid grid-cols-3 gap-3 bg-white p-4 rounded-[15px_15px_0_0]'>
                         {
@@ -66,22 +66,22 @@ const SeeAllPresentersMain: React.FC = () => {
                         }
                     </div>
                 </div>
-                <div className='w-1/5 flex flex-col gap-3 p-[13px] thin-scrollbar bg-white rounded-[15px_15px_15px_15px]'>
-                    <div className=' sticky top-0'>
+                <div className='w-[100%] md:w-[35%] lg:w-[30%] xl:w-[25%] 2xl:w-1/5 pt-[13px] pb-0 pl-[13px] pr-[5px]  bg-white rounded-[15px_15px_15px_15px]'>
+                    <div className='flex flex-row md:flex-col gap-3 thin-scrollbar pb-3 md:pb-0'>
                         {
                             appLoader ?
                                 <div>Data is beening loaded ...</div> : storeAllUpcomingEvents.length > 0 ? storeAllUpcomingEvents?.map((items) => {
                                     return (
-                                        <div className='mainCard rightCardContainer border-solid border border-[#e6e6e6] rounded-[20px] p-3 mb-3'>
+                                        <div className='mainCard rightCardContainer min-w-[60%] md:w-[100%] border-solid border border-[#e6e6e6] rounded-[20px] p-3'>
                                             <RightSideCard rightSideData={items} />
                                         </div>
                                     )
-                                }) : (loginUserDetail && localStorage.getItem('userAccessToken')) ? <div className='no-data'>no data</div> : <Message className='flex w-full justify-start' severity="info" text="Login to see the Events." />
+                                }) : (loginUserDetail && localStorage.getItem('userAccessToken')) ? <div className='no-data'>No Events Avaliable.</div> : <Message className='flex w-full justify-start' severity="info" text="Login to see the Events." />
 
                         }
-                        <div className='flex justify-end'>
-                            <Button className='px-0 pb-0' label="See all upcoming Events" link onClick={() => navigate('/upcoming-events')} />
-                        </div>
+                    </div>
+                    <div className='flex justify-end py-0 md:py-2'>
+                        <Button className='!px-0 pb-0' label="See All Events" iconPos='right' icon='pi pi-angle-double-right' link onClick={() => navigate('/upcoming-events')} />
                     </div>
                 </div>
             </div>

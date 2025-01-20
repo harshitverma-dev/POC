@@ -52,7 +52,7 @@ const LoginForm: React.FC = () => {
         })
     }
     return (
-        <Dialog header="Log in" dismissableMask visible={logInPopupValue} position={'top'} style={{ width: '30vw' }} onHide={() => { if (!logInPopupValue) return; setLoginPopupValue(false); }} draggable={false} resizable={false}>
+        <Dialog header="Log in" dismissableMask visible={logInPopupValue} position={'top'} style={{ minWidth: '30vw' }} onHide={() => { if (!logInPopupValue) return; setLoginPopupValue(false); }} draggable={false} resizable={false}>
             <p className="m-0">
                 <div className='logInFormContainer'>
                     <div className="card">
