@@ -111,17 +111,17 @@ const PresenterTableList: React.FC = () => {
 
     const renderHeader = () => {
         return (
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center flex-wrap gap-2">
                 <h4 className="m-0">Presenters -</h4>
-                <div className='flex items-center'>
+                <div className='flex items-center flex-wrap gap-2'>
                     <IconField iconPosition="left">
                         <InputIcon className="pi pi-search" />
                         <InputText type='search' size='small' value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Search ..." />
                     </IconField>
-                    <div className='flex items-center ml-2'>
+                    <div className='flex items-center md:ml-2'>
                         <Button size='small' type="button" icon="pi pi-file" label='Export CSV' rounded onClick={() => exportCSV(false)} data-pr-tooltip="CSV" />
                         <Button size='small' className='ml-2' type="button" icon="pi pi-file-excel" label='Export Excel' severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
-                        <Button size='small' className='ml-2' type="button" icon="pi pi-file-pdf" label='Download PDF' severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+                        {/* <Button size='small' className='ml-2' type="button" icon="pi pi-file-pdf" label='Download PDF' severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" /> */}
                     </div>
                 </div>
 
@@ -129,18 +129,18 @@ const PresenterTableList: React.FC = () => {
         );
     };
 
-    const roleTemplate = (rowData: any) => {
-        return (
-            <Badge value={rowData.role} />
-        )
-    };
+    // const roleTemplate = (rowData: any) => {
+    //     return (
+    //         <Badge value={rowData.role} />
+    //     )
+    // };
 
     const techExpertiesTemplate = (rowData: any) => {
         if (Array.isArray(rowData.techExpertise) && rowData.techExpertise.length > 0) {
             return (
-                <div className="techExpertiesContainerForRow">
+                <div className="techExpertiesContainerForRow gap-1 flex">
                     {rowData.techExpertise?.map((item: string, index: number) => (
-                        <Chip key={index} label={item} className="techBadge text-[14px] mr-2" />
+                        <Chip key={index} label={item} className="techBadge text-[12px] mr-2" />
                     ))}
                 </div>
             );
@@ -176,21 +176,21 @@ const PresenterTableList: React.FC = () => {
         <div className="card w-full">
             <DataTable ref={dt} value={storeAllPresenters} paginator showGridlines rows={4} dataKey="id" filters={filters} globalFilterFields={['name', 'email', 'role', 'org', 'introduction']} header={header} emptyMessage="No presenters found." className='text-center'>
 
-                <Column field="name" header="Name" filterField="name" style={{ minWidth: '7rem', maxWidth: '9rem' }} />
+                <Column className='text-[13px] md:text-[15px]' field="name" header="Name" filterField="name" style={{ minWidth: '7rem', maxWidth: '9rem' }} />
 
-                <Column field="email" header="Email" filterField="email" style={{ minWidth: '7rem', maxWidth: '12rem' }} />
+                <Column className='text-[13px] md:text-[15px]' field="email" header="Email" filterField="email" style={{ minWidth: '7rem' }} />
 
-                <Column field='role' header="Role" filterField="role" body={roleTemplate} style={{ minWidth: '5rem', maxWidth: '5rem' }} />
+                {/* <Column field='role' header="Role" filterField="role" body={roleTemplate} style={{ minWidth: '5rem', maxWidth: '5rem' }} /> */}
 
-                <Column field='org' header="Organization" filterField="org" dataType="date" style={{ minWidth: '8rem', maxWidth: '11rem' }} />
+                <Column className='text-[13px] md:text-[15px]' field='org' header="Organization" filterField="org" dataType="date" style={{ minWidth: '8rem' }} />
 
-                <Column field='introduction' header="Introduction" filterField="introduction" style={{ minWidth: '10rem', maxWidth: '20rem' }} />
+                <Column className='text-[13px] md:text-[15px]' field='introduction' header="Introduction" filterField="introduction" style={{ minWidth: '40rem' }} />
 
                 <Column field="techExpertise" header="Tech Expertise" filterField="techExpertise" body={techExpertiesTemplate} style={{ minWidth: '12rem' }} />
 
                 {/* <Column field="activity" header="Activity" showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={activityBodyTemplate} filter filterElement={activityFilterTemplate} /> */}
 
-                <Column field="action" header="Action" bodyClassName="text-center" style={{ maxWidth: '4rem' }} body={actionTemplate} />
+                <Column field="action" header="Action" bodyClassName="text-center" style={{ maxWidth: '5rem' }} body={actionTemplate} />
             </DataTable>
             <Toast ref={toast}/>
         </div>

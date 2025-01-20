@@ -26,7 +26,7 @@ const PresenterDetailPopup: React.FC = () => {
         </div>
     );
     return (
-        <Dialog position={'top'} draggable={false} dismissableMask header={headerElementForPopup} visible={presentersDetailsPopupValue} onHide={() => { if (!presentersDetailsPopupValue) return; setPresentersDetailsPopupValue(false);  }} style={{ minWidth: '50vw' }} >
+        <Dialog position={'top'} draggable={false} dismissableMask header={headerElementForPopup} visible={presentersDetailsPopupValue} onHide={() => { if (!presentersDetailsPopupValue) return; setPresentersDetailsPopupValue(false);  }} className='w-full md:max-w-[65vw]'>
             <p className="m-0 pb-3 text-[14px] md:text-[15px]">
                 <span className='font-bold'>About:- </span>
                 {presentersDetailsPopup?.introduction}

@@ -104,7 +104,7 @@ const AddStudent: React.FC = () => {
 
 
     return (
-        <div className='md:w-1/2 m-auto addStudentContainer rounded p-5'>
+        <div className='w-full md:w-1/2 m-auto addStudentContainer rounded p-5'>
             <div className="card">
                 <h3 className='text-[24px] md:text-[28px] lg:text-[32px] mb-7 text-center border-b border-[#ddd] border-solid'>Create Student</h3>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">

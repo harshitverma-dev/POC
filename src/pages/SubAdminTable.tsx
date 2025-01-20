@@ -138,17 +138,17 @@ const SubAdminTable: React.FC = () => {
 
     const renderHeader = () => {
         return (
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center flex-wrap gap-2">
                 <h4 className="m-0">Sub Admin -</h4>
-                <div className='flex items-center'>
+                <div className='flex items-center flex-wrap gap-2'>
                     <IconField iconPosition="left">
                         <InputIcon className="pi pi-search" />
                         <InputText type='search' size='small' value={globalFilterValue} onChange={onGlobalFilterChange} placeholder="Search ..." />
                     </IconField>
-                    <div className='flex items-center ml-2'>
+                    <div className='flex items-center md:ml-2'>
                         <Button size='small' type="button" icon="pi pi-file" label='Export CSV' rounded onClick={() => exportCSV(false)} data-pr-tooltip="CSV" />
                         <Button size='small' className='ml-2' type="button" icon="pi pi-file-excel" label='Export Excel' severity="success" rounded onClick={exportExcel} data-pr-tooltip="XLS" />
-                        <Button size='small' className='ml-2' type="button" icon="pi pi-file-pdf" label='Download PDF' severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" />
+                        {/* <Button size='small' className='ml-2' type="button" icon="pi pi-file-pdf" label='Download PDF' severity="warning" rounded onClick={exportPdf} data-pr-tooltip="PDF" /> */}
                     </div>
                 </div>
 
@@ -204,26 +204,26 @@ const SubAdminTable: React.FC = () => {
         <div className="card w-full">
             <DataTable ref={dt} value={storeAllSubAdminList} paginator showGridlines rows={4} dataKey="id" filters={filters} globalFilterFields={['name', 'email', 'role', 'metaData.contact_no', 'metaData.college', 'metaData.course', 'metaData.stream', 'metaData.graduation_year', 'metaData.location']} header={header} emptyMessage="No sub Admin found." className='text-center'>
 
-                <Column field="name" header="Name" filterField="name" style={{ minWidth: '7rem', maxWidth: '9rem' }} />
+                <Column className='text-[13px] md:text-[15px]' field="name" header="Name" filterField="name" style={{ minWidth: '7rem' }} />
 
-                <Column field="email" header="Email" filterField="email" style={{ minWidth: '7rem', maxWidth: '12rem' }} />
+                <Column className='text-[13px] md:text-[15px]' field="email" header="Email" filterField="email" style={{ minWidth: '7rem' }} />
 
-                <Column field='role' header="Role" filterField="role" body={roleTemplate} style={{ minWidth: '5rem', maxWidth: '6rem' }} />
+                {/* <Column field='role' header="Role" filterField="role" body={roleTemplate} style={{ minWidth: '5rem'}} /> */}
 
-                <Column field='metaData.contact_no' header="Contact No" filterField="metaData.contact_no" dataType="date" style={{ minWidth: '8rem', maxWidth: '8rem' }} />
+                <Column className='text-[13px] md:text-[15px]' field='metaData.contact_no' header="Contact No" filterField="metaData.contact_no" dataType="date" style={{ minWidth: '8rem', maxWidth: '8rem' }} />
 
-                <Column field='metaData.college' header="College" filterField="metaData.college" style={{ minWidth: '10rem', maxWidth: '20rem' }} />
+                <Column className='text-[13px] md:text-[15px]' field='metaData.college' header="College" filterField="metaData.college" style={{ minWidth: '10rem', maxWidth: '20rem' }} />
 
-                <Column field="metaData.course" header="Course" filterField="metaData.course" style={{ minWidth: '4rem' }} />
-                <Column field="metaData.stream" header="Stream" filterField="metaData.stream" style={{ minWidth: '4rem' }} />
-                <Column field="metaData.graduation_year" header="Graduation Year" filterField="metaData.graduation_year" style={{ minWidth: '5rem' }} />
-                <Column field="metaData.location" header="location" filterField="metaData.location" style={{ minWidth: '4rem' }} />
+                <Column className='text-[13px] md:text-[15px]' field="metaData.course" header="Course" filterField="metaData.course" style={{ minWidth: '4rem' }} />
+                <Column className='text-[13px] md:text-[15px]' field="metaData.stream" header="Stream" filterField="metaData.stream" style={{ minWidth: '4rem' }} />
+                <Column className='text-[13px] md:text-[15px]' field="metaData.graduation_year" header="Graduation Year" filterField="metaData.graduation_year" style={{ minWidth: '5rem' }} />
+                <Column className='text-[13px] md:text-[15px]' field="metaData.location" header="location" filterField="metaData.location" style={{ minWidth: '4rem' }} />
 
 
                 {/* <Column field="activity" header="Activity" showFilterMatchModes={false} style={{ minWidth: '12rem' }} body={activityBodyTemplate} filter filterElement={activityFilterTemplate} /> */}
 
                 {/* <Column field="verified" header="Verified" dataType="boolean" bodyClassName="text-center" style={{ minWidth: '8rem' }} /> */}
-                <Column field="action" header="Action" bodyClassName="text-center" style={{ maxWidth: '4rem' }} body={actionTemplate} />
+                <Column field="action" header="Action" bodyClassName="text-center" style={{ maxWidth: '5rem' }} body={actionTemplate} />
             </DataTable>
             <Toast ref={toast} />
         </div>
