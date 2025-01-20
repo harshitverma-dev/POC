@@ -81,7 +81,7 @@ const SideBarLayout: React.FC = () => {
                 </div>
             </aside>
             {
-                isFilterForm && <Dialog position={'top'} draggable={false} header="Filter" visible={isFilterForm} style={{ width: '30vw' }} onHide={() => { if (!isFilterForm) return; setIsFilterForm(false); }}>
+                isFilterForm && <Dialog position={'top'} draggable={false} header="Filter" visible={isFilterForm} style={{ minWidth: '30vw' }} onHide={() => { if (!isFilterForm) return; setIsFilterForm(false); }}>
                     <p className="m-0">
                         <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                             <label htmlFor="eventPrerequisite" className="">Industry:</label>
@@ -97,8 +97,8 @@ const SideBarLayout: React.FC = () => {
                         {/* placeholder="Select a City" className="w-full md:w-14rem mb-3" highlightOnSelect={false} /> */}
                         {/* <InputText type="text" placeholder="Normal" className="p-inputtext-sm w-full mb-3" /> */}
                         <div className='text-center'>
-                            <Button label="Apply Filters" className='mr-3' outlined rounded onClick={applyFilterData} />
-                            <Button label="Remove Filters" outlined rounded onClick={removeFilter} />
+                            <Button label="Apply Filters" className='mr-3 text-[13px] md:text-[15px]' outlined rounded onClick={applyFilterData} />
+                            <Button label="Remove Filters" className='text-[13px] md:text-[15px]' outlined rounded onClick={removeFilter} />
                         </div>
                     </p>
                 </Dialog>

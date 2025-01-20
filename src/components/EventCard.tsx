@@ -115,13 +115,13 @@ const EventCard: React.FC<EventProps> = (props) => {
             <div>
                 <div className='flex justify-between items-center'>
                     <h3 className='text-[20px] text-xl font-medium text-[#474747] capitalize w-1/2'>{eventData.eventName ?? 'sdsd'}</h3>
-                    <div className='flex flex-col text-[15px] text-[#5e5e5e] w-1/2 items-end'>
+                    <div className='flex flex-col text-[15px] text-[#818181] w-1/2 items-end'>
                         <span>{modifiedEventDate(eventData.toDateTime)}</span>
                         {/* <span>{eventData.eventTime}</span> */}
                     </div>
                 </div>
-                <p className='mt-4 text-[15px] text-[#5e5e5e] textinThreeLineSix'>{eventData.description}</p>
-                <p className='my-3 text-[15px] text-[#5e5e5e]'>Presenter - {eventData.presenterId}</p>
+                <p className='mt-4 text-[15px] text-[#818181] textinThreeLineSix'>{eventData.description}</p>
+                <p className='my-3 text-[15px] text-[#818181]'>Presenter - {eventData.presenterId}</p>
             </div>
             <div>
                 {

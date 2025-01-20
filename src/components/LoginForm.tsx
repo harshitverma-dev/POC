@@ -56,7 +56,7 @@ const LoginForm: React.FC = () => {
             <p className="m-0">
                 <div className='logInFormContainer'>
                     <div className="card">
-                        {/* <h3 className='text-[32px] mb-7 text-center border-b border-[#ddd] border-solid'>Log In</h3> */}
+                        {/* <h3 className='text-[24px] md:text-[28px] lg:text-[32px] mb-7 text-center border-b border-[#ddd] border-solid'>Log In</h3> */}
                         <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                             <label htmlFor="userEmail" className="">Email :</label>
                             <InputText value={loginForm.userEmail} onChange={onchangeFun} id="userEmail" name='userEmail' placeholder="Enter the user name" className="mr-2 w-full" />

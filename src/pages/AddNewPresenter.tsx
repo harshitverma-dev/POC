@@ -114,7 +114,7 @@ const AddNewPresenter: React.FC = () => {
     return (
         <div className='md:w-1/2 m-auto addPresenterContainer rounded p-5'>
             <div className="card">
-                <h3 className='text-[32px] mb-7 text-center border-b border-[#ddd] border-solid'>Add New Presenter</h3>
+                <h3 className='text-[24px] md:text-[28px] lg:text-[32px] mb-7 text-center border-b border-[#ddd] border-solid'>Add New Presenter</h3>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterName" className="">Name:</label>
                     <InputText invalid={createPresenterErrors.presenterNameError && !createPresenterDetails.presenterName} id="presenterName" value={createPresenterDetails.presenterName} name='presenterName' onChange={onChangeFun} placeholder="Enter the name" className="mr-2 w-full" />

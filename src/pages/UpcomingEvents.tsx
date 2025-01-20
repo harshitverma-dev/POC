@@ -42,7 +42,7 @@ const UpcomingEvents: React.FC = () => {
                 {
                     loginUserDetail && localStorage.getItem('userAccessToken') && <div>
                         <EventsTab />
-                        <div className='grid grid-cols-3 gap-3 bg-white p-4 rounded-[15px_15px_0_0]'>
+                        <div className='grid grid-cols-2 2xl:grid-cols-3 gap-3 bg-white p-4 rounded-[15px_15px_0_0]'>
                             {
                                 appLoader ? <div>Data is beening loaded ...</div> : (storeAllUpcomingEvents && storeAllUpcomingEvents.length > 0) ? storeAllUpcomingEvents.map((items, index) => {
                                     return (
@@ -53,7 +53,7 @@ const UpcomingEvents: React.FC = () => {
                                                 eventDetails="Upcoming Events" />
                                         </div >
                                     )
-                                }) : <div className='no-data'>No Upcoming Events Avaliable.</div>
+                                }) : <div className='no-data text-[13px] md:text-[15px]'>No Events Avaliable.</div>
                             }
                         </div>
                         {
@@ -86,12 +86,12 @@ const UpcomingEvents: React.FC = () => {
                                 </div>
                             )
                         }
-                        ) : <div className='no-data'>No Presenter Avaliable.</div>
+                        ) : <div className='no-data text-[13px] md:text-[15px]'>No Presenter Avaliable.</div>
                     }
                 </div>
                 <div className='flex justify-end py-0 md:py-2'>
                     <Link to="/presenters-list" className='flex justify-start items-center'>
-                        <Button className='!px-0 pb-0' iconPos='right' icon='pi pi-angle-double-right' label="See All Presenters" link />
+                        <Button className='!px-0 pb-0 text-[14px] md:text-[15px]' iconPos='right' icon='pi pi-angle-double-right' label="See All Presenters" link />
                         {/* <i className='pi pi-angle-double-right'/> */}
                     </Link>
                 </div>

@@ -46,23 +46,24 @@ const SeeAllPresentersMain: React.FC = () => {
     //         </div>
     //     </div>
     // );
+    
     return (
         <>
             <div className='flex flex-col md:flex-row gap-3 w-full items-start'>
                 <div className='w-[100%] md:w-[65%] lg:w-[70%] xl:w-[75%] 2xl:w-4/5'>
                     {/* <EventsTab /> */}
-                    <div className='grid grid-cols-3 gap-3 bg-white p-4 rounded-[15px_15px_0_0]'>
+                    <div className='grid grid-cols-2 2xl:grid-cols-3 gap-3 bg-white p-4 rounded-[15px_15px_0_0]'>
                         {
                             appLoader ? <div>Data is beening loaded ...</div> : (storeAllPresenters !== null && storeAllPresenters?.length > 0) ? storeAllPresenters?.map((items, index) => {
                                 return (
-                                    <div className='mainCard border-solid border border-[#e6e6e6] rounded-[20px] p-3' key={index}>
+                                    <div className='mainCard border-solid border border-[#e6e6e6] rounded-[20px] p-2 md:p-3' key={index}>
                                         <PresentersCard
                                             // key={index}
                                             presentersData={items}
                                             index={index} />
                                     </div >
                                 )
-                            }) : <div className='no-data'>No Presenter Avaliable.</div>
+                            }) : <div className='no-data text-[13px] md:text-[15px]'>No Presenter Avaliable.</div>
                         }
                     </div>
                 </div>
@@ -76,12 +77,12 @@ const SeeAllPresentersMain: React.FC = () => {
                                             <RightSideCard rightSideData={items} />
                                         </div>
                                     )
-                                }) : (loginUserDetail && localStorage.getItem('userAccessToken')) ? <div className='no-data'>No Events Avaliable.</div> : <Message className='flex w-full justify-start' severity="info" text="Login to see the Events." />
+                                }) : (loginUserDetail && localStorage.getItem('userAccessToken')) ? <div className='no-data text-[13px] md:text-[15px]'>No Events Avaliable.</div> : <Message className='flex w-full justify-start' severity="info" text="Login to see the Events." />
 
                         }
                     </div>
                     <div className='flex justify-end py-0 md:py-2'>
-                        <Button className='!px-0 pb-0' label="See All Events" iconPos='right' icon='pi pi-angle-double-right' link onClick={() => navigate('/upcoming-events')} />
+                        <Button className='!px-0 pb-0 text-[14px] md:text-[15px]' label="See All Events" iconPos='right' icon='pi pi-angle-double-right' link onClick={() => navigate('/upcoming-events')} />
                     </div>
                 </div>
             </div>

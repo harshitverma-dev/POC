@@ -42,12 +42,15 @@ const EventsTab: React.FC = () => {
     }, [location.pathname]);
     return (
         <div className='mb-5 flex'>
-            <ul className='flex justify-start items-center'>
-                <Link to={'/'} className={`border border-solid border-[#e6e6e6] rounded-[15px] px-4 py-2 mr-2 cursor-pointer ${activeMainTab == 'Upcoming Events' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={() => { setActiveMainTab('Upcoming Events') }}>Upcoming Events</Link>
-                <li className={`border text-[#000] border-solid border-[#e6e6e6] rounded-[15px] px-4 py-2 mr-2 cursor-pointer ${activeMainTab == 'My Events' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={toggleMyEventsTabs}>
-                    My Events
-                </li>
-                {toggleEventTabs && <HiArrowLongRight className='mr-2' />}
+            <ul className='flex justify-start items-center text-[14px] md:text-[16px] w-[100%] flex-wrap gap-2'>
+                <div className='flex justify-start items-center'>
+                    <Link to={'/'} className={`border border-solid border-[#e6e6e6] rounded-[15px] px-4 py-2 mr-2 cursor-pointer ${activeMainTab == 'Upcoming Events' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={() => { setActiveMainTab('Upcoming Events') }}>Upcoming Events</Link>
+                    <li className={`border text-[#000] border-solid border-[#e6e6e6] rounded-[15px] px-4 py-2 mr-2 cursor-pointer ${activeMainTab == 'My Events' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={toggleMyEventsTabs}>
+                        My Events
+                    </li>
+                    {toggleEventTabs && <HiArrowLongRight className='mr-2' />}
+                </div>
+                
                 {
                     toggleEventTabs && <ul className='flex justify-start items-center'>
                         <li className={`border border-solid border-[#e6e6e6] rounded-[15px] px-3 py-1 mr-2 cursor-pointer ${activeEventSubTab == 'To Attend' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={toAttendedTab} >To Attend</li>
