@@ -19,7 +19,7 @@ const SideBarLayout: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { isFilterForm, setIsFilterForm, filterFields, setFilterFields, applyFilterData, removeFilter, loginUserDetail } = context;
+    const { isFilterForm, setIsFilterForm, filterFields, setFilterFields, applyFilterData, removeFilter, loginUserDetail, toggleSidebar } = context;
 
     // const [selectedCity, setSelectedCity] = useState(null);
     // const cities = [
@@ -59,7 +59,8 @@ const SideBarLayout: React.FC = () => {
 
     return (
         <>
-            <aside id="logo-sidebar" className="fixed top-0 left-0 z-40 w-20 h-screen pt-20 transition-transform -translate-x-full bg-white sm:translate-x-0" aria-label="Sidebar">
+            <aside className={`fixed top-0 left-0 z-40 w-20 h-screen pt-20 transition-transform bg-white ${toggleSidebar ? 'translate-x-0 shadow-xl' : '-translate-x-full shadow'
+                } sm:translate-x-0`} aria-label="Sidebar">
                 <div className="h-full px-3 pb-4 bg-white dark:bg-gray-800 flex justify-center">
                     <ul className="space-y-2 font-medium">
                         {
@@ -81,7 +82,7 @@ const SideBarLayout: React.FC = () => {
                 </div>
             </aside>
             {
-                isFilterForm && <Dialog position={'top'} draggable={false} header="Filter" visible={isFilterForm} style={{ minWidth: '30vw' }} onHide={() => { if (!isFilterForm) return; setIsFilterForm(false); }}>
+                isFilterForm && <Dialog position={'top'} draggable={false} header="Filter" visible={isFilterForm} className='w-full md:max-w-[30vw]' onHide={() => { if (!isFilterForm) return; setIsFilterForm(false); }}>
                     <p className="m-0">
                         <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                             <label htmlFor="eventPrerequisite" className="">Industry:</label>

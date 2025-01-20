@@ -11,7 +11,7 @@ const PresenterDetailPopup: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { presentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopupValue, setPresentersDetailsPopup } = context;
+    const { presentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopupValue } = context;
 
     const headerElementForPopup = (
         <div className="inline-flex items-center justify-content-center gap-2">
