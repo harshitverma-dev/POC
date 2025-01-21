@@ -113,33 +113,33 @@ const EventCard: React.FC<EventProps> = (props) => {
     return (
         <div className='flex flex-col justify-between h-full'>
             <div>
-                <div className='flex justify-between items-center'>
-                    <h3 className='text-[20px] text-xl font-medium text-[#474747] capitalize w-1/2'>{eventData.eventName ?? 'sdsd'}</h3>
-                    <div className='flex flex-col text-[15px] text-[#818181] w-1/2 items-end'>
+                <div className='flex flex-col xl:flex-row justify-between xl:items-center'>
+                    <h3 className='text-[16px] sm:text-[18px] font-bold lg:text-xl md:font-medium text-[#474747] capitalize w-full xl:w-1/2'>{eventData.eventName}</h3>
+                    <div className='flex flex-col text-[12px] sm:text-[14px] lg:text-[15px] text-[#818181] w-full xl:w-1/2 xl:items-end'>
                         <span>{modifiedEventDate(eventData.toDateTime)}</span>
                         {/* <span>{eventData.eventTime}</span> */}
                     </div>
                 </div>
-                <p className='mt-4 text-[15px] text-[#818181] textinThreeLineSix'>{eventData.description}</p>
-                <p className='my-3 text-[15px] text-[#818181]'>Presenter - {eventData.presenterId}</p>
+                <p className='mt-4 text-[13px] sm:text-[14px] lg:text-[15px] text-[#818181] textinThreeLineSix'>{eventData.description}</p>
+                <p className='my-2 md:my-3 text-[13px] sm:text-[14px] lg:text-[15px] text-[#818181]'><span className='font-bold'>Presenter -</span> {eventData.presenterId}</p>
             </div>
             <div>
                 {
                     (eventDetails == 'Upcoming Events' || eventDetails == '/') && <div className='eventBtnContainer flex justify-end items-center'>
-                        <Button size='small' loading={isLoadingForPostAttendEvent ? true : false} onClick={postAttendEventByApi} label="Attend" severity="secondary" />
+                        <Button className='text-[12px] sm:text-[13px] lg:text-[15px]' size='small' loading={isLoadingForPostAttendEvent ? true : false} onClick={postAttendEventByApi} label="Attend" severity="secondary" />
                     </div>
                 }
                 {
-                    eventDetails == 'To Attend' ? <div className='flex justify-between items-center text-[#474747]'>
-                        <div>Attendee - <span>{eventData.attendees}</span></div>
-                        <Button size='small' loading={isLoadingForWithdrawAttendEvent ? true : false} label="Withdraw" severity="secondary" onClick={withdrawAttendEventByApi} />
+                    eventDetails == 'To Attend' ? <div className='flex flex-col md:flex-row items-start justify-between md:items-center text-[#474747]'>
+                        <div className='text-[13px] md:text-[15px]'>Attendee - <span>{eventData.attendees}</span></div>
+                        <Button className='text-[12px] md:text-[15px]' size='small' loading={isLoadingForWithdrawAttendEvent ? true : false} label="Withdraw" severity="secondary" onClick={withdrawAttendEventByApi} />
                     </div> : eventDetails == 'To Present' ? <div className='flex justify-between items-center cursor-pointer text-[#474747]'>
-                        <div>Attendee - <span>{eventData.attendees}</span></div>
+                        <div className='text-[13px] md:text-[15px]'>Attendee - <span>{eventData.attendees}</span></div>
                         <div className='flex text-[#474747]'> 
                             {/* <LiaUserEditSolid size={23} onClick={openDialogFun} className='mr-2' /> 
                             <AiOutlineDelete size={23} color='red' /> */}
                             </div> </div> : eventDetails == 'Presented' && <div className='flex justify-between items-center cursor-pointer'>
-                            <div className='text-[#474747]'>Attendee - <span>{eventData.attendees}</span></div>
+                            <div className='text-[#474747] text-[13px] md:text-[15px]'>Attendee - <span>{eventData.attendees}</span></div>
                             {/* <Rating value={eventData.eventRating} cancel={false} /> */}
                         </div>
                     //  onChange={(e: RatingChangeEvent) => setValue(e.value)} 

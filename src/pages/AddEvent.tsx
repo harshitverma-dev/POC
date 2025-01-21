@@ -27,7 +27,7 @@ const AddEvent: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { loginUserDetail} = context;
+    const { loginUserDetail, getLengthOfAllUpcomingEventsByApi, getLengthOfAllPastEventsByApi} = context;
     const navigate = useNavigate()
 
     const onChangeFun = (e: any) => {
@@ -73,6 +73,8 @@ const AddEvent: React.FC = () => {
             console.log(response, 'save event');
             setCreateEventErrors([]);
             navigate('/')
+            getLengthOfAllUpcomingEventsByApi();
+            getLengthOfAllPastEventsByApi();
         }).catch(err => {
             console.log(err, 'err')
             setCreateEventErrors(err?.response?.data?.message ?? []);

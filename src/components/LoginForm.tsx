@@ -13,7 +13,7 @@ const LoginForm: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { logInPopupValue, setLoginPopupValue, setLoginForm, getAllUpcomingEventsDataByApi,loginForm, setLoginUserDetail } = context;
+    const { logInPopupValue, setLoginPopupValue, setLoginForm, getAllUpcomingEventsDataByApi,loginForm, setLoginUserDetail,getLengthOfAllUpcomingEventsByApi,getLengthOfAllPastEventsByApi } = context;
 
     const onchangeFun = (e: any) => {
         const { name, value } = e.target;
@@ -43,6 +43,8 @@ const LoginForm: React.FC = () => {
             storeLoginErrMsg([]);
             setLoginPopupValue(false);
             setLoginLoader(false)
+            getLengthOfAllUpcomingEventsByApi();
+            getLengthOfAllPastEventsByApi();
             getAllUpcomingEventsDataByApi();
         }).catch(err => {
             console.log(err, 'err')
