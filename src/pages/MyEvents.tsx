@@ -6,7 +6,7 @@ import EventsTab from '../components/EventsTab';
 import { Button } from 'primereact/button';
 import { Link } from 'react-router-dom';
 import { ProductContextData } from '../context/ContextData';
-import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
+// import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
 import LoginForm from '../components/LoginForm';
 import LogInImg from '../assets/loginImg.gif'
 import { Image } from 'primereact/image';

@@ -8,7 +8,7 @@ import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { Button } from 'primereact/button';
 import { ProductContextData } from '../context/ContextData';
-import { Badge } from 'primereact/badge';
+// import { Badge } from 'primereact/badge';
 import { Chip } from 'primereact/chip';
 import { userPresentersI } from '../interface/Presenters';
 import axios from 'axios';
@@ -30,14 +30,14 @@ const PresenterTableList: React.FC = () => {
     // const [loading, setLoading] = useState<boolean>(false);
     const [globalFilterValue, setGlobalFilterValue] = useState<string>('');
     const dt = useRef<DataTable<userPresentersI[] | []>>(null);
-    const exportColumns = [
-        { field: 'name', header: 'Name' },
-        { field: 'email', header: 'Email' },
-        { field: 'role', header: 'Role' },
-        { field: 'org', header: 'Organization' },
-        { field: 'introduction', header: 'Introduction' },
-        { field: 'techExpertise', header: 'Tech Expertise' },
-    ];
+    // const exportColumns = [
+    //     { field: 'name', header: 'Name' },
+    //     { field: 'email', header: 'Email' },
+    //     { field: 'role', header: 'Role' },
+    //     { field: 'org', header: 'Organization' },
+    //     { field: 'introduction', header: 'Introduction' },
+    //     { field: 'techExpertise', header: 'Tech Expertise' },
+    // ];
     const toast = useRef<Toast>(null)
 
 
@@ -86,23 +86,23 @@ const PresenterTableList: React.FC = () => {
         });
     };
 
-    const exportPdf = () => {
-        import('jspdf').then((jsPDFModule) => {
-            const jsPDF: any = jsPDFModule.default;
-            import('jspdf-autotable').then(() => {
-                const doc = new jsPDF();
-                const headers = [exportColumns.map((col) => col.header)];
-                const data = storeAllPresenters.map((row) =>
-                    exportColumns.map((col) => row[col.field as keyof typeof row])
-                );
-                doc.autoTable({
-                    head: headers,
-                    body: data,
-                });
-                doc.save('presenters-table.pdf');
-            });
-        });
-    };
+    // const exportPdf = () => {
+    //     import('jspdf').then((jsPDFModule) => {
+    //         const jsPDF: any = jsPDFModule.default;
+    //         import('jspdf-autotable').then(() => {
+    //             const doc = new jsPDF();
+    //             const headers = [exportColumns.map((col) => col.header)];
+    //             const data = storeAllPresenters.map((row) =>
+    //                 exportColumns.map((col) => row[col.field as keyof typeof row])
+    //             );
+    //             doc.autoTable({
+    //                 head: headers,
+    //                 body: data,
+    //             });
+    //             doc.save('presenters-table.pdf');
+    //         });
+    //     });
+    // };
 
 
 

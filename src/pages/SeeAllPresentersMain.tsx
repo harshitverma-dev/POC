@@ -14,7 +14,7 @@ import { ProductContextData } from '../context/ContextData';
 
 // import { Badge } from 'primereact/badge';
 import PresenterDetailPopup from '../components/PresenterDetailPopup';
-import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
+// import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
 // import { Messages } from 'primereact/messages';
 import { Message } from 'primereact/message';
 // import Spinner from '../components/Spinner';

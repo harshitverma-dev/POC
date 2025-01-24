@@ -8,7 +8,7 @@ import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { Button } from 'primereact/button';
 import { ProductContextData } from '../context/ContextData';
-import { Badge } from 'primereact/badge';
+// import { Badge } from 'primereact/badge';
 // import { Chip } from 'primereact/chip';
 import { userPresentersI } from '../interface/Presenters';
 import axios from 'axios';
@@ -105,31 +105,31 @@ const SubAdminTable: React.FC = () => {
     };
 
 
-    const exportPdf = () => {
-        import('jspdf').then((jsPDFModule) => {
-            const jsPDF: any = jsPDFModule.default;
-            import('jspdf-autotable').then(() => {
-                const doc = new jsPDF();
-                const headers = [exportColumns.map((col) => col.header)];
-                const data = storeAllSubAdminList.map((row) =>
-                    exportColumns.map((col) => {
-                        // Check if the field is nested (e.g., metaData.contact_no)
-                        const field = col.field as keyof typeof row;
-                        if (typeof field === 'string' && field.includes('.')) {
-                            const keys = field.split('.'); // Split nested keys
-                            return keys.reduce((acc: any, key) => acc && acc[key], row); // Access nested fields
-                        }
-                        return row[field];
-                    })
-                );
-                doc.autoTable({
-                    head: headers,
-                    body: data,
-                });
-                doc.save('subadmin-table.pdf');
-            });
-        });
-    };
+    // const exportPdf = () => {
+    //     import('jspdf').then((jsPDFModule) => {
+    //         const jsPDF: any = jsPDFModule.default;
+    //         import('jspdf-autotable').then(() => {
+    //             const doc = new jsPDF();
+    //             const headers = [exportColumns.map((col) => col.header)];
+    //             const data = storeAllSubAdminList.map((row) =>
+    //                 exportColumns.map((col) => {
+    //                     // Check if the field is nested (e.g., metaData.contact_no)
+    //                     const field = col.field as keyof typeof row;
+    //                     if (typeof field === 'string' && field.includes('.')) {
+    //                         const keys = field.split('.'); // Split nested keys
+    //                         return keys.reduce((acc: any, key) => acc && acc[key], row); // Access nested fields
+    //                     }
+    //                     return row[field];
+    //                 })
+    //             );
+    //             doc.autoTable({
+    //                 head: headers,
+    //                 body: data,
+    //             });
+    //             doc.save('subadmin-table.pdf');
+    //         });
+    //     });
+    // };
 
 
 
@@ -156,11 +156,11 @@ const SubAdminTable: React.FC = () => {
         );
     };
 
-    const roleTemplate = (rowData: any) => {
-        return (
-            <Badge value={rowData.role} />
-        )
-    };
+    // const roleTemplate = (rowData: any) => {
+    //     return (
+    //         <Badge value={rowData.role} />
+    //     )
+    // };
 
     // const techExpertiesTemplate = (rowData: any) => {
     //     if (Array.isArray(rowData.techExpertise) && rowData.techExpertise.length > 0) {
