@@ -1,6 +1,3 @@
-
-// Type Role = 'ADMIN' 
-
 export interface AccessControlType {
     PROFESSOR: {
         routes: string[],

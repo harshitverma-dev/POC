@@ -4,7 +4,7 @@ import { ProductContextData } from '../context/ContextData';
 import { Chip } from 'primereact/chip';
 import { Dialog } from 'primereact/dialog';
 import { Avatar } from 'primereact/avatar';
-import { Badge } from 'primereact/badge';
+// import { Badge } from 'primereact/badge';
 
 const PresenterDetailPopup: React.FC = () => {
     const context = useContext(ProductContextData);
@@ -19,9 +19,9 @@ const PresenterDetailPopup: React.FC = () => {
             <div className='flex flex-col'>
                 <span className='flex items-center'>
                     <span className="capitalize font-bold white-space-nowrap text-[18px] md:text-[22px]">{presentersDetailsPopup?.name}</span>
-                    <Badge className='ml-2' value={presentersDetailsPopup?.role} severity="contrast" />
+                    {/* <Badge className='ml-2' value={presentersDetailsPopup?.role} severity="contrast" /> */}
                 </span>
-                <span className='text-[14px] md:text-[15px] font-medium text-[#ababab]'>{presentersDetailsPopup?.email}</span>
+                {/* <span className='text-[14px] md:text-[15px] font-medium text-[#ababab]'>{presentersDetailsPopup?.email}</span> */}
             </div>
         </div>
     );

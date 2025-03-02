@@ -5,7 +5,6 @@ import { EventType } from '../interface/EventInterface';
 import { IndustrySegemntType } from '../interface/IndustryAndSegment';
 
 export interface createContextType {
-    // storeAllUpcomingEvents: any,
     setStoreAllUpcomingEvents: React.Dispatch<React.SetStateAction<any>>
     isFilterForm: boolean,
     setIsFilterForm: React.Dispatch<React.SetStateAction<boolean>>,
@@ -31,9 +30,6 @@ export interface createContextType {
     loginForm: loginFormI,
     setLoginForm: React.Dispatch<React.SetStateAction<loginFormI>>,
     appLoader: boolean,
-    // isStoreAllToAttendEventsLoader: boolean,
-    // isstoreAllPastEventsLoader: boolean,
-    // isStoreAllToPresentersLoader: boolean
     loginUserDetail: any | null,
     setLoginUserDetail: React.Dispatch<React.SetStateAction<any | null>>,
     getAllPastEventsDataByApi: () => void,

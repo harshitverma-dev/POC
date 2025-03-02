@@ -17,6 +17,7 @@ import PresenterDetailPopup from '../components/PresenterDetailPopup';
 // import RightSideCardSkeleton from '../skeletons/RightSideCardSkeleton';
 // import { Messages } from 'primereact/messages';
 import { Message } from 'primereact/message';
+import LoginForm from '../components/LoginForm';
 // import Spinner from '../components/Spinner';
 
 
@@ -25,13 +26,20 @@ const SeeAllPresentersMain: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { getAllPresentersDataByApi, appLoader, storeAllPresenters, loginUserDetail, storeAllUpcomingEvents, getAllUpcomingEventsDataByApi } = context;
+    const { getAllPresentersDataByApi, appLoader, storeAllPresenters, loginUserDetail, storeAllUpcomingEvents, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue } = context;
     const navigate = useNavigate()
 
     useEffect(() => {
         getAllPresentersDataByApi();
         getAllUpcomingEventsDataByApi();
     }, [])
+
+    const handleFunctionforEventsShow = () =>{
+        let checkIfUserLoginOrNot = localStorage.getItem('userAccessToken');
+        checkIfUserLoginOrNot ? navigate('/upcoming-events') : setLoginPopupValue(true);
+        // navigate('/upcoming-events')
+        // setLoginPopupValue(true);
+    }
 
 
     // const headerElementForPopup = (
@@ -82,7 +90,7 @@ const SeeAllPresentersMain: React.FC = () => {
                         }
                     </div>
                     <div className='flex justify-end py-0 md:py-2'>
-                        <Button className='!px-0 pb-0 text-[14px] md:text-[15px]' label="See All Events" iconPos='right' icon='pi pi-angle-double-right' link onClick={() => navigate('/upcoming-events')} />
+                        <Button className='!px-0 pb-0 text-[14px] md:text-[15px]' label="See All Events" iconPos='right' icon='pi pi-angle-double-right' link onClick={handleFunctionforEventsShow} />
                     </div>
                 </div>
             </div>
@@ -102,6 +110,7 @@ const SeeAllPresentersMain: React.FC = () => {
                 
             </Dialog> */}
             <PresenterDetailPopup />
+            {logInPopupValue && <LoginForm />}
         </>
     )
 }

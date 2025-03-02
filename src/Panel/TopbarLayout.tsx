@@ -6,6 +6,7 @@ import { IoIosLogOut } from "react-icons/io";
 import { ProductContextData } from '../context/ContextData';
 import { AccessControl } from '../accessControl/AccessControl';
 import { Badge } from 'primereact/badge';
+import LoginForm from '../components/LoginForm';
 // import Logo from '../assets/POC.png'
 
 interface propsI {
@@ -18,7 +19,7 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { loginUserDetail, setLoginUserDetail, setStoreAllUpcomingEvents, setToggleSidebar, toggleSidebar } = context;
+    const { loginUserDetail, setLoginUserDetail, setStoreAllUpcomingEvents, setToggleSidebar, toggleSidebar, logInPopupValue, setLoginPopupValue } = context;
     const [toggleUserPopup, setToggleUserPopup] = useState<boolean>(false);
     const refContainerPopup = useRef<HTMLDivElement>(null)
 
@@ -72,9 +73,18 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
         // getAllUpcomingEventsDataByApi()
         setStoreAllUpcomingEvents([])
         navigate('/')
-        // window.history.go(0);
     }
-    // data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" 
+
+    const handleTopBarUserPopup = (e:React.MouseEvent)=>{
+        let checkIfUserLoginOrNot = localStorage.getItem('userAccessToken');
+        if(checkIfUserLoginOrNot){
+            e.stopPropagation(); 
+            setToggleUserPopup(!toggleUserPopup)
+        }else{
+            setLoginPopupValue(true);
+        }
+    }
+
     return (
         <nav className="fixed top-0 z-50 w-full bg-white shadow">
             <div className="px-3 py-3 lg:px-5 lg:pl-3 relative">
@@ -92,7 +102,7 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
                     </div>
                     <div className="flex items-center">
                         <div className="flex items-center ms-3">
-                            <div className='p-[5px] rounded-full border border-solid border-[#ddd]' onClick={(e) => { e.stopPropagation(); setToggleUserPopup(!toggleUserPopup) }}>
+                            <div className='p-[5px] rounded-full border border-solid border-[#ddd]' onClick={handleTopBarUserPopup}>
                                 <button type="button" className="flex text-sm">
                                     {/* <span className="sr-only">Open user menu</span> */}
                                     <i className='pi pi-user text-[20px] text-[#666666]' />
@@ -132,6 +142,7 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
                     </div>
                 }
             </div>
+            {logInPopupValue && <LoginForm />}
         </nav>
     )
 }

@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react'
 import { ProductContextData } from '../context/ContextData';
 import { Dialog } from 'primereact/dialog';
 import { Rating, RatingChangeEvent } from 'primereact/rating';
-// import { Rating } from 'flowbite-react';
 
 const EventRatingPopup: React.FC = () => {
     const context = useContext(ProductContextData);

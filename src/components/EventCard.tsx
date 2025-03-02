@@ -1,22 +1,9 @@
 import React, { useContext, useRef, useState } from 'react'
 import { EventType } from '../interface/EventInterface';
 import { Button } from 'primereact/button';
-// import { LiaUserEditSolid } from "react-icons/lia";
-// import { Rating } from "primereact/rating";
-// import { Dialog } from 'primereact/dialog';
-// import { Dropdown } from 'primereact/dropdown';
-// import { InputText } from 'primereact/inputtext';
-// import { InputTextarea } from 'primereact/inputtextarea'
-// import { Calendar } from 'primereact/calendar';
-// import { FloatLabel } from 'primereact/floatlabel';
-// import { AiOutlineDelete } from "react-icons/ai";
 import axios from 'axios';
 import { Toast } from 'primereact/toast';
 import { ProductContextData } from '../context/ContextData';
-// import { ProductContextData } from '../context/ContextData';
-// import { useNavigate } from 'react-router-dom';
-// import { Nullable } from "primereact/ts-helpers";
-
 
 interface EventProps {
     eventData: EventType,
@@ -25,40 +12,16 @@ interface EventProps {
 }
 
 const EventCard: React.FC<EventProps> = (props) => {
-    // const [value, setValue] = useState<any>(null);
     const context = useContext(ProductContextData);
     if (!context) {
         throw new Error('it should not be null');
     }
     const { getAllToAttendEventsDataByApi } = context;
     const toast = useRef<Toast>(null)
-    // const navigate = useNavigate()
-
-
     const { eventData, eventDetails } = props;
     const [isLoadingForPostAttendEvent, setIsLoadingForPostAttendEvent] = useState<boolean>(false)
     const [isLoadingForWithdrawAttendEvent, setIsLoadingForWithdrawAttendEvent] = useState<boolean>(false)
-    // const [editEventBoolean, setEditEventBoolean] = useState(false);
-    // const [date, setDate] = useState<Nullable<Date>>(null);
-
-    // console.log(props, eventData)
-    // const [selectedCity, setSelectedCity] = useState();
-    // const cities = [
-    //     { name: 'New York', code: 'NY' },
-    //     { name: 'Rome', code: 'RM' },
-    //     { name: 'London', code: 'LDN' },
-    //     { name: 'Istanbul', code: 'IST' },
-    //     { name: 'Paris', code: 'PRS' }
-    // ];
-
-    // useEffect(() => {
-    //     getAllToAttendEventsDataByApi()
-    // }, [])
-
-    // const openDialogFun = () => {
-    //     setEditEventBoolean(true);
-    // }
-
+ 
     const getCorrectTime = (date: any) => {
         let hours = date.getHours();
         const minutes = date.getMinutes();
@@ -68,13 +31,11 @@ const EventCard: React.FC<EventProps> = (props) => {
         const minutesString = minutes < 10 ? `0${minutes}` : minutes;
         return `${hours}:${minutesString} ${ampm}`;
     }
-    // console.log(eventData)
+
     const modifiedEventDate = (date: any) => {
         let updatedDate = new Date(date);
         let modifiedTrimFormate = updatedDate.toString().split(' ').slice(0, 5);
-
         let modifiedFormate = `${modifiedTrimFormate[0]}, ${modifiedTrimFormate[2]} ${modifiedTrimFormate[1]} ${modifiedTrimFormate[3]}, ${getCorrectTime(updatedDate)}`;
-        // console.log(modifiedFormate, modifiedTrimFormate)
         return modifiedFormate;
     }
 
@@ -89,7 +50,7 @@ const EventCard: React.FC<EventProps> = (props) => {
             toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Added Event to attend !' });
             setIsLoadingForPostAttendEvent(false)
         }).catch(err => {
-            console.log(err)
+            console.log(err, 'error')
             setIsLoadingForPostAttendEvent(false)
         })
     }
@@ -117,7 +78,6 @@ const EventCard: React.FC<EventProps> = (props) => {
                     <h3 className='text-[16px] sm:text-[18px] font-bold lg:text-xl md:font-medium text-[#474747] capitalize w-full xl:w-1/2'>{eventData.eventName}</h3>
                     <div className='flex flex-col text-[12px] sm:text-[14px] lg:text-[15px] text-[#818181] w-full xl:w-1/2 xl:items-end'>
                         <span>{modifiedEventDate(eventData.toDateTime)}</span>
-                        {/* <span>{eventData.eventTime}</span> */}
                     </div>
                 </div>
                 <p className='mt-4 text-[13px] sm:text-[14px] lg:text-[15px] text-[#818181] textinThreeLineSix'>{eventData.description}</p>
