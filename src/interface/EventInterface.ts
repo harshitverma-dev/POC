@@ -17,10 +17,3 @@ export interface RightSideType{
     eventName? : string,
     description? : string
 }
-
-
-// for presenters
-// export interface PresenterType{
-//     presenterName: string,
-//     presenterDiscription : string
-// }

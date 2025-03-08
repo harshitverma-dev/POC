@@ -154,6 +154,7 @@ const ContextData: React.FC<props> = ({ children }) => {
         })
     }
     const getAllUpcomingEventsDataByApi = () => {
+        getAllToAttendEventsDataByApi()
         setAppLoader(true);
         axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=${limitForUpcomingEvents}&skip=${skipForUpcomingEvents}&industry=${filterFields.industry}&segment=${filterFields.segment}`, {
             headers: {

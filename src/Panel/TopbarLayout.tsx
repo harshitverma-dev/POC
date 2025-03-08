@@ -116,7 +116,7 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
                     (localStorage.getItem('userAccessToken') && toggleUserPopup) && <div ref={refContainerPopup} className="absolute z-50 right-[5px] w-[180px] my-3 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600">
                         <div className="px-4 py-3" role="none">
                             <p className="text-sm text-gray-900 dark:text-white flex items-center justify-start capitalize" role="none">
-                                <span className='truncate'>{loginUserDetail?.name}</span><Badge className='ml-2 text-[10px]' value={loginUserDetail?.role} />
+                                <span className='truncate'>{loginUserDetail?.name}</span><Badge className='ml-2 text-[10px] truncate' value={loginUserDetail?.role} />
                             </p>
                             <p className="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
                                 {loginUserDetail?.email}

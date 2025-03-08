@@ -22,159 +22,8 @@ const MyEvents: React.FC = () => {
         throw new Error('it should not be null');
     }
     const { activeEventSubTab, getAllPresentersDataByApi, loginUserDetail, storeAllPresenters, storeAllToAttendEvents, getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, limitForUpcomingEvents, skipForPastEvents, limitForPastEvents, storeLengthOfPastEvents, setLimitForPastEvent, setSkipForPastEvent, appLoader, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
-    // const EventData: EventType[] = [
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "aDiscussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 2.3
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "bDiscussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 4
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "cDiscussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 4
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "dDiscussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 4
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "eDiscussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing"
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "fDiscussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 4
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "gDiscussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 4
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "hDiscussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 4
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 4
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 3
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 1
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 3
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 3.4
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 5
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 2
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 2
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 4
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 5
-    //     },
-    //     {
-    //         eventName: "Event1",
-    //         eventDate: "03rd August - 2024",
-    //         eventTime: "6:00PM - 8:00PM",
-    //         eventInfo: "Discussion on Porters Five forces and how these forces shape a companies marketing strategies, with industry examples",
-    //         presenterInfo: "Abhinav is an MBA from IIM, brings with him a total experience of 8 years primarily in Marketing",
-    //         eventRating: 1
-    //     }
-    // ];
+
+    const CONTACT_EMAIL = 'tt@timetappers.com';
 
     useEffect(() => {
         getAllPresentersDataByApi();
@@ -274,8 +123,11 @@ const MyEvents: React.FC = () => {
                 }
                 {
                     !loginUserDetail && !localStorage.getItem('userAccessToken') && <div className='flex flex-col items-center bg-[#fff] rounded-[20px]'>
-                        <div>
-                            <Image src={LogInImg} className='w-[100%] h-[100%]' style={{ marginBottom: '-60px' }} loading='lazy' />
+                        <div className='flex justify-around items-center'>
+                            <h2 className='text-[30px] w-[55%] text-[#5e5e5e] pl-[50px]'>It's a member only platform, if you wish to associate please write to us at  <a href={`mailto:${CONTACT_EMAIL}`} className="text-[#06b6d4] hover:underline">
+                                {CONTACT_EMAIL}
+                            </a>, do not forget to attach your CV!</h2>
+                            <div className='loginImgContainer w-[45%]'><Image src={LogInImg} className='w-[100%]' style={{ marginBottom: '-60px' }} loading='lazy' /></div>
                         </div>
                         {/* <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login to the Application' onClick={() => { setLoginPopupValue(true) }} /> */}
                         <div className='flex items-center justify-center'>

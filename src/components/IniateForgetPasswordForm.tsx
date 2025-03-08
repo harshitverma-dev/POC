@@ -21,7 +21,7 @@ const InitateForgetPasswordForm: React.FC = () => {
     // log in user
     const initiateLoginPasswordFun = () => {
         // console.log('ssss')
-        if (!forgetPasswordForEmail.includes('@gmail.com')) {
+        if (!forgetPasswordForEmail.includes('@')) {
             setValidEmailError(true)
             return false;
         }
@@ -54,7 +54,7 @@ const InitateForgetPasswordForm: React.FC = () => {
                                 <InputText value={forgetPasswordForEmail} onChange={onChangeFun} id="userEmailForForget" name='userEmailForForget' placeholder="Enter the user name" className="mr-2 w-full" />
                             </div>
                             {
-                                vaildEmailError && <div className='text-red-500'>Please enter void email</div>
+                                vaildEmailError && <div className='text-red-500'>Invalid Email format</div>
                             }
                             <Button disabled={forgetPasswordForEmail? false : true} label='Submit' onClick={initiateLoginPasswordFun} className='mt-2' />
                         </div>

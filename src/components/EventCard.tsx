@@ -4,6 +4,9 @@ import { Button } from 'primereact/button';
 import axios from 'axios';
 import { Toast } from 'primereact/toast';
 import { ProductContextData } from '../context/ContextData';
+import { userPresentersI } from '../interface/Presenters';
+import { AiOutlineDelete } from 'react-icons/ai';
+import { LiaUserEditSolid } from 'react-icons/lia';
 
 interface EventProps {
     eventData: EventType,
@@ -16,12 +19,12 @@ const EventCard: React.FC<EventProps> = (props) => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { getAllToAttendEventsDataByApi } = context;
+    const { getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, storeAllPresenters, setPresentersDetailsPopupValue, setPresentersDetailsPopup, loginUserDetail, storeAllToAttendEvents } = context;
     const toast = useRef<Toast>(null)
     const { eventData, eventDetails } = props;
     const [isLoadingForPostAttendEvent, setIsLoadingForPostAttendEvent] = useState<boolean>(false)
     const [isLoadingForWithdrawAttendEvent, setIsLoadingForWithdrawAttendEvent] = useState<boolean>(false)
- 
+
     const getCorrectTime = (date: any) => {
         let hours = date.getHours();
         const minutes = date.getMinutes();
@@ -46,9 +49,13 @@ const EventCard: React.FC<EventProps> = (props) => {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
         }).then((response) => {
-            console.log(response)
             toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Added Event to attend !' });
-            setIsLoadingForPostAttendEvent(false)
+            console.log(response)
+            setIsLoadingForPostAttendEvent(false);
+            setTimeout(() => {
+                getAllUpcomingEventsDataByApi()
+            }, 1200)
+
         }).catch(err => {
             console.log(err, 'error')
             setIsLoadingForPostAttendEvent(false)
@@ -62,31 +69,52 @@ const EventCard: React.FC<EventProps> = (props) => {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
         }).then((response) => {
-            console.log(response)
             toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Event Withdrawal Done !' });
+            console.log(response)
             setIsLoadingForWithdrawAttendEvent(false)
-            getAllToAttendEventsDataByApi();
+            setTimeout(() => {
+                getAllToAttendEventsDataByApi();
+            }, 1200)
         }).catch(err => {
             console.log(err)
             setIsLoadingForWithdrawAttendEvent(false)
         })
     }
+
+    const handlePresenterDetailPopupForEvent = () => {
+        let getPresenterInfo = storeAllPresenters.find((item) => item._id === eventData.presenterId);
+        if (!getPresenterInfo) {
+            toast?.current?.show({
+                severity: 'error',
+                summary: 'Error',
+                detail: 'Presenter information not found !'
+            });
+            return;
+        }
+        setPresentersDetailsPopup(getPresenterInfo);
+        setPresentersDetailsPopupValue(true);
+    }
+
+    const isEventAlreadyAttended = () => {
+        return storeAllToAttendEvents?.some((item) => item._id === eventData._id) ?? false;
+    }
+
     return (
         <div className='flex flex-col justify-between h-full'>
             <div>
-                <div className='flex flex-col xl:flex-row justify-between xl:items-center'>
-                    <h3 className='text-[16px] sm:text-[18px] font-bold lg:text-xl md:font-medium text-[#474747] capitalize w-full xl:w-1/2'>{eventData.eventName}</h3>
-                    <div className='flex flex-col text-[12px] sm:text-[14px] lg:text-[15px] text-[#818181] w-full xl:w-1/2 xl:items-end'>
+                <div className='flex flex-col items-start'>
+                    <h3 className='text-[16px] sm:text-[18px] font-bold lg:text-xl md:font-medium text-[#474747] capitalize w-full'>{eventData.eventName}</h3>
+                    <div className='flex flex-col text-[12px] sm:text-[14px] lg:text-[15px] text-[#818181] w-full xl:items-end'>
                         <span>{modifiedEventDate(eventData.toDateTime)}</span>
                     </div>
                 </div>
                 <p className='mt-4 text-[13px] sm:text-[14px] lg:text-[15px] text-[#818181] textinThreeLineSix'>{eventData.description}</p>
-                <p className='my-2 md:my-3 text-[13px] sm:text-[14px] lg:text-[15px] text-[#818181]'><span className='font-bold'>Presenter -</span> {eventData.presenterId}</p>
+                <p className='my-2 md:my-3 text-[13px] sm:text-[14px] lg:text-[15px] text-[#818181]'><span className='font-bold text-[#0e7490] cursor-pointer' onClick={handlePresenterDetailPopupForEvent}>See Presenter's Detail</span></p>
             </div>
             <div>
                 {
                     (eventDetails == 'Upcoming Events' || eventDetails == '/') && <div className='eventBtnContainer flex justify-end items-center'>
-                        <Button className='text-[12px] sm:text-[13px] lg:text-[15px]' size='small' loading={isLoadingForPostAttendEvent ? true : false} onClick={postAttendEventByApi} label="Attend" severity="secondary" />
+                        <Button disabled={isEventAlreadyAttended()} className='text-[12px] sm:text-[13px] lg:text-[15px]' size='small' loading={isLoadingForPostAttendEvent ? true : false} onClick={postAttendEventByApi} label={isEventAlreadyAttended() ? "Already Attending" : "Attend"} severity="secondary" />
                     </div>
                 }
                 {
@@ -95,13 +123,16 @@ const EventCard: React.FC<EventProps> = (props) => {
                         <Button className='text-[12px] md:text-[15px]' size='small' loading={isLoadingForWithdrawAttendEvent ? true : false} label="Withdraw" severity="secondary" onClick={withdrawAttendEventByApi} />
                     </div> : eventDetails == 'To Present' ? <div className='flex justify-between items-center cursor-pointer text-[#474747]'>
                         <div className='text-[13px] md:text-[15px]'>Attendee - <span>{eventData.attendees}</span></div>
-                        <div className='flex text-[#474747]'> 
-                            {/* <LiaUserEditSolid size={23} onClick={openDialogFun} className='mr-2' /> 
-                            <AiOutlineDelete size={23} color='red' /> */}
-                            </div> </div> : eventDetails == 'Presented' && <div className='flex justify-between items-center cursor-pointer'>
-                            <div className='text-[#474747] text-[13px] md:text-[15px]'>Attendee - <span>{eventData.attendees}</span></div>
-                            {/* <Rating value={eventData.eventRating} cancel={false} /> */}
-                        </div>
+                        {
+                            loginUserDetail._id === eventData.presenterId && <div className='flex text-[#474747]'>
+                                <LiaUserEditSolid size={23} className='mr-2' />
+                                <AiOutlineDelete size={23} color='red' />
+                            </div>
+                        }
+                    </div> : eventDetails == 'Presented' && <div className='flex justify-between items-center cursor-pointer'>
+                        <div className='text-[#474747] text-[13px] md:text-[15px]'>Attendee - <span>{eventData.attendees}</span></div>
+                        {/* <Rating value={eventData.eventRating} cancel={false} /> */}
+                    </div>
                     //  onChange={(e: RatingChangeEvent) => setValue(e.value)} 
                 }
             </div>

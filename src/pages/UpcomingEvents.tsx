@@ -27,6 +27,8 @@ const UpcomingEvents: React.FC = () => {
     }
     const { getAllPresentersDataByApi, appLoader, storeAllPresenters, getAllUpcomingEventsDataByApi, loginUserDetail, storeAllUpcomingEvents, setLoginPopupValue, logInPopupValue, limitForUpcomingEvents, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
 
+    const CONTACT_EMAIL = 'tt@timetappers.com';
+
     useEffect(() => {
         getAllPresentersDataByApi();
         getAllUpcomingEventsDataByApi();
@@ -66,8 +68,11 @@ const UpcomingEvents: React.FC = () => {
                 }
                 {
                     !loginUserDetail && !localStorage.getItem('userAccessToken') && <div className='flex flex-col items-center bg-[#fff] rounded-[20px]'>
-                        <div>
-                            <Image src={LogInImg} className='w-[100%] h-[100%]' style={{ marginBottom: '-60px' }} loading='lazy' />
+                         <div className='flex flex-col lg:flex-row justify-around items-center'>
+                            <h2 className='text-[18px] px-7 pt-7 text-left sm:text-[24px] md:text-[24px] lg:text-[26px] xl:text-[30px] w-[100%] lg:w-[55%] text-[#5e5e5e] lg:pl-[50px]'>It's a member only platform, if you wish to associate please write to us at  <a href={`mailto:${CONTACT_EMAIL}`} className="text-[#06b6d4] hover:underline">
+                                {CONTACT_EMAIL}
+                            </a>, do not forget to attach your CV!</h2>
+                            <div className='loginImgContainer w-[100%] lg:w-[45%]'><Image src={LogInImg} className='w-[100%] inline-block mb-[-60px] sm:mb-0' loading='lazy' /></div>
                         </div>
                         <div className='flex items-center justify-center'>
                             <Button icon='pi pi-sign-in' className='mt-4 mb-6' label='Login' onClick={() => { setLoginPopupValue(true) }} />
