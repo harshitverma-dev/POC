@@ -1,5 +1,6 @@
 {
-  "name": "user-managment",
+  "name": "poc-frontend",
+  "author":"Harshit Verma",
   "private": true,
   "version": "0.0.0",
   "type": "module",
