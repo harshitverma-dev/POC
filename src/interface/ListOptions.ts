@@ -1,4 +1,4 @@
-import { techExpertiesListI, userRoleListI } from "./presenterInterface"
+import { userRoleListI } from "./presenterInterface"
 
 export const userRoleList: userRoleListI[] = [{
     label: 'Student',
@@ -18,13 +18,13 @@ export const userRoleList: userRoleListI[] = [{
 }
 ]
 
-export const techExpertiesList: techExpertiesListI[] = [
-    {
-        id: 'AI/ML',
-        label: 'AI/ML'
-    },
-    {
-        id: 'Big Data',
-        label: 'Big Data'
-    }
-]
+// export const techExpertiesList: techExpertiesListI[] = [
+//     {
+//         id: 'AI/ML',
+//         label: 'AI/ML'
+//     },
+//     {
+//         id: 'Big Data',
+//         label: 'Big Data'
+//     }
+// ]
