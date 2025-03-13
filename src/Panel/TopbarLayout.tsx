@@ -3,10 +3,14 @@ import { Link, useNavigate } from 'react-router-dom'
 // import { CiLight, CiDark } from "react-icons/ci";
 // import { ProductContextData } from '../context/ContextData';
 import { IoIosLogOut } from "react-icons/io";
+import { FiUserX } from "react-icons/fi";
 import { ProductContextData } from '../context/ContextData';
 import { AccessControl } from '../accessControl/AccessControl';
 import { Badge } from 'primereact/badge';
 import LoginForm from '../components/LoginForm';
+import axios from 'axios';
+import { Toast } from 'primereact/toast';
+// import { Tooltip } from 'primereact/tooltip';
 // import Logo from '../assets/POC.png'
 
 interface propsI {
@@ -22,6 +26,7 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
     const { loginUserDetail, setLoginUserDetail, setStoreAllUpcomingEvents, setToggleSidebar, toggleSidebar, logInPopupValue, setLoginPopupValue } = context;
     const [toggleUserPopup, setToggleUserPopup] = useState<boolean>(false);
     const refContainerPopup = useRef<HTMLDivElement>(null)
+    const toast = useRef<Toast>(null)
 
     // const topBarPophoverItems = [
     //     {
@@ -75,14 +80,28 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
         navigate('/')
     }
 
-    const handleTopBarUserPopup = (e:React.MouseEvent)=>{
+    const handleTopBarUserPopup = (e: React.MouseEvent) => {
         let checkIfUserLoginOrNot = localStorage.getItem('userAccessToken');
-        if(checkIfUserLoginOrNot){
-            e.stopPropagation(); 
+        if (checkIfUserLoginOrNot) {
+            e.stopPropagation();
             setToggleUserPopup(!toggleUserPopup)
-        }else{
+        } else {
             setLoginPopupValue(true);
         }
+    }
+    // need to correct end points
+    const deleteMyOwnProfile = () => {
+        axios.delete(`${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/profile?deletionId=${loginUserDetail._id}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
+            }
+        }).then((response) => {
+            console.log(response);
+            logoutUser();
+            toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Profile deleted !' });
+        }).catch(err => {
+            console.log(err)
+        })
     }
 
     return (
@@ -90,7 +109,7 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
             <div className="px-3 py-3 lg:px-5 lg:pl-3 relative">
                 <div className="flex items-center justify-between">
                     <div className="flex items-center justify-start rtl:justify-end">
-                        <button onClick={()=>setToggleSidebar(!toggleSidebar)} type="button" className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                        <button onClick={() => setToggleSidebar(!toggleSidebar)} type="button" className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
                             <span className="sr-only">Open sidebar</span>
                             <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
                                 <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
@@ -134,6 +153,12 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
                                     )
                                 })
                             }
+                            {
+                                loginUserDetail.role === 'PROFESSOR' && <li className="block cursor-pointer flex justify-start items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white hover:bg-[#ff00000a] text-[#ff0000]">
+                                    <FiUserX size={20} />
+                                    <div className='ml-2' onClick={deleteMyOwnProfile}>Delete My Profile</div>
+                                </li>
+                            }
                             <li className="block cursor-pointer flex justify-start items-center px-4 py-2 text-sm text-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white hover:bg-[#ff00000a] text-[#ff0000]">
                                 <IoIosLogOut size={20} />
                                 <div className='ml-2' onClick={logoutUser}>Logout</div>
@@ -143,6 +168,7 @@ const TopbarLayout: React.FC<propsI> = ({ userRole }) => {
                 }
             </div>
             {logInPopupValue && <LoginForm />}
+            <Toast ref={toast} />
         </nav>
     )
 }

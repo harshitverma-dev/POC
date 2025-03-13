@@ -14,6 +14,7 @@ import { Image } from 'primereact/image';
 import { Paginator } from 'primereact/paginator';
 import InitateForgetPasswordForm from '../components/IniateForgetPasswordForm';
 import PresenterDetailPopup from '../components/PresenterDetailPopup';
+import { ConfirmPopup } from 'primereact/confirmpopup';
 // import Spinner from '../components/Spinner';
 
 const MyEvents: React.FC = () => {
@@ -159,6 +160,7 @@ const MyEvents: React.FC = () => {
             {logInPopupValue && <LoginForm />}
             {initateForgetPasswordPopupValue && <InitateForgetPasswordForm />}
             <PresenterDetailPopup />
+            <ConfirmPopup/>
         </div>
     )
 }

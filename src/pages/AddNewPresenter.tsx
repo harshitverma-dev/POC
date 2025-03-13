@@ -3,12 +3,15 @@ import React, { useRef, useState } from 'react'
 import { Message } from 'primereact/message';
 import { InputTextarea } from 'primereact/inputtextarea';
 // import { Dropdown } from 'primereact/dropdown';
-import { techExpertiesList} from '../interface/ListOptions';
+// import { techExpertiesList} from '../interface/ListOptions';
 import { createPresenterDetailsI } from '../interface/presenterInterface';
-import { MultiSelect } from 'primereact/multiselect';
+// import { MultiSelect } from 'primereact/multiselect';
 import { Button } from 'primereact/button';
 import axios from 'axios';
 import { Toast } from 'primereact/toast';
+import { Chips } from 'primereact/chips';
+import { Dropdown } from 'primereact/dropdown';
+import { IndustryList, SegmentList } from '../interface/IndustryAndSegment';
 
 const AddNewPresenter: React.FC = () => {
     const [createPresenterDetails, setCreatePresenterDetails] = useState<createPresenterDetailsI>({
@@ -49,12 +52,12 @@ const AddNewPresenter: React.FC = () => {
     // npm run start:dev
     const SavePresenterProfile = () => {
         setisLoadingForCreatePresenter(true);
-        let correctFormatForTechExperties: string[] = [];
-        createPresenterDetails.presenterTechExperties.forEach((items) => {
-            correctFormatForTechExperties.push(items.id);
-        });
+        // let correctFormatForTechExperties: string[] = [];
+        // createPresenterDetails.presenterTechExperties.forEach((items) => {
+        //     correctFormatForTechExperties.push(items.id);
+        // });
 
-        if (!createPresenterDetails.presenterName || !createPresenterDetails.presenterEmail || !createPresenterDetails.presenterContactNo || !createPresenterDetails.presenterOrg || !createPresenterDetails.presenterIntroduction || correctFormatForTechExperties.length == 0) {
+        if (!createPresenterDetails.presenterName || !createPresenterDetails.presenterEmail || !createPresenterDetails.presenterContactNo || !createPresenterDetails.presenterOrg || !createPresenterDetails.presenterIntroduction ||   createPresenterDetails.presenterTechExperties.length == 0) {
             setCreatePresenterErrors({
                 presenterNameError: !createPresenterDetails.presenterName ? true : false,
                 presenterEmailError: !createPresenterDetails.presenterEmail ? true : false,
@@ -64,7 +67,7 @@ const AddNewPresenter: React.FC = () => {
                 // presenterIndustryError: !createPresenterDetails.presenterIndustry ? true : false,
                 // PresenterSegmentError: !createPresenterDetails.PresenterSegment ? true : false,
                 // presenterRoleError: !createPresenterDetails.presenterRole ? true : false,
-                presenterTechExpertiesError: correctFormatForTechExperties.length == 0 ? true : false
+                presenterTechExpertiesError:   createPresenterDetails.presenterTechExperties.length == 0 ? true : false
             })
             setisLoadingForCreatePresenter(false);
             return false;
@@ -80,7 +83,7 @@ const AddNewPresenter: React.FC = () => {
             industry: createPresenterDetails.presenterIndustry,
             segment : createPresenterDetails.presenterSegment,
             role: 'PROFESSOR',
-            techExpertise: correctFormatForTechExperties,
+            techExpertise:   createPresenterDetails.presenterTechExperties,
             metaData: {
                 professor_contact_no: createPresenterDetails.presenterContactNo,
             }
@@ -128,7 +131,7 @@ const AddNewPresenter: React.FC = () => {
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterContactNo" className="">Contact Number:</label>
-                    <InputText invalid={createPresenterErrors.presenterContactNoError && !createPresenterDetails.presenterContactNo} id="presenterContactNo" value={createPresenterDetails.presenterContactNo} name='presenterContactNo' onChange={onChangeFun} placeholder="Enter the Contact Number" className="mr-2 w-full" />
+                    <InputText maxLength={10} invalid={createPresenterErrors.presenterContactNoError && !createPresenterDetails.presenterContactNo} id="presenterContactNo" value={createPresenterDetails.presenterContactNo} name='presenterContactNo' onChange={onChangeFun} placeholder="Enter the Contact Number" className="mr-2 w-full" />
                     {(createPresenterErrors.presenterContactNoError && !createPresenterDetails.presenterContactNo) && <Message severity="error" className='p-1' text="Contact number is required" />}
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
@@ -149,17 +152,20 @@ const AddNewPresenter: React.FC = () => {
                 </div> */}
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterIndustry" className="">Industry:</label>
-                    <InputText id="presenterIndustry" value={createPresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} placeholder="Enter Industry" className="mr-2 w-full" />
+                    {/* <InputText id="presenterIndustry" value={createPresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} placeholder="Enter Industry" className="mr-2 w-full" /> */}
+                     <Dropdown value={createPresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} options={IndustryList} placeholder="Select Industry" filter className="w-full md:w-14rem" />
                     {/* {(createPresenterErrors.presenterOrgError && !createPresenterDetails.presenterOrg) && <Message severity="error" className='p-1' text="Org is required" />} */}
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterSegment" className="">Segment:</label>
-                    <InputText id="presenterSegment" value={createPresenterDetails.presenterSegment} name='presenterSegment' onChange={onChangeFun} placeholder="Enter Segment" className="mr-2 w-full" />
+                    {/* <InputText id="presenterSegment" value={createPresenterDetails.presenterSegment} name='presenterSegment' onChange={onChangeFun} placeholder="Enter Segment" className="mr-2 w-full" /> */}
+                    <Dropdown value={createPresenterDetails.presenterSegment} name='presenterSegment' onChange={onChangeFun} options={SegmentList} placeholder="Select Segment" filter className="w-full md:w-14rem" />
                     {/* {(createPresenterErrors.presenterOrgError && !createPresenterDetails.presenterOrg) && <Message severity="error" className='p-1' text="Org is required" />} */}
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterTechExperties" className="">Tech Experties:</label>
-                    <MultiSelect invalid={createPresenterErrors.presenterTechExpertiesError && createPresenterDetails.presenterTechExperties.length == 0} options={techExpertiesList} name='presenterTechExperties' value={createPresenterDetails.presenterTechExperties} onChange={onChangeFun} optionLabel="label" placeholder='Select Experties' className="w-full sm:w-20rem" display="chip" />
+                    {/* <MultiSelect invalid={createPresenterErrors.presenterTechExpertiesError && createPresenterDetails.presenterTechExperties.length == 0} options={techExpertiesList} name='presenterTechExperties' value={createPresenterDetails.presenterTechExperties} onChange={onChangeFun} optionLabel="label" placeholder='Select Experties' className="w-full sm:w-20rem" display="chip" /> */}
+                    <Chips className="w-full block" placeholder='Enter multiple tech experties by using comma (,)' value={createPresenterDetails?.presenterTechExperties} name='presenterTechExperties' invalid={createPresenterErrors.presenterTechExpertiesError && createPresenterDetails.presenterTechExperties.length == 0} onChange={onChangeFun} separator="," />
                     {(createPresenterErrors.presenterTechExpertiesError && createPresenterDetails.presenterTechExperties.length == 0) && <Message severity="error" className='p-1' text="Tech Expertie is required" />}
                 </div>
                 <Button label="Submit" loading={isLoadingForCreatePresenter ? true : false} onClick={SavePresenterProfile} />

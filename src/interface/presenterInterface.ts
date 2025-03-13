@@ -7,13 +7,13 @@ export interface createPresenterDetailsI {
     presenterIndustry?: string,
     presenterSegment?: string,
     presenterRole?: userRoleListI | string | any,
-    presenterTechExperties: techExpertiesListI[]
+    presenterTechExperties: []
 }
 
-export interface techExpertiesListI {
-    id: string,
-    label: string
-}
+// export interface techExpertiesListI {
+//     id: string,
+//     label: string
+// }
 
 export interface userRoleListI {
     label: string,

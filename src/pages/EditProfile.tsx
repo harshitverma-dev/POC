@@ -3,13 +3,16 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { Message } from 'primereact/message';
 import { InputTextarea } from 'primereact/inputtextarea';
 // import { Dropdown } from 'primereact/dropdown';
-import { techExpertiesList } from '../interface/ListOptions';
+// import { techExpertiesList } from '../interface/ListOptions';
 import { createPresenterDetailsI } from '../interface/presenterInterface';
-import { MultiSelect } from 'primereact/multiselect';
+// import { MultiSelect } from 'primereact/multiselect';
 import { Button } from 'primereact/button';
 import axios from 'axios';
 import { Toast } from 'primereact/toast';
 import { ProductContextData } from '../context/ContextData';
+import { Chips } from 'primereact/chips';
+import { Dropdown } from 'primereact/dropdown';
+import { IndustryList, SegmentList } from '../interface/IndustryAndSegment';
 
 const EditProfile: React.FC = () => {
     const context = useContext(ProductContextData);
@@ -61,26 +64,19 @@ const EditProfile: React.FC = () => {
                 presenterIndustry: loginUserDetail?.industry,
                 presenterSegment: loginUserDetail?.segment,
                 // presenterRole: 'PROFESSOR'
-                presenterTechExperties: loginUserDetail?.techExpertise.map((items: string) => {
-                    return (
-                        {
-                            id: items,
-                            label: items
-                        }
-                    )
-                })
+                presenterTechExperties: loginUserDetail?.techExpertise
             })
         }
     }, [loginUserDetail])
     // npm run start:dev
     const UpdatePresenterProfile = () => {
         setisLoadingForUpdatePresenter(true);
-        let correctFormatForTechExperties: string[] = [];
-        updatePresenterDetails.presenterTechExperties.forEach((items) => {
-            correctFormatForTechExperties.push(items.id);
-        });
+        // let correctFormatForTechExperties: string[] = [];
+        // updatePresenterDetails.presenterTechExperties.forEach((items) => {
+        //     correctFormatForTechExperties.push(items.id);
+        // });
 
-        if (!updatePresenterDetails.presenterName || !updatePresenterDetails.presenterEmail || !updatePresenterDetails.presenterContactNo || !updatePresenterDetails.presenterOrg || !updatePresenterDetails.presenterIntroduction || correctFormatForTechExperties.length == 0) {
+        if (!updatePresenterDetails.presenterName || !updatePresenterDetails.presenterEmail || !updatePresenterDetails.presenterContactNo || !updatePresenterDetails.presenterOrg || !updatePresenterDetails.presenterIntroduction || updatePresenterDetails.presenterTechExperties.length == 0) {
             setUpdatePresenterErrors({
                 presenterNameError: !updatePresenterDetails.presenterName ? true : false,
                 presenterEmailError: !updatePresenterDetails.presenterEmail ? true : false,
@@ -88,7 +84,7 @@ const EditProfile: React.FC = () => {
                 presenterOrgError: !updatePresenterDetails.presenterOrg ? true : false,
                 presenterIntroductionError: !updatePresenterDetails.presenterIntroduction ? true : false,
                 // presenterRoleError: !updatePresenterDetails.presenterRole ? true : false,
-                presenterTechExpertiesError: correctFormatForTechExperties.length == 0 ? true : false
+                presenterTechExpertiesError: updatePresenterDetails.presenterTechExperties.length == 0 ? true : false
             })
             setisLoadingForUpdatePresenter(false);
             return false;
@@ -105,7 +101,7 @@ const EditProfile: React.FC = () => {
             industry: updatePresenterDetails.presenterIndustry,
             segment: updatePresenterDetails.presenterSegment,
             role: 'PROFESSOR',
-            techExpertise: correctFormatForTechExperties,
+            techExpertise: updatePresenterDetails.presenterTechExperties,
             metaData: {
                 professor_contact_no: updatePresenterDetails.presenterContactNo
             }
@@ -178,17 +174,21 @@ const EditProfile: React.FC = () => {
                 </div> */}
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterIndustry" className="">Industry:</label>
-                    <InputText id="presenterIndustry" value={updatePresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} placeholder="Enter Industry" className="mr-2 w-full" />
-                    {(updatePresenterErrors.presenterOrgError && !updatePresenterDetails.presenterOrg) && <Message severity="error" className='p-1' text="Org is required" />}
+                     <Dropdown value={updatePresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} options={IndustryList} placeholder="Select Industry" filter className="w-full md:w-14rem" />
+                    {/* <InputText id="presenterIndustry" value={updatePresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} placeholder="Enter Industry" className="mr-2 w-full" /> */}
+                    {/* {(updatePresenterErrors.presenterOrgError && !updatePresenterDetails.presenterOrg) && <Message severity="error" className='p-1' text="Org is required" />} */}
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterSegment" className="">Segment:</label>
-                    <InputText id="presenterSegment" value={updatePresenterDetails.presenterSegment} name='presenterSegment' onChange={onChangeFun} placeholder="Enter Segment" className="mr-2 w-full" />
-                    {(updatePresenterErrors.presenterOrgError && !updatePresenterDetails.presenterOrg) && <Message severity="error" className='p-1' text="Org is required" />}
+                    <Dropdown value={updatePresenterDetails.presenterSegment} name='presenterSegment' onChange={onChangeFun} options={SegmentList} placeholder="Select Segment" filter className="w-full md:w-14rem" />
+                    {/* <InputText id="presenterSegment" value={updatePresenterDetails.presenterSegment} name='presenterSegment' onChange={onChangeFun} placeholder="Enter Segment" className="mr-2 w-full" /> */}
+                    {/* {(updatePresenterErrors.presenterOrgError && !updatePresenterDetails.presenterOrg) && <Message severity="error" className='p-1' text="Org is required" />} */}
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterTechExperties" className="">Tech Experties:</label>
-                    <MultiSelect invalid={updatePresenterErrors.presenterTechExpertiesError && updatePresenterDetails.presenterTechExperties.length == 0} options={techExpertiesList} name='presenterTechExperties' value={updatePresenterDetails.presenterTechExperties} onChange={onChangeFun} optionLabel="label" placeholder='Select Experties' className="w-full sm:w-20rem" display="chip" />
+                     <Chips invalid={updatePresenterErrors.presenterTechExpertiesError && updatePresenterDetails.presenterTechExperties.length == 0} className="w-full block" placeholder='Enter multiple tech experties by using comma (,)' value={updatePresenterDetails?.presenterTechExperties} name='presenterTechExperties' onChange={onChangeFun} separator="," />
+
+                    {/* <MultiSelect invalid={updatePresenterErrors.presenterTechExpertiesError && updatePresenterDetails.presenterTechExperties.length == 0} options={techExpertiesList} name='presenterTechExperties' value={updatePresenterDetails.presenterTechExperties} onChange={onChangeFun} optionLabel="label" placeholder='Select Experties' className="w-full sm:w-20rem" display="chip" /> */}
                     {(updatePresenterErrors.presenterTechExpertiesError && updatePresenterDetails.presenterTechExperties.length == 0) && <Message severity="error" className='p-1' text="Tech Expertie is required" />}
                 </div>
                 <Button label="Submit" loading={isLoadingForUpdatePresenter ? true : false} onClick={UpdatePresenterProfile} />

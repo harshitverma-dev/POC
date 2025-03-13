@@ -48,21 +48,14 @@ const EventsTab: React.FC = () => {
                     <li className={`border text-[#000] border-solid border-[#e6e6e6] rounded-[15px] px-4 py-2 mr-2 cursor-pointer ${activeMainTab == 'My Events' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={toggleMyEventsTabs}>
                         My Events
                     </li>
-                    {toggleEventTabs && <HiArrowLongRight className='mr-2' />}
+                    {toggleEventTabs &&  (loginUserDetail.role !== 'STUDENT' && loginUserDetail.role !== 'SUBADMIN') && <HiArrowLongRight className='mr-2' />}
                 </div>
-                
-                {
-                    toggleEventTabs && <ul className='flex justify-start items-center'>
-                        <li className={`border border-solid border-[#e6e6e6] rounded-[15px] px-3 py-1 mr-2 cursor-pointer ${activeEventSubTab == 'To Attend' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={toAttendedTab} >To Attend</li>
-                        {
-                            loginUserDetail.role !== 'STUDENT' && loginUserDetail.role !== 'SUBADMIN' && (
-                                <>
-                                    <li className={`border border-solid border-[#e6e6e6] rounded-[15px] px-3 py-1 mr-2 cursor-pointer ${activeEventSubTab == 'To Present' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={toPresentTab}>To Present</li>
-                                    <li className={`border border-solid border-[#e6e6e6] rounded-[15px] px-3 py-1 cursor-pointer ${activeEventSubTab == 'Presented' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={PresentedTab}>Presented</li>
-                                </>
-                            )
-                        }
 
+                {
+                    toggleEventTabs && (loginUserDetail.role !== 'STUDENT' && loginUserDetail.role !== 'SUBADMIN') && <ul className='flex justify-start items-center'>
+                        <li className={`border border-solid border-[#e6e6e6] rounded-[15px] px-3 py-1 mr-2 cursor-pointer ${activeEventSubTab == 'To Attend' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={toAttendedTab} >To Attend</li>
+                        <li className={`border border-solid border-[#e6e6e6] rounded-[15px] px-3 py-1 mr-2 cursor-pointer ${activeEventSubTab == 'To Present' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={toPresentTab}>To Present</li>
+                        <li className={`border border-solid border-[#e6e6e6] rounded-[15px] px-3 py-1 cursor-pointer ${activeEventSubTab == 'Presented' ? 'bg-[#e6e6e6]' : 'bg-[#fff]'}`} onClick={PresentedTab}>Presented</li>
                     </ul>
                 }
 
