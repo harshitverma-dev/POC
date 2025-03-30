@@ -18,7 +18,7 @@ const AddEvent: React.FC = () => {
         eventDescription: '',
         eventPlace: '',
         eventPrerequisite: '',
-        eventIndustry: '',
+        eventIndustry: 'IT',
         eventSegment: ''
     })
     // const []
@@ -119,7 +119,7 @@ const AddEvent: React.FC = () => {
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="eventSegment" className="">Event Segment:</label>
-                    <Dropdown value={createEventDetails.eventSegment} name='eventSegment' onChange={onChangeFun} options={SegmentList} placeholder="Select Segment" filter className="w-full md:w-14rem" />
+                    <Dropdown value={createEventDetails.eventSegment} name='eventSegment' onChange={onChangeFun} options={SegmentList[createEventDetails?.eventIndustry ?? '' ] || []} placeholder="Select Segment" filter className="w-full md:w-14rem" />
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="eventDateTime" className="">Event Date/Time:</label>

@@ -60,7 +60,12 @@ export interface createContextType {
     forgetPasswordForEmail: string
     setForgetPasswordForEmail: React.Dispatch<React.SetStateAction<string>>,
     setToggleSidebar: React.Dispatch<React.SetStateAction<boolean>>,
-    toggleSidebar: boolean
+    toggleSidebar: boolean,
+    eventsDetailsPopupValue: boolean,
+    setEventsDetailsPopupValue: React.Dispatch<React.SetStateAction<boolean>>,
+    eventsDetailsPopup: null | EventType,
+    setEventsDetailsPopup: React.Dispatch<React.SetStateAction<null | EventType>>,
+
     // storeAllUnratedEvents: EventType[] | [],
     // setStoreAllUnratedEvents: React.Dispatch<React.SetStateAction<EventType[] | []>>,
     // currentEventToRate : EventType | null,
@@ -116,6 +121,8 @@ const ContextData: React.FC<props> = ({ children }) => {
     })
     const [forgetPasswordForEmail, setForgetPasswordForEmail] = useState<string>('')
     const [toggleSidebar, setToggleSidebar] = useState<boolean>(false);
+    const [eventsDetailsPopupValue, setEventsDetailsPopupValue] = useState<boolean>(false);
+    const [eventsDetailsPopup, setEventsDetailsPopup] = useState<EventType | null>(null);
     // for event Rating
     // const [storeAllUnratedEvents, setStoreAllUnratedEvents] = useState<EventType[] | []>([])
     // const [currentEventToRate, setCurrentEventToRate] = useState<EventType | null>(null);
@@ -300,7 +307,7 @@ const ContextData: React.FC<props> = ({ children }) => {
 
 
     return (
-        <ProductContextData.Provider value={{ storeAllUpcomingEvents, setStoreAllUpcomingEvents, isFilterForm, setIsFilterForm, toggleEventTabs, setToggleEventTabs, activeMainTab, setActiveMainTab, activeEventSubTab, setEventSubTab, getAllPresentersDataByApi, storeAllPresenters, setStoreAllPresenters, presentersDetailsPopupValue, setPresentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopup, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, loginForm, setLoginForm, loginUserDetail, setLoginUserDetail, getAllPastEventsDataByApi, storeAllPastEvents, setStoreAllPastEvents, getAllSubAdminListDataByApi, storeAllSubAdminList, setStoreAllSubAdminList, getAllToAttendEventsDataByApi, storeAllToAttendEvents, setLimitForUpcomingEvent, setSkipForUpcomingEvent, limitForUpcomingEvents, skipForUpcomingEvents, getLengthOfAllUpcomingEventsByApi, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, getLengthOfAllPastEventsByApi, storeLengthOfPastEvents, skipForPastEvents, limitForPastEvents, setLimitForPastEvent, setSkipForPastEvent, filterFields, setFilterFields, applyFilterData, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue, forgetPasswordForEmail, setForgetPasswordForEmail, removeFilter, appLoader, toggleSidebar, setToggleSidebar }}>
+        <ProductContextData.Provider value={{ storeAllUpcomingEvents, setStoreAllUpcomingEvents, isFilterForm, setIsFilterForm, toggleEventTabs, setToggleEventTabs, activeMainTab, setActiveMainTab, activeEventSubTab, setEventSubTab, getAllPresentersDataByApi, storeAllPresenters, setStoreAllPresenters, presentersDetailsPopupValue, setPresentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopup, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, loginForm, setLoginForm, loginUserDetail, setLoginUserDetail, getAllPastEventsDataByApi, storeAllPastEvents, setStoreAllPastEvents, getAllSubAdminListDataByApi, storeAllSubAdminList, setStoreAllSubAdminList, getAllToAttendEventsDataByApi, storeAllToAttendEvents, setLimitForUpcomingEvent, setSkipForUpcomingEvent, limitForUpcomingEvents, skipForUpcomingEvents, getLengthOfAllUpcomingEventsByApi, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, getLengthOfAllPastEventsByApi, storeLengthOfPastEvents, skipForPastEvents, limitForPastEvents, setLimitForPastEvent, setSkipForPastEvent, filterFields, setFilterFields, applyFilterData, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue, forgetPasswordForEmail, setForgetPasswordForEmail, removeFilter, appLoader, toggleSidebar, setToggleSidebar, eventsDetailsPopupValue, setEventsDetailsPopupValue, eventsDetailsPopup, setEventsDetailsPopup }}>
             {children}
         </ProductContextData.Provider>
     )

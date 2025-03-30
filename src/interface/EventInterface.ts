@@ -8,7 +8,10 @@ export interface EventType {
     presenterId?: string,
     org?: string,
     attendees : number | string,
-    rating?: string | number
+    rating?: string | number,
+    industry?: string,  
+    segment?: string,
+    place?: string, 
 }
 
 export interface RightSideType{

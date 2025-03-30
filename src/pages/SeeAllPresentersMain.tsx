@@ -101,7 +101,7 @@ const SeeAllPresentersMain: React.FC = () => {
                 </p>
                 {
                     (presentersDetailsPopup?.techExpertise !== undefined && presentersDetailsPopup?.techExpertise.length > 0)  && <p className="m-0">
-                    <span className='font-bold'>Tech Experties:- </span>
+                    <span className='font-bold'>Skills:- </span>
                     {
                         presentersDetailsPopup?.techExpertise.map((items) => <Chip className='mr-2 text-[14px]' label={items}/>)
                     }

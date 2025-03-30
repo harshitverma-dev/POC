@@ -15,22 +15,18 @@ import AddStudent from "../pages/AddStudent";
 import ForgotPassword from "../pages/ForgotPassword";
 // import AddNewUser from "../pages/AddNewPresenter";
 // AccessControl
-interface propsI{
+interface propsI {
     userRole: string | any
 }
-const AppRoutes: React.FC<propsI> = ({userRole}) => {
+const AppRoutes: React.FC<propsI> = ({ userRole }) => {
     const publicPath = [
         {
             path: "/",
             element: <UpcomingEvents />
         },
         {
-            path: "/presenters-list",
-            element: <SeeAllPresentersMain />
-        },
-        {
             path: '/my-events',
-            element : <MyEevents/>
+            element: <MyEevents />
         },
         {
             path: "/upcoming-events",
@@ -60,25 +56,29 @@ const AppRoutes: React.FC<propsI> = ({userRole}) => {
         },
         {
             path: "/add-new-presenter",
-            element: <AddNewPresenter/>
+            element: <AddNewPresenter />
+        },
+        {
+            path: "/presenters-list",
+            element: <SeeAllPresentersMain />
         },
         {
             path: "/presenters-table",
-            element: <PresentersTableList/>
+            element: <PresentersTableList />
 
         },
         {
             path: "/add-sub-admin",
-            element: <AddSubAdmin/>
+            element: <AddSubAdmin />
         },
         {
             path: "/sub-admin-table",
-            element: <SubAdminTable/>
+            element: <SubAdminTable />
 
         },
         {
             path: "/add-student",
-            element: <AddStudent/>
+            element: <AddStudent />
 
         }
     ]
@@ -89,7 +89,7 @@ const AppRoutes: React.FC<propsI> = ({userRole}) => {
                     return <Route key={index} path={items.path} element={<ProtectedRoute path={items.path} userRole={userRole}> {items.element} </ProtectedRoute>} />
                 })
             }
-   {
+            {
                 publicPath?.map((items, index) => {
                     return <Route key={index} path={items.path} element={items.element} />
                 })

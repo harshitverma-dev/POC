@@ -14,6 +14,8 @@ import { InputTextarea } from 'primereact/inputtextarea';
 import { Calendar } from 'primereact/calendar';
 import { IndustryList, SegmentList } from '../interface/IndustryAndSegment';
 import { Nullable } from "primereact/ts-helpers";
+import EventDetailPopup from './EventDetailPopup';
+import modifiedEventDate from '../helpers/DateFormate';
 
 interface EventProps {
     eventData: EventType,
@@ -26,7 +28,7 @@ const EventCard: React.FC<EventProps> = (props) => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi,getLengthOfAllUpcomingEventsByApi, storeAllPresenters, setPresentersDetailsPopupValue, setPresentersDetailsPopup, loginUserDetail, storeAllToAttendEvents } = context;
+    const { getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, getLengthOfAllUpcomingEventsByApi, storeAllPresenters, setPresentersDetailsPopupValue, setPresentersDetailsPopup, loginUserDetail, storeAllToAttendEvents, setEventsDetailsPopup, setEventsDetailsPopupValue } = context;
     const toast = useRef<Toast>(null)
     const { eventData, eventDetails } = props;
     const [isLoadingForPostAttendEvent, setIsLoadingForPostAttendEvent] = useState<boolean>(false)
@@ -34,25 +36,10 @@ const EventCard: React.FC<EventProps> = (props) => {
     const [editEventBoolean, setEditEventBoolean] = useState<boolean>(false);
     const [storeEditEventsDetails, setStoreEditEventsDetails] = useState<any>(null)
     const [eventDate, setEventDate] = useState<Nullable<Date>>(null);
-  const [CreateEventErrors, setCreateEventErrors] = useState([])
+    const [CreateEventErrors, setCreateEventErrors] = useState([])
 
 
-    const getCorrectTime = (date: any) => {
-        let hours = date.getHours();
-        const minutes = date.getMinutes();
-        const ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12;
-        hours = hours ? hours : 12;
-        const minutesString = minutes < 10 ? `0${minutes}` : minutes;
-        return `${hours}:${minutesString} ${ampm}`;
-    }
 
-    const modifiedEventDate = (date: any) => {
-        let updatedDate = new Date(date);
-        let modifiedTrimFormate = updatedDate.toString().split(' ').slice(0, 5);
-        let modifiedFormate = `${modifiedTrimFormate[0]}, ${modifiedTrimFormate[2]} ${modifiedTrimFormate[1]} ${modifiedTrimFormate[3]}, ${getCorrectTime(updatedDate)}`;
-        return modifiedFormate;
-    }
 
     const postAttendEventByApi = () => {
         setIsLoadingForPostAttendEvent(true)
@@ -111,7 +98,6 @@ const EventCard: React.FC<EventProps> = (props) => {
         return storeAllToAttendEvents?.some((item) => item._id === eventData._id) ?? false;
     }
     const deleteEventByPresenter = (id: string) => {
-
         axios.delete(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/class/${id}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
@@ -179,14 +165,19 @@ const EventCard: React.FC<EventProps> = (props) => {
                 summary: 'Success',
                 detail: 'Event updated successfully!'
             });
-            setTimeout(()=>{
+            setTimeout(() => {
                 getAllUpcomingEventsDataByApi();
-            },1200)
+            }, 1200)
         }).catch(err => {
             console.log(err, 'err')
             setCreateEventErrors(err?.response?.data?.message ?? []);
 
         })
+    }
+
+    const showEventsFullInfo = () => {
+        setEventsDetailsPopup(eventData);
+        setEventsDetailsPopupValue(true);
     }
     return (
         <div className='flex flex-col justify-between h-full'>
@@ -209,7 +200,10 @@ const EventCard: React.FC<EventProps> = (props) => {
                 {
                     eventDetails == 'To Attend' ? <div className='flex flex-col md:flex-row items-start justify-between md:items-center text-[#474747]'>
                         <div className='text-[13px] md:text-[15px]'>Attendee - <span>{eventData.attendees}</span></div>
-                        <Button className='text-[12px] md:text-[15px]' size='small' loading={isLoadingForWithdrawAttendEvent ? true : false} label="Withdraw" severity="secondary" onClick={withdrawAttendEventByApi} />
+                        <div className='flex justify-end items-center gap-2'>
+                            <Button severity="secondary" icon="pi pi-info-circle" onClick={showEventsFullInfo}/>
+                            <Button className='text-[12px] md:text-[15px]' size='small' disabled={isLoadingForWithdrawAttendEvent} icon={isLoadingForWithdrawAttendEvent ? 'pi pi-spin pi-spinner' : 'pi pi-trash'} severity="danger" onClick={withdrawAttendEventByApi} />
+                        </div>
                     </div> : eventDetails == 'To Present' ? <div className='flex justify-between items-center cursor-pointer text-[#474747]'>
                         <div className='text-[13px] md:text-[15px]'>Attendee - <span>{eventData.attendees}</span></div>
                         {
@@ -229,52 +223,52 @@ const EventCard: React.FC<EventProps> = (props) => {
                 editEventBoolean &&
                 <Dialog header="Edit Event" dismissableMask className='w-full md:max-w-[65vw]' draggable={false} visible={editEventBoolean} onHide={() => { if (!editEventBoolean) return; setEditEventBoolean(false); }}>
                     {/* <p className="m-0"> */}
-                        {/* <div className="card m-2"> */}
-                            {/* <h3 className='text-[24px] md:text-[28px] lg:text-[32px] mb-7 text-center border-b border-[#ddd] border-solid'>Create New Event</h3> */}
-                            <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
-                                <label htmlFor="eventName" className="">Event Name:</label>
-                                <InputText id="eventName" value={storeEditEventsDetails.eventName} name='eventName' onChange={onChangeFunForEditEvent} placeholder="Enter the event name" className="mr-2 w-full" />
-                            </div>
-                            <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
-                                <label htmlFor="eventDescription" className="">Event Description:</label>
-                                <InputTextarea autoResize value={storeEditEventsDetails.description} name='eventDescription' onChange={onChangeFunForEditEvent} placeholder='Description..' rows={5} cols={30} className='mr-2 w-full' />
-                            </div>
-                            <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
-                                <label htmlFor="eventPlace" className="">Event Place:</label>
-                                <InputText id="eventPlace" value={storeEditEventsDetails.place} name='eventPlace' onChange={onChangeFunForEditEvent} placeholder="Enter the event place" className="mr-2 w-full" />
-                            </div>
-                            {/* <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                    {/* <div className="card m-2"> */}
+                    {/* <h3 className='text-[24px] md:text-[28px] lg:text-[32px] mb-7 text-center border-b border-[#ddd] border-solid'>Create New Event</h3> */}
+                    <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                        <label htmlFor="eventName" className="">Event Name:</label>
+                        <InputText id="eventName" value={storeEditEventsDetails.eventName} name='eventName' onChange={onChangeFunForEditEvent} placeholder="Enter the event name" className="mr-2 w-full" />
+                    </div>
+                    <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                        <label htmlFor="eventDescription" className="">Event Description:</label>
+                        <InputTextarea autoResize value={storeEditEventsDetails.description} name='eventDescription' onChange={onChangeFunForEditEvent} placeholder='Description..' rows={5} cols={30} className='mr-2 w-full' />
+                    </div>
+                    <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                        <label htmlFor="eventPlace" className="">Event Place:</label>
+                        <InputText id="eventPlace" value={storeEditEventsDetails.place} name='eventPlace' onChange={onChangeFunForEditEvent} placeholder="Enter the event place" className="mr-2 w-full" />
+                    </div>
+                    {/* <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                                 <label htmlFor="eventPrerequisite" className="">Event Pre-Requisite:</label>
                                 <InputText id="eventPrerequisite" value={storeEditEventsDetails.eventPrerequisite} name='eventPrerequisite' onChange={onChangeFunForEditEvent} placeholder="Enter Prerequisite for attendee" className="mr-2 w-full" />
                             </div> */}
-                            <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
-                                <label htmlFor="eventIndustry" className="">Event Industry:</label>
-                                {/* <InputText id="eventIndustry" value={createEventDetails.eventIndustry} name='eventIndustry' onChange={onChangeFun} placeholder="Enter Industry" className="mr-2 w-full" /> */}
-                                <Dropdown value={storeEditEventsDetails.industry} name='eventIndustry' onChange={onChangeFunForEditEvent} options={IndustryList} placeholder="Select Industry" filter className="w-full md:w-14rem" />
+                    <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                        <label htmlFor="eventIndustry" className="">Event Industry:</label>
+                        {/* <InputText id="eventIndustry" value={createEventDetails.eventIndustry} name='eventIndustry' onChange={onChangeFun} placeholder="Enter Industry" className="mr-2 w-full" /> */}
+                        <Dropdown value={storeEditEventsDetails.industry} name='eventIndustry' onChange={onChangeFunForEditEvent} options={IndustryList} placeholder="Select Industry" filter className="w-full md:w-14rem" />
+                    </div>
+                    <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                        <label htmlFor="eventSegment" className="">Event Segment:</label>
+                        <Dropdown value={storeEditEventsDetails.segment} name='eventSegment' onChange={onChangeFunForEditEvent} options={SegmentList[storeEditEventsDetails?.industry ?? ''] || []} placeholder="Select Segment" filter className="w-full md:w-14rem" />
+                    </div>
+                    <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
+                        <label htmlFor="eventDateTime" className="">Event Date/Time:</label>
+                        {/* <InputText id="eventDateTime" value={createEventDetails.eventPlace} name='eventDateTime' onChange={onChangeFun} placeholder="Enter " className="mr-2 w-full" /> */}
+                        <Calendar touchUI showTime numberOfMonths={1} hideOnDateTimeSelect readOnlyInput placeholder='Click to select date and time for event' hourFormat="12" value={eventDate} onChange={(e) => setEventDate(e.value)} className='w-full mb-3' />
+                    </div>
+                    {
+                        CreateEventErrors?.map((items) => {
+                            return <div className="mb-3 text-red-500">
+                                {items}
                             </div>
-                            <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
-                                <label htmlFor="eventSegment" className="">Event Segment:</label>
-                                <Dropdown value={storeEditEventsDetails.segment} name='eventSegment' onChange={onChangeFunForEditEvent} options={SegmentList} placeholder="Select Segment" filter className="w-full md:w-14rem" />
-                            </div>
-                            <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
-                                <label htmlFor="eventDateTime" className="">Event Date/Time:</label>
-                                {/* <InputText id="eventDateTime" value={createEventDetails.eventPlace} name='eventDateTime' onChange={onChangeFun} placeholder="Enter " className="mr-2 w-full" /> */}
-                                <Calendar touchUI showTime numberOfMonths={1} hideOnDateTimeSelect readOnlyInput placeholder='Click to select date and time for event' hourFormat="12" value={eventDate} onChange={(e) => setEventDate(e.value)} className='w-full mb-3' />
-                            </div>
-                            {
-                                CreateEventErrors?.map((items) => {
-                                    return <div className="mb-3 text-red-500">
-                                        {items}
-                                    </div>
-                                })
-                            }
-                            <Button label='Submit' onClick={updateCurrentEvent} />
-                        {/* </div> */}
+                        })
+                    }
+                    <Button label='Submit' onClick={updateCurrentEvent} />
+                    {/* </div> */}
                     {/* </p> */}
                 </Dialog>
             }
             <Toast ref={toast} />
-
+            <EventDetailPopup />
         </div>
     )
 }

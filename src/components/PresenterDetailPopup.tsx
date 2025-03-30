@@ -1,10 +1,7 @@
 import React, { useContext } from 'react'
 import { ProductContextData } from '../context/ContextData';
-// import { Avatar, Badge } from 'flowbite-react';
-import { Chip } from 'primereact/chip';
 import { Dialog } from 'primereact/dialog';
 import { Avatar } from 'primereact/avatar';
-// import { Badge } from 'primereact/badge';
 
 const PresenterDetailPopup: React.FC = () => {
     const context = useContext(ProductContextData);
@@ -19,9 +16,7 @@ const PresenterDetailPopup: React.FC = () => {
             <div className='flex flex-col'>
                 <span className='flex items-center'>
                     <span className="capitalize font-bold white-space-nowrap text-[18px] md:text-[22px] poppins-font">{presentersDetailsPopup?.name}</span>
-                    {/* <Badge className='ml-2' value={presentersDetailsPopup?.role} severity="contrast" /> */}
                 </span>
-                {/* <span className='text-[14px] md:text-[15px] font-medium text-[#ababab]'>{presentersDetailsPopup?.email}</span> */}
             </div>
         </div>
     );
@@ -33,9 +28,9 @@ const PresenterDetailPopup: React.FC = () => {
             </p>
             {
                 (presentersDetailsPopup?.techExpertise !== undefined && presentersDetailsPopup?.techExpertise.length > 0) && <p className="m-0 text-[14px] md:text-[15px]">
-                    <span className='font-bold poppins-font'>Tech Experties :- </span>
+                    <span className='font-bold poppins-font'>Skills :- </span>
                     {
-                        presentersDetailsPopup?.techExpertise.map((items) => <Chip className='mr-1 md:mr-2 text-[11px] md:text-[14px] text-[#474747] poppins-font' label={items} />)
+                        presentersDetailsPopup?.techExpertise.map((items, index, itemsList) => <span className='text-[11px] lg:text-[14px] text-[#818181] mr-[5px]'>{items}{itemsList.length -1 !== index &&<span>,</span>}</span>)
                     }
                 </p>
             }

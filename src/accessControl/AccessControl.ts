@@ -16,7 +16,7 @@ export interface AccessControlType {
 
 export const AccessControl = {
     'PROFESSOR': {
-        routes: ['/add-event', '/edit-profile', '/change-password'],
+        routes: ['/add-event', '/edit-profile', '/change-password', '/presenters-list'],
         navLinks: [
             {
                 navName: 'Add Event',
@@ -33,7 +33,7 @@ export const AccessControl = {
         ]
     },
     'ADMIN': {
-        routes: ['/add-new-presenter', '/presenters-table', '/upcoming-events', '/change-password', '/add-sub-admin', '/sub-admin-table'],
+        routes: ['/add-new-presenter', '/presenters-table', '/upcoming-events', '/change-password', '/add-sub-admin', '/sub-admin-table', '/presenters-list'],
         navLinks: [
             {
                 navName: 'Add Presenter',
@@ -62,7 +62,7 @@ export const AccessControl = {
         ]
     },
     'STUDENT': {
-        routes: ['/change-password'],
+        routes: ['/change-password', '/presenters-list'],
         navLinks: [
             {
                 navName: 'Change Password',
@@ -71,7 +71,7 @@ export const AccessControl = {
         ]
     },
     'SUBADMIN': {
-        routes: ['/add-student', '/change-password'],
+        routes: ['/add-student', '/change-password', '/presenters-list'],
         navLinks: [
             {
                 navName: 'Add Student',

@@ -66,15 +66,17 @@ const SideBarLayout: React.FC = () => {
                         {
                             sidebarItems?.map((items, index) => {
                                 return (
-                                    items.navLink ?
-                                        <li key={index} onClick={items.onClick} className='py-2 px-2 cursor-pointer hover:bg-[#f3f3f3] rounded-full'>
-                                            <Link to={`${items.navLink}`}>
-                                                {items.navIcon}
-                                            </Link>
-                                        </li> : (loginUserDetail && localStorage.getItem('userAccessToken')) ?
+                                    (loginUserDetail && localStorage.getItem('userAccessToken')) ?
+                                        items.navLink ?
+                                            <li key={index} onClick={items.onClick} className='py-2 px-2 cursor-pointer hover:bg-[#f3f3f3] rounded-full'>
+                                                <Link to={`${items.navLink}`}>
+                                                    {items.navIcon}
+                                                </Link>
+                                            </li> :
                                             <li key={index} onClick={items.onClick} className='py-2 px-2 cursor-pointer hover:bg-[#f3f3f3] rounded-full'>
                                                 {items.navIcon}
                                             </li> : null
+
                                 )
                             })
                         }
@@ -91,7 +93,7 @@ const SideBarLayout: React.FC = () => {
                         </div>
                         <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                             <label htmlFor="eventPrerequisite" className="">Segment:</label>
-                            <Dropdown filter value={filterFields.segment} name='segment' onChange={filterOnChange} options={SegmentList}
+                            <Dropdown filter value={filterFields.segment} name='segment' onChange={filterOnChange} options={SegmentList[filterFields?.industry ?? ''] || []}
                                 placeholder="Select Segement" className="w-full md:w-14rem mb-3" highlightOnSelect={false} />
                         </div>
 

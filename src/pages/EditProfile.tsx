@@ -174,19 +174,19 @@ const EditProfile: React.FC = () => {
                 </div> */}
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterIndustry" className="">Industry:</label>
-                     <Dropdown value={updatePresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} options={IndustryList} placeholder="Select Industry" filter className="w-full md:w-14rem" />
+                    <Dropdown value={updatePresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} options={IndustryList} placeholder="Select Industry" filter className="w-full md:w-14rem" />
                     {/* <InputText id="presenterIndustry" value={updatePresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} placeholder="Enter Industry" className="mr-2 w-full" /> */}
                     {/* {(updatePresenterErrors.presenterOrgError && !updatePresenterDetails.presenterOrg) && <Message severity="error" className='p-1' text="Org is required" />} */}
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterSegment" className="">Segment:</label>
-                    <Dropdown value={updatePresenterDetails.presenterSegment} name='presenterSegment' onChange={onChangeFun} options={SegmentList} placeholder="Select Segment" filter className="w-full md:w-14rem" />
+                    <Dropdown value={updatePresenterDetails.presenterSegment} name='presenterSegment' onChange={onChangeFun} options={SegmentList[updatePresenterDetails?.presenterIndustry ?? ''] || []} placeholder="Select Segment" filter className="w-full md:w-14rem" />
                     {/* <InputText id="presenterSegment" value={updatePresenterDetails.presenterSegment} name='presenterSegment' onChange={onChangeFun} placeholder="Enter Segment" className="mr-2 w-full" /> */}
                     {/* {(updatePresenterErrors.presenterOrgError && !updatePresenterDetails.presenterOrg) && <Message severity="error" className='p-1' text="Org is required" />} */}
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
-                    <label htmlFor="presenterTechExperties" className="">Tech Experties:</label>
-                     <Chips invalid={updatePresenterErrors.presenterTechExpertiesError && updatePresenterDetails.presenterTechExperties.length == 0} className="w-full block" placeholder='Enter multiple tech experties by using comma (,)' value={updatePresenterDetails?.presenterTechExperties} name='presenterTechExperties' onChange={onChangeFun} separator="," />
+                    <label htmlFor="presenterTechExperties" className="">Skills:</label>
+                    <Chips invalid={updatePresenterErrors.presenterTechExpertiesError && updatePresenterDetails.presenterTechExperties.length == 0} className="w-full block" placeholder='Enter multiple Skills by using comma (,)' value={updatePresenterDetails?.presenterTechExperties} name='presenterTechExperties' onChange={onChangeFun} separator="," />
 
                     {/* <MultiSelect invalid={updatePresenterErrors.presenterTechExpertiesError && updatePresenterDetails.presenterTechExperties.length == 0} options={techExpertiesList} name='presenterTechExperties' value={updatePresenterDetails.presenterTechExperties} onChange={onChangeFun} optionLabel="label" placeholder='Select Experties' className="w-full sm:w-20rem" display="chip" /> */}
                     {(updatePresenterErrors.presenterTechExpertiesError && updatePresenterDetails.presenterTechExperties.length == 0) && <Message severity="error" className='p-1' text="Tech Expertie is required" />}

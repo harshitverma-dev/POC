@@ -1,9 +1,10 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import './App.css'
 import Spinner from './components/Spinner';
 import { ProductContextData } from './context/ContextData';
 import MainLayout from './Panel/MainLayout';
 import { BrowserRouter as Router } from "react-router-dom";
+import AutoLogout from './components/AutoLogout';
 
 function App() {
   let getUserRole: string | null = null;
@@ -25,10 +26,14 @@ function App() {
 
 
   return (
-    <Router>
+   <React.Fragment>
+     <Router>
       <MainLayout userRole={getUserRole} />
       {appLoader && <Spinner />}
+      <AutoLogout/>
     </Router>
+   
+   </React.Fragment>
   )
 }
 

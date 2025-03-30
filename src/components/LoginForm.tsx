@@ -74,7 +74,7 @@ const LoginForm: React.FC = () => {
                                 )
                             }) : <div className='text-red-500'>{loginErrMsg}</div>
                         }
-                        <Button label='Login' loading={loginLoader ? true : false} onClick={loginUserApi} className='mt-2' />
+                        <Button label='Login' loading={loginLoader ? true : false}  onClick={loginUserApi} className='mt-2' />
                     </div>
                 </div>
             </p>
