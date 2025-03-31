@@ -1,5 +1,5 @@
 import { InputText } from 'primereact/inputtext';
-import React, { useRef, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { Message } from 'primereact/message';
 import { InputTextarea } from 'primereact/inputtextarea';
 // import { Dropdown } from 'primereact/dropdown';
@@ -12,8 +12,15 @@ import { Toast } from 'primereact/toast';
 import { Chips } from 'primereact/chips';
 import { Dropdown } from 'primereact/dropdown';
 import { IndustryList, SegmentList } from '../interface/IndustryAndSegment';
+import { ProductContextData } from '../context/ContextData';
+// import { IoCloudUploadOutline } from "react-icons/io5";
 
 const AddNewPresenter: React.FC = () => {
+    const context = useContext(ProductContextData);
+    if (!context) {
+        throw new Error('it should not be null');
+    }
+    const { handleChangeExcelFile, uploadBulkUserApi, isLoadingForExcel, inputfileValue } = context;
     const [createPresenterDetails, setCreatePresenterDetails] = useState<createPresenterDetailsI>({
         presenterName: '',
         presenterEmail: '',
@@ -57,7 +64,7 @@ const AddNewPresenter: React.FC = () => {
         //     correctFormatForTechExperties.push(items.id);
         // });
 
-        if (!createPresenterDetails.presenterName || !createPresenterDetails.presenterEmail || !createPresenterDetails.presenterContactNo || !createPresenterDetails.presenterOrg || !createPresenterDetails.presenterIntroduction ||   createPresenterDetails.presenterTechExperties.length == 0) {
+        if (!createPresenterDetails.presenterName || !createPresenterDetails.presenterEmail || !createPresenterDetails.presenterContactNo || !createPresenterDetails.presenterOrg || !createPresenterDetails.presenterIntroduction || createPresenterDetails.presenterTechExperties.length == 0) {
             setCreatePresenterErrors({
                 presenterNameError: !createPresenterDetails.presenterName ? true : false,
                 presenterEmailError: !createPresenterDetails.presenterEmail ? true : false,
@@ -67,7 +74,7 @@ const AddNewPresenter: React.FC = () => {
                 // presenterIndustryError: !createPresenterDetails.presenterIndustry ? true : false,
                 // PresenterSegmentError: !createPresenterDetails.PresenterSegment ? true : false,
                 // presenterRoleError: !createPresenterDetails.presenterRole ? true : false,
-                presenterTechExpertiesError:   createPresenterDetails.presenterTechExperties.length == 0 ? true : false
+                presenterTechExpertiesError: createPresenterDetails.presenterTechExperties.length == 0 ? true : false
             })
             setisLoadingForCreatePresenter(false);
             return false;
@@ -81,9 +88,9 @@ const AddNewPresenter: React.FC = () => {
             org: createPresenterDetails.presenterOrg,
             introduction: createPresenterDetails.presenterIntroduction,
             industry: createPresenterDetails.presenterIndustry,
-            segment : createPresenterDetails.presenterSegment,
+            segment: createPresenterDetails.presenterSegment,
             role: 'PROFESSOR',
-            techExpertise:   createPresenterDetails.presenterTechExperties,
+            techExpertise: createPresenterDetails.presenterTechExperties,
             metaData: {
                 professor_contact_no: createPresenterDetails.presenterContactNo,
             }
@@ -155,7 +162,7 @@ const AddNewPresenter: React.FC = () => {
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                     <label htmlFor="presenterIndustry" className="">Industry:</label>
                     {/* <InputText id="presenterIndustry" value={createPresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} placeholder="Enter Industry" className="mr-2 w-full" /> */}
-                     <Dropdown value={createPresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} options={IndustryList} placeholder="Select Industry" filter className="w-full md:w-14rem" />
+                    <Dropdown value={createPresenterDetails.presenterIndustry} name='presenterIndustry' onChange={onChangeFun} options={IndustryList} placeholder="Select Industry" filter className="w-full md:w-14rem" />
                     {/* {(createPresenterErrors.presenterOrgError && !createPresenterDetails.presenterOrg) && <Message severity="error" className='p-1' text="Org is required" />} */}
                 </div>
                 <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
@@ -170,9 +177,18 @@ const AddNewPresenter: React.FC = () => {
                     <Chips className="w-full block" placeholder='Enter multiple Skills by using comma (,)' value={createPresenterDetails?.presenterTechExperties} name='presenterTechExperties' invalid={createPresenterErrors.presenterTechExpertiesError && createPresenterDetails.presenterTechExperties.length == 0} onChange={onChangeFun} separator="," />
                     {(createPresenterErrors.presenterTechExpertiesError && createPresenterDetails.presenterTechExperties.length == 0) && <Message severity="error" className='p-1' text="Tech Expertie is required" />}
                 </div>
-                <Button label="Submit" loading={isLoadingForCreatePresenter ? true : false} onClick={SavePresenterProfile} />
+                <div className="flex flex-col justify-start items-start">
+                    <Button label="Submit" loading={isLoadingForCreatePresenter ? true : false} onClick={SavePresenterProfile} />
+                    <div className='mt-3 w-full border-top border-solid border-[#ddd]'>
+                        <div className='mt-3'>Or Upload By Excel :-</div>
+                        <div className='flex justify-center w-full items-center mt-2'>
+                            <input ref={inputfileValue} onChange={handleChangeExcelFile} type="file" accept=".xlsx,.xls" className="block w-full mb-0 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" />
+                            <Button className='ml-3' disabled={isLoadingForExcel} icon={isLoadingForExcel ? 'pi pi-spin pi-spinner' : "pi pi-cloud-upload"} onClick={() => { uploadBulkUserApi('PROFESSOR') }} />
+                        </div>
+                    </div>
+                </div>
             </div>
-            <Toast ref={toast}/>
+            <Toast ref={toast} />
         </div>
     )
 }

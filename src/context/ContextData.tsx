@@ -1,4 +1,4 @@
-import React, { createContext, ReactNode, useEffect, useState } from 'react'
+import React, { createContext, ReactNode, useEffect, useRef, useState } from 'react'
 import { userPresentersI } from '../interface/Presenters';
 import axios from 'axios';
 import { EventType } from '../interface/EventInterface';
@@ -65,7 +65,13 @@ export interface createContextType {
     setEventsDetailsPopupValue: React.Dispatch<React.SetStateAction<boolean>>,
     eventsDetailsPopup: null | EventType,
     setEventsDetailsPopup: React.Dispatch<React.SetStateAction<null | EventType>>,
-
+    excelBulkUserFile: File | null,
+    setExcelBulkUserFile: React.Dispatch<React.SetStateAction<File | null>>,
+    uploadBulkUserApi: (getRole: string) => void,
+    handleChangeExcelFile: (e: React.ChangeEvent<HTMLInputElement>) => void
+    setIsLoadingForExcel: React.Dispatch<React.SetStateAction<boolean>>,
+    isLoadingForExcel: boolean,
+    inputfileValue: React.MutableRefObject<HTMLInputElement | null>
     // storeAllUnratedEvents: EventType[] | [],
     // setStoreAllUnratedEvents: React.Dispatch<React.SetStateAction<EventType[] | []>>,
     // currentEventToRate : EventType | null,
@@ -123,6 +129,9 @@ const ContextData: React.FC<props> = ({ children }) => {
     const [toggleSidebar, setToggleSidebar] = useState<boolean>(false);
     const [eventsDetailsPopupValue, setEventsDetailsPopupValue] = useState<boolean>(false);
     const [eventsDetailsPopup, setEventsDetailsPopup] = useState<EventType | null>(null);
+    const [excelBulkUserFile, setExcelBulkUserFile] = useState<File | null>(null);
+    const [isLoadingForExcel, setIsLoadingForExcel] = useState<boolean>(false);
+    const inputfileValue = useRef(null) as React.MutableRefObject<HTMLInputElement | null>;
     // for event Rating
     // const [storeAllUnratedEvents, setStoreAllUnratedEvents] = useState<EventType[] | []>([])
     // const [currentEventToRate, setCurrentEventToRate] = useState<EventType | null>(null);
@@ -253,6 +262,47 @@ const ContextData: React.FC<props> = ({ children }) => {
         })
     }
 
+    const handleChangeExcelFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files && e.target.files.length > 0) {
+            setExcelBulkUserFile(e.target.files[0])
+        }
+    }
+
+    // upload bulk user by excel file 
+    const uploadBulkUserApi = (getRole: string) => {
+        setIsLoadingForExcel(true)
+        if (!excelBulkUserFile) {
+            alert('Please upload Excel file');
+            setExcelBulkUserFile(null);
+            setIsLoadingForExcel(false)
+            return false;
+        }
+
+        let formData = new FormData();
+        formData.append('file', excelBulkUserFile);
+        axios.post(`${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/bulk-users?role=${getRole}`, formData, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
+            },
+        }).then((response) => {
+            console.log(response);
+            setExcelBulkUserFile(null)
+            setIsLoadingForExcel(false)
+            if (inputfileValue.current) {
+                inputfileValue.current.value = "";
+            }
+            alert('Uploaded successfully!');
+        }).catch((err => {
+            console.log(err);
+            setExcelBulkUserFile(null);
+            setIsLoadingForExcel(false);
+            if (inputfileValue.current) {
+                inputfileValue.current.value = "";
+            }
+            alert('Something went wrong!');
+        }))
+    }
+
     useEffect(() => {
         let getLoginUserData = localStorage.getItem('userProfile')
         if (getLoginUserData) {
@@ -264,6 +314,7 @@ const ContextData: React.FC<props> = ({ children }) => {
             setLoginUserDetail(null);
         }
     }, [])
+    
 
 
     const onPageChangeForUpcoming = (event: any) => {
@@ -307,7 +358,7 @@ const ContextData: React.FC<props> = ({ children }) => {
 
 
     return (
-        <ProductContextData.Provider value={{ storeAllUpcomingEvents, setStoreAllUpcomingEvents, isFilterForm, setIsFilterForm, toggleEventTabs, setToggleEventTabs, activeMainTab, setActiveMainTab, activeEventSubTab, setEventSubTab, getAllPresentersDataByApi, storeAllPresenters, setStoreAllPresenters, presentersDetailsPopupValue, setPresentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopup, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, loginForm, setLoginForm, loginUserDetail, setLoginUserDetail, getAllPastEventsDataByApi, storeAllPastEvents, setStoreAllPastEvents, getAllSubAdminListDataByApi, storeAllSubAdminList, setStoreAllSubAdminList, getAllToAttendEventsDataByApi, storeAllToAttendEvents, setLimitForUpcomingEvent, setSkipForUpcomingEvent, limitForUpcomingEvents, skipForUpcomingEvents, getLengthOfAllUpcomingEventsByApi, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, getLengthOfAllPastEventsByApi, storeLengthOfPastEvents, skipForPastEvents, limitForPastEvents, setLimitForPastEvent, setSkipForPastEvent, filterFields, setFilterFields, applyFilterData, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue, forgetPasswordForEmail, setForgetPasswordForEmail, removeFilter, appLoader, toggleSidebar, setToggleSidebar, eventsDetailsPopupValue, setEventsDetailsPopupValue, eventsDetailsPopup, setEventsDetailsPopup }}>
+        <ProductContextData.Provider value={{ storeAllUpcomingEvents, setStoreAllUpcomingEvents, isFilterForm, setIsFilterForm, toggleEventTabs, setToggleEventTabs, activeMainTab, setActiveMainTab, activeEventSubTab, setEventSubTab, getAllPresentersDataByApi, storeAllPresenters, setStoreAllPresenters, presentersDetailsPopupValue, setPresentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopup, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, loginForm, setLoginForm, loginUserDetail, setLoginUserDetail, getAllPastEventsDataByApi, storeAllPastEvents, setStoreAllPastEvents, getAllSubAdminListDataByApi, storeAllSubAdminList, setStoreAllSubAdminList, getAllToAttendEventsDataByApi, storeAllToAttendEvents, setLimitForUpcomingEvent, setSkipForUpcomingEvent, limitForUpcomingEvents, skipForUpcomingEvents, getLengthOfAllUpcomingEventsByApi, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, getLengthOfAllPastEventsByApi, storeLengthOfPastEvents, skipForPastEvents, limitForPastEvents, setLimitForPastEvent, setSkipForPastEvent, filterFields, setFilterFields, applyFilterData, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue, forgetPasswordForEmail, setForgetPasswordForEmail, removeFilter, appLoader, toggleSidebar, setToggleSidebar, eventsDetailsPopupValue, setEventsDetailsPopupValue, eventsDetailsPopup, setEventsDetailsPopup, uploadBulkUserApi, excelBulkUserFile, setExcelBulkUserFile, handleChangeExcelFile, isLoadingForExcel, setIsLoadingForExcel, inputfileValue }}>
             {children}
         </ProductContextData.Provider>
     )

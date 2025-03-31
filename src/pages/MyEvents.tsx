@@ -24,7 +24,7 @@ const MyEvents: React.FC = () => {
     }
     const { activeEventSubTab, getAllPresentersDataByApi, loginUserDetail, storeAllPresenters, storeAllToAttendEvents, getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, limitForUpcomingEvents, skipForPastEvents, limitForPastEvents, storeLengthOfPastEvents, setLimitForPastEvent, setSkipForPastEvent, appLoader, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
 
-    const CONTACT_EMAIL = 'tt@timetappers.com';
+    const CONTACT_EMAIL = 'timetappers@osttalent.com';
 
     useEffect(() => {
         getAllPresentersDataByApi();

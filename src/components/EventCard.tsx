@@ -48,7 +48,7 @@ const EventCard: React.FC<EventProps> = (props) => {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
         }).then((response) => {
-            toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Added Event to attend !' });
+            toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Event successfully added to your "My Event" section !' });
             console.log(response)
             setIsLoadingForPostAttendEvent(false);
             setTimeout(() => {

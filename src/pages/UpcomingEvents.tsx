@@ -27,7 +27,7 @@ const UpcomingEvents: React.FC = () => {
     }
     const { getAllPresentersDataByApi, appLoader, storeAllPresenters, getAllUpcomingEventsDataByApi, loginUserDetail, storeAllUpcomingEvents, setLoginPopupValue, logInPopupValue, limitForUpcomingEvents, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
 
-    const CONTACT_EMAIL = 'tt@timetappers.com';
+    const CONTACT_EMAIL = 'timetappers@osttalent.com';
 
     useEffect(() => {
         getAllPresentersDataByApi();
@@ -44,7 +44,7 @@ const UpcomingEvents: React.FC = () => {
                 !loginUserDetail && !localStorage.getItem('userAccessToken') && <div className='w-[100%]'>
                     <div className='flex flex-col items-center bg-[#fff] rounded-[20px]'>
                         <div className='flex flex-col lg:flex-row justify-around items-center'>
-                            <h2 className='text-[18px] px-7 pt-7 text-left sm:text-[24px] md:text-[24px] lg:text-[26px] xl:text-[32px] w-[100%] lg:w-[62%] text-[#5e5e5e] lg:pl-[50px]'>It's a member only platform powered by OST Talent (OST Placements Search Private Limited)
+                            <h2 className='text-[18px] px-7 pt-7 text-left sm:text-[24px] md:text-[24px] lg:text-[26px] xl:text-[32px] w-[100%] lg:w-[62%] text-[#5e5e5e] lg:pl-[50px]'>It's a member only platform powered by OST Talent (OST Placements Search Private Limited) <br/>
                             If you wish to be a part of it, write to us at  <a href={`mailto:${CONTACT_EMAIL}`} className="text-[#06b6d4] hover:underline">
                                 {CONTACT_EMAIL}
                             </a></h2>

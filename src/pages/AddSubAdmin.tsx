@@ -11,7 +11,7 @@ const AddSubAdmin: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    // const { loginUserDetail } = context
+    const { inputfileValue,handleChangeExcelFile, isLoadingForExcel,uploadBulkUserApi } = context
     const [createSubAdminDetails, setCreateSubAdminDetails] = useState({
         subAdminName: '',
         subAdminContactNo: '',
@@ -82,7 +82,7 @@ const AddSubAdmin: React.FC = () => {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
-        }).then((response)=>{
+        }).then((response) => {
             console.log(response);
             toast?.current?.show({ severity: 'success', summary: 'Success', detail: 'Sub Admin created !' });
             setisLoadingForCreateSubAdmin(false);
@@ -96,7 +96,7 @@ const AddSubAdmin: React.FC = () => {
                 subAdminGraduationYear: '',
                 subAdminLocation: ''
             })
-        }).catch((err)=>{
+        }).catch((err) => {
             console.log(err)
             setisLoadingForCreateSubAdmin(false);
         })
@@ -147,7 +147,16 @@ const AddSubAdmin: React.FC = () => {
                     <InputText id="subAdminLocation" type='text' value={createSubAdminDetails.subAdminLocation} onChange={onChangeFun} name='subAdminLocation' placeholder="Enter the location" className="mr-2 w-full" />
                     {(createSubAdminErrors.subAdminLocationError && !createSubAdminDetails.subAdminLocation) && <Message severity="error" className='p-1' text="Location is required" />}
                 </div>
-                <Button loading={isLoadingForCreateSubAdmin} label="Submit" onClick={saveSubAdminProfile} />
+                <div className="flex flex-col justify-start items-start">
+                    <Button loading={isLoadingForCreateSubAdmin} label="Submit" onClick={saveSubAdminProfile} />
+                    <div className='mt-3 w-full border-top border-solid border-[#ddd]'>
+                        <div className='mt-3'>Or Upload By Excel :-</div>
+                        <div className='flex justify-center w-full items-center mt-2'>
+                            <input ref={inputfileValue} onChange={handleChangeExcelFile} type="file" accept=".xlsx,.xls" className="block w-full mb-0 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" />
+                            <Button className='ml-3' disabled={isLoadingForExcel} icon={isLoadingForExcel ? 'pi pi-spin pi-spinner' : "pi pi-cloud-upload"} onClick={() => { uploadBulkUserApi('SUBADMIN') }} />
+                        </div>
+                    </div>
+                </div>
             </div>
             <Toast ref={toast} />
         </div>
