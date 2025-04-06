@@ -156,7 +156,7 @@ const ContextData: React.FC<props> = ({ children }) => {
     // get Upcoming all Events ->>
     const getLengthOfAllUpcomingEventsByApi = () => {
         setAppLoader(true);
-        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=0&skip=0&industry=''&segment=''`, {
+        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=0&skip=0&industry=&segment=`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
@@ -194,7 +194,7 @@ const ContextData: React.FC<props> = ({ children }) => {
     // get Past all Events ->> 
     const getLengthOfAllPastEventsByApi = () => {
         setAppLoader(true);
-        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/past-events?limit=0&skip=0&industry=''&segment=''`, {
+        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/past-events?limit=0&skip=0&industry=&segment=`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
