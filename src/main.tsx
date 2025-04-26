@@ -7,10 +7,13 @@ import "primereact/resources/primereact.min.css";
 
 import 'primeicons/primeicons.css';
 import ContextData from './context/ContextData.tsx';
+import { BrowserRouter } from 'react-router-dom';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <ContextData>
-      <App />
-    </ContextData>
-  ,
+    <BrowserRouter>
+        <ContextData>
+            <App />
+        </ContextData>
+    </BrowserRouter>
+    ,
 )

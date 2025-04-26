@@ -3,7 +3,7 @@ import './App.css'
 import Spinner from './components/Spinner';
 import { ProductContextData } from './context/ContextData';
 import MainLayout from './Panel/MainLayout';
-import { BrowserRouter } from "react-router-dom";
+// import { BrowserRouter } from "react-router-dom";
 import AutoLogout from './components/AutoLogout';
 
 function App() {
@@ -27,11 +27,10 @@ function App() {
 
   return (
    <React.Fragment>
-     <BrowserRouter>
+   
       <MainLayout userRole={getUserRole} />
       {appLoader && <Spinner />}
       <AutoLogout/>
-    </BrowserRouter>
    
    </React.Fragment>
   )

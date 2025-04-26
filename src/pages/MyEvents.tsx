@@ -11,7 +11,7 @@ import LoginForm from '../components/LoginForm';
 import LogInImg from '../assets/loginImg.gif'
 import { Image } from 'primereact/image';
 // import PresentersListSkeleton from '../skeletons/PresentersListSkeleton';
-import { Paginator } from 'primereact/paginator';
+// import { Paginator } from 'primereact/paginator';
 import InitateForgetPasswordForm from '../components/IniateForgetPasswordForm';
 import PresenterDetailPopup from '../components/PresenterDetailPopup';
 import { ConfirmPopup } from 'primereact/confirmpopup';
@@ -22,7 +22,7 @@ const MyEvents: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { activeEventSubTab, getAllPresentersDataByApi, loginUserDetail, storeAllPresenters, storeAllToAttendEvents, getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, limitForUpcomingEvents, skipForPastEvents, limitForPastEvents, storeLengthOfPastEvents, setLimitForPastEvent, setSkipForPastEvent, appLoader, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
+    const { activeEventSubTab, getAllPresentersDataByApi, loginUserDetail, storeAllPresenters, storeAllToAttendEvents, getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents, appLoader, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
 
     const CONTACT_EMAIL = 'timetappers@osttalent.com';
 
@@ -35,14 +35,14 @@ const MyEvents: React.FC = () => {
     }, [])
 
 
-    const onPageChangeForPast = (event: any) => {
-        setLimitForPastEvent(event.rows);
-        setSkipForPastEvent(event.first)
-    }
+    // const onPageChangeForPast = (event: any) => {
+    //     setLimitForPastEvent(event.rows);
+    //     setSkipForPastEvent(event.first)
+    // }
 
-    useEffect(() => {
-        getAllPastEventsDataByApi();
-    }, [limitForPastEvents, skipForPastEvents])
+    // useEffect(() => {
+    //     getAllPastEventsDataByApi();
+    // }, [limitForPastEvents, skipForPastEvents])
     return (
         <div className='flex flex-col md:flex-row gap-3 w-full items-start'>
             {
@@ -127,8 +127,8 @@ const MyEvents: React.FC = () => {
                                 }
 
                             </div>
-                            {
-                                // <>
+                            {/* {
+                            
                                 (activeEventSubTab === 'To Present' && storeAllUpcomingEvents.length > 0) && <div className='rounded-[0_0_15px_15px]'>
                                     <Paginator className='rounded-[0_0_15px_15px]' first={skipForUpcomingEvents} rows={limitForUpcomingEvents} totalRecords={storeLengthOfUpcomingEvents} rowsPerPageOptions={[6, 12, 18]} onPageChange={onPageChangeForUpcoming} />
                                 </div>
@@ -137,7 +137,7 @@ const MyEvents: React.FC = () => {
                                 (activeEventSubTab === 'Presented' && storeAllPastEvents.length > 0) && <div className='rounded-[0_0_15px_15px]'>
                                     <Paginator className='rounded-[0_0_15px_15px]' first={skipForPastEvents} rows={limitForPastEvents} totalRecords={storeLengthOfPastEvents} rowsPerPageOptions={[6, 12, 18]} onPageChange={onPageChangeForPast} />
                                 </div>
-                            }
+                            } */}
 
                         </div>
 

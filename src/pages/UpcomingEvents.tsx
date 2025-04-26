@@ -13,7 +13,7 @@ import LogInImg from '../assets/loginImg.gif'
 import { Image } from 'primereact/image';
 // import { ProgressSpinner } from 'primereact/progressspinner';
 // import Spinner from '../components/Spinner';
-import { Paginator } from 'primereact/paginator';
+// import { Paginator } from 'primereact/paginator';
 import InitateForgetPasswordForm from '../components/IniateForgetPasswordForm';
 import PresenterDetailPopup from '../components/PresenterDetailPopup';
 // import Spinner from '../components/Spinner';
@@ -25,7 +25,7 @@ const UpcomingEvents: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { getAllPresentersDataByApi, appLoader, storeAllPresenters, getAllUpcomingEventsDataByApi, loginUserDetail, storeAllUpcomingEvents, setLoginPopupValue, logInPopupValue, limitForUpcomingEvents, skipForUpcomingEvents, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
+    const { getAllPresentersDataByApi, appLoader, storeAllPresenters, getAllUpcomingEventsDataByApi, loginUserDetail, storeAllUpcomingEvents, setLoginPopupValue, logInPopupValue, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
 
     const CONTACT_EMAIL = 'timetappers@osttalent.com';
 
@@ -77,11 +77,11 @@ const UpcomingEvents: React.FC = () => {
                                     }) : <div className='no-data text-[13px] md:text-[15px]'>No Events Avaliable.</div>
                                 }
                             </div>
-                            {
+                            {/* {
                                 storeAllUpcomingEvents.length > 0 && <div className='rounded-[0_0_15px_15px]'>
                                     <Paginator className='rounded-[0_0_15px_15px]' first={skipForUpcomingEvents} rows={limitForUpcomingEvents} totalRecords={storeLengthOfUpcomingEvents} rowsPerPageOptions={[6, 12, 18]} onPageChange={onPageChangeForUpcoming} />
                                 </div>
-                            }
+                            } */}
 
                         </div>
 

@@ -3,6 +3,7 @@ import { userPresentersI } from '../interface/Presenters';
 import axios from 'axios';
 import { EventType } from '../interface/EventInterface';
 import { IndustrySegemntType } from '../interface/IndustryAndSegment';
+import { useLocation } from 'react-router-dom';
 
 export interface createContextType {
     setStoreAllUpcomingEvents: React.Dispatch<React.SetStateAction<any>>
@@ -44,15 +45,15 @@ export interface createContextType {
     skipForUpcomingEvents: number,
     setLimitForUpcomingEvent: React.Dispatch<React.SetStateAction<number>>,
     setSkipForUpcomingEvent: React.Dispatch<React.SetStateAction<number>>,
-    getLengthOfAllUpcomingEventsByApi: () => void,
-    storeLengthOfUpcomingEvents: number,
-    onPageChangeForUpcoming: (e: any) => void,
+    // getLengthOfAllUpcomingEventsByApi: () => void,
+    // storeLengthOfUpcomingEvents: number,
+    // onPageChangeForUpcoming: (e: any) => void,
     limitForPastEvents: number,
     skipForPastEvents: number,
     setLimitForPastEvent: React.Dispatch<React.SetStateAction<number>>,
     setSkipForPastEvent: React.Dispatch<React.SetStateAction<number>>,
-    getLengthOfAllPastEventsByApi: () => void,
-    storeLengthOfPastEvents: number,
+    // getLengthOfAllPastEventsByApi: () => void,
+    // storeLengthOfPastEvents: number,
     filterFields: IndustrySegemntType,
     setFilterFields: React.Dispatch<React.SetStateAction<IndustrySegemntType>>,
     applyFilterData: () => void,
@@ -117,10 +118,10 @@ const ContextData: React.FC<props> = ({ children }) => {
     const [storeAllToAttendEvents, setStoreAllToAttendEvents] = useState<EventType[] | []>([])
     const [limitForUpcomingEvents, setLimitForUpcomingEvent] = useState<number>(6);
     const [skipForUpcomingEvents, setSkipForUpcomingEvent] = useState<number>(0)
-    const [storeLengthOfUpcomingEvents, setStoreLengthOfUpcomingEvent] = useState<number>(0)
+    // const [storeLengthOfUpcomingEvents, setStoreLengthOfUpcomingEvent] = useState<number>(0)
     const [limitForPastEvents, setLimitForPastEvent] = useState<number>(6);
     const [skipForPastEvents, setSkipForPastEvent] = useState<number>(0)
-    const [storeLengthOfPastEvents, setStoreLengthOfPastEvent] = useState<number>(0)
+    // const [storeLengthOfPastEvents, setStoreLengthOfPastEvent] = useState<number>(0)
     const [filterFields, setFilterFields] = useState<IndustrySegemntType>({
         industry: '',
         segment: ''
@@ -132,6 +133,7 @@ const ContextData: React.FC<props> = ({ children }) => {
     const [excelBulkUserFile, setExcelBulkUserFile] = useState<File | null>(null);
     const [isLoadingForExcel, setIsLoadingForExcel] = useState<boolean>(false);
     const inputfileValue = useRef(null) as React.MutableRefObject<HTMLInputElement | null>;
+    const location = useLocation();
     // for event Rating
     // const [storeAllUnratedEvents, setStoreAllUnratedEvents] = useState<EventType[] | []>([])
     // const [currentEventToRate, setCurrentEventToRate] = useState<EventType | null>(null);
@@ -143,7 +145,7 @@ const ContextData: React.FC<props> = ({ children }) => {
     // get All Presenters ->>
     const getAllPresentersDataByApi = () => {
         setAppLoader(true);
-        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/presentrs?limit=0&skip=0`).then((response) => {
+        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/presentrs?limit=0&skip=0&industry=${filterFields.industry}&segment=${filterFields.segment}`).then((response) => {
             // console.log(response);
             setAppLoader(false);
             setStoreAllPresenters(response.data.presenters);
@@ -154,25 +156,25 @@ const ContextData: React.FC<props> = ({ children }) => {
     }
 
     // get Upcoming all Events ->>
-    const getLengthOfAllUpcomingEventsByApi = () => {
-        setAppLoader(true);
-        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=0&skip=0&industry=&segment=`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
-            },
-        }).then((response) => {
-            console.log('pk')
-            setStoreLengthOfUpcomingEvent(response.data.events.length);
-            setAppLoader(false)
-        }).catch((err) => {
-            console.log(err, 'err');
-            setAppLoader(false)
-        })
-    }
+    // const getLengthOfAllUpcomingEventsByApi = () => {
+    //     setAppLoader(true);
+    //     axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=0&skip=0&industry=&segment=`, {
+    //         headers: {
+    //             Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
+    //         },
+    //     }).then((response) => {
+    //         console.log('pk')
+    //         setStoreLengthOfUpcomingEvent(response.data.events.length);
+    //         setAppLoader(false)
+    //     }).catch((err) => {
+    //         console.log(err, 'err');
+    //         setAppLoader(false)
+    //     })
+    // }
     const getAllUpcomingEventsDataByApi = () => {
         getAllToAttendEventsDataByApi()
         setAppLoader(true);
-        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=${limitForUpcomingEvents}&skip=${skipForUpcomingEvents}&industry=${filterFields.industry}&segment=${filterFields.segment}`, {
+        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=0&skip=0&industry=${filterFields.industry}&segment=${filterFields.segment}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
@@ -192,24 +194,24 @@ const ContextData: React.FC<props> = ({ children }) => {
 
 
     // get Past all Events ->> 
-    const getLengthOfAllPastEventsByApi = () => {
-        setAppLoader(true);
-        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/past-events?limit=0&skip=0&industry=&segment=`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
-            },
-        }).then((response) => {
-            setStoreLengthOfPastEvent(response.data.length);
-            setAppLoader(false)
-            console.log(response, 'kp')
-        }).catch((err) => {
-            console.log(err, 'err')
-            setAppLoader(false)
-        })
-    }
+    // const getLengthOfAllPastEventsByApi = () => {
+    //     setAppLoader(true);
+    //     axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/past-events?limit=0&skip=0&industry=&segment=`, {
+    //         headers: {
+    //             Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
+    //         },
+    //     }).then((response) => {
+    //         setStoreLengthOfPastEvent(response.data.length);
+    //         setAppLoader(false)
+    //         console.log(response, 'kp')
+    //     }).catch((err) => {
+    //         console.log(err, 'err')
+    //         setAppLoader(false)
+    //     })
+    // }
     const getAllPastEventsDataByApi = () => {
         setAppLoader(true)
-        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/past-events?limit=${limitForPastEvents}&skip=${skipForPastEvents}&industry=${filterFields.industry}&segment=${filterFields.segment}`, {
+        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/past-events?limit=0&skip=0&industry=${filterFields.industry}&segment=${filterFields.segment}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
@@ -307,50 +309,64 @@ const ContextData: React.FC<props> = ({ children }) => {
         let getLoginUserData = localStorage.getItem('userProfile')
         if (getLoginUserData) {
             let userProfileData = JSON.parse(getLoginUserData);
-            getLengthOfAllUpcomingEventsByApi();
-            getLengthOfAllPastEventsByApi();
+            // getLengthOfAllUpcomingEventsByApi();
+            // getLengthOfAllPastEventsByApi();
             setLoginUserDetail(userProfileData);
         } else {
             setLoginUserDetail(null);
         }
     }, [])
-    
 
 
-    const onPageChangeForUpcoming = (event: any) => {
-        setLimitForUpcomingEvent(event.rows);
-        setSkipForUpcomingEvent(event.first)
+
+    // const onPageChangeForUpcoming = (event: any) => {
+    //     setLimitForUpcomingEvent(event.rows);
+    //     setSkipForUpcomingEvent(event.first)
+    // }
+
+    // useEffect(() => {
+    //     getAllUpcomingEventsDataByApi();
+    // }, [limitForUpcomingEvents, skipForUpcomingEvents])
+
+    const fetchFilterChangesApi = async () => {
+        if (location.pathname === '/presenters-list') {
+            await getAllPresentersDataByApi();
+        } else {
+            await Promise.all([
+                getAllUpcomingEventsDataByApi(),
+                getAllPastEventsDataByApi()
+            ]);
+        }
     }
-
-    useEffect(() => {
-        getAllUpcomingEventsDataByApi();
-    }, [limitForUpcomingEvents, skipForUpcomingEvents])
-
 
 
     const applyFilterData = () => {
-        getLengthOfAllUpcomingEventsByApi();
-        getAllUpcomingEventsDataByApi();
-        getLengthOfAllPastEventsByApi();
-        getAllPastEventsDataByApi();
+        fetchFilterChangesApi();
         setIsFilterForm(false)
     }
 
-    // const initateForgetPasword = () =>{
-    //     console.log()
-    // }
+    useEffect(() => {
+        if (filterFields.industry === '' && filterFields.segment === '') {
+            fetchFilterChangesApi();
+            getAllUpcomingEventsDataByApi(),
+            getAllPastEventsDataByApi()
+        }
+    }, [filterFields])
 
     const removeFilter = () => {
         setFilterFields({
             industry: '',
             segment: ''
         })
-        getLengthOfAllUpcomingEventsByApi();
-        getAllUpcomingEventsDataByApi();
-        getLengthOfAllPastEventsByApi();
-        getAllPastEventsDataByApi();
         setIsFilterForm(false)
     }
+
+
+    useEffect(() => {
+        if (location.pathname !== '/' && location.pathname !== '/my-events') {
+            removeFilter();
+        }
+    }, [location.pathname])
 
 
 
@@ -358,7 +374,7 @@ const ContextData: React.FC<props> = ({ children }) => {
 
 
     return (
-        <ProductContextData.Provider value={{ storeAllUpcomingEvents, setStoreAllUpcomingEvents, isFilterForm, setIsFilterForm, toggleEventTabs, setToggleEventTabs, activeMainTab, setActiveMainTab, activeEventSubTab, setEventSubTab, getAllPresentersDataByApi, storeAllPresenters, setStoreAllPresenters, presentersDetailsPopupValue, setPresentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopup, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, loginForm, setLoginForm, loginUserDetail, setLoginUserDetail, getAllPastEventsDataByApi, storeAllPastEvents, setStoreAllPastEvents, getAllSubAdminListDataByApi, storeAllSubAdminList, setStoreAllSubAdminList, getAllToAttendEventsDataByApi, storeAllToAttendEvents, setLimitForUpcomingEvent, setSkipForUpcomingEvent, limitForUpcomingEvents, skipForUpcomingEvents, getLengthOfAllUpcomingEventsByApi, storeLengthOfUpcomingEvents, onPageChangeForUpcoming, getLengthOfAllPastEventsByApi, storeLengthOfPastEvents, skipForPastEvents, limitForPastEvents, setLimitForPastEvent, setSkipForPastEvent, filterFields, setFilterFields, applyFilterData, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue, forgetPasswordForEmail, setForgetPasswordForEmail, removeFilter, appLoader, toggleSidebar, setToggleSidebar, eventsDetailsPopupValue, setEventsDetailsPopupValue, eventsDetailsPopup, setEventsDetailsPopup, uploadBulkUserApi, excelBulkUserFile, setExcelBulkUserFile, handleChangeExcelFile, isLoadingForExcel, setIsLoadingForExcel, inputfileValue }}>
+        <ProductContextData.Provider value={{ storeAllUpcomingEvents, setStoreAllUpcomingEvents, isFilterForm, setIsFilterForm, toggleEventTabs, setToggleEventTabs, activeMainTab, setActiveMainTab, activeEventSubTab, setEventSubTab, getAllPresentersDataByApi, storeAllPresenters, setStoreAllPresenters, presentersDetailsPopupValue, setPresentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopup, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, loginForm, setLoginForm, loginUserDetail, setLoginUserDetail, getAllPastEventsDataByApi, storeAllPastEvents, setStoreAllPastEvents, getAllSubAdminListDataByApi, storeAllSubAdminList, setStoreAllSubAdminList, getAllToAttendEventsDataByApi, storeAllToAttendEvents, setLimitForUpcomingEvent, setSkipForUpcomingEvent, limitForUpcomingEvents, skipForUpcomingEvents, skipForPastEvents, limitForPastEvents, setLimitForPastEvent, setSkipForPastEvent, filterFields, setFilterFields, applyFilterData, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue, forgetPasswordForEmail, setForgetPasswordForEmail, removeFilter, appLoader, toggleSidebar, setToggleSidebar, eventsDetailsPopupValue, setEventsDetailsPopupValue, eventsDetailsPopup, setEventsDetailsPopup, uploadBulkUserApi, excelBulkUserFile, setExcelBulkUserFile, handleChangeExcelFile, isLoadingForExcel, setIsLoadingForExcel, inputfileValue }}>
             {children}
         </ProductContextData.Provider>
     )

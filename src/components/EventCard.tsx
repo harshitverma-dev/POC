@@ -28,7 +28,7 @@ const EventCard: React.FC<EventProps> = (props) => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, getLengthOfAllUpcomingEventsByApi, storeAllPresenters, setPresentersDetailsPopupValue, setPresentersDetailsPopup, loginUserDetail, storeAllToAttendEvents, setEventsDetailsPopup, setEventsDetailsPopupValue } = context;
+    const { getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, storeAllPresenters, setPresentersDetailsPopupValue, setPresentersDetailsPopup, loginUserDetail, storeAllToAttendEvents, setEventsDetailsPopup, setEventsDetailsPopupValue } = context;
     const toast = useRef<Toast>(null)
     const { eventData, eventDetails } = props;
     const [isLoadingForPostAttendEvent, setIsLoadingForPostAttendEvent] = useState<boolean>(false)
@@ -110,7 +110,7 @@ const EventCard: React.FC<EventProps> = (props) => {
                     detail: 'Event deleted successfully!'
                 });
                 setTimeout(() => {
-                    getLengthOfAllUpcomingEventsByApi();
+                    // getLengthOfAllUpcomingEventsByApi();
                     getAllUpcomingEventsDataByApi();
                 }, 1200)
 
