@@ -22,7 +22,7 @@ const MyEvents: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { activeEventSubTab, getAllPresentersDataByApi, loginUserDetail, storeAllPresenters, storeAllToAttendEvents, getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, storeAllUpcomingEvents, getAllPastEventsDataByApi, storeAllPastEvents, appLoader, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
+    const { activeEventSubTab, getAllPresentersDataByApi, loginUserDetail, storeAllPresenters, storeAllToAttendEvents, getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, getAllEventsDataByApiForPresenter, storeAllEventsCreatedByPresenter, getAllPastEventsDataByApi, storeAllPastEvents, appLoader, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
 
     const CONTACT_EMAIL = 'timetappers@osttalent.com';
 
@@ -30,7 +30,9 @@ const MyEvents: React.FC = () => {
         getAllPresentersDataByApi();
         getAllUpcomingEventsDataByApi();
         getAllPastEventsDataByApi();
-        getAllToAttendEventsDataByApi()
+        getAllToAttendEventsDataByApi();
+        getAllEventsDataByApiForPresenter()
+
         // console.log(storeAllPresenters)
     }, [])
 
@@ -92,7 +94,7 @@ const MyEvents: React.FC = () => {
                                         : activeEventSubTab === 'To Present' ?
                                             appLoader ?
                                                 <div>Data is beening loaded ...</div> :
-                                                (storeAllUpcomingEvents && storeAllUpcomingEvents.length > 0) ? storeAllUpcomingEvents?.map((items, index) => {
+                                                (storeAllEventsCreatedByPresenter && storeAllEventsCreatedByPresenter.length > 0) ? storeAllEventsCreatedByPresenter?.map((items, index) => {
                                                     return (
                                                         <div
                                                             key={index}

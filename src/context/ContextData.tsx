@@ -72,7 +72,10 @@ export interface createContextType {
     handleChangeExcelFile: (e: React.ChangeEvent<HTMLInputElement>) => void
     setIsLoadingForExcel: React.Dispatch<React.SetStateAction<boolean>>,
     isLoadingForExcel: boolean,
-    inputfileValue: React.MutableRefObject<HTMLInputElement | null>
+    inputfileValue: React.MutableRefObject<HTMLInputElement | null>,
+    getAllEventsDataByApiForPresenter: () => void,
+    storeAllEventsCreatedByPresenter: EventType[] | [],
+    setStoreAllEventsCreatedByPresenter: React.Dispatch<React.SetStateAction<EventType[] | []>>,
     // storeAllUnratedEvents: EventType[] | [],
     // setStoreAllUnratedEvents: React.Dispatch<React.SetStateAction<EventType[] | []>>,
     // currentEventToRate : EventType | null,
@@ -102,6 +105,7 @@ const ContextData: React.FC<props> = ({ children }) => {
     const [presentersDetailsPopupValue, setPresentersDetailsPopupValue] = useState<boolean>(false);
     const [presentersDetailsPopup, setPresentersDetailsPopup] = useState<userPresentersI | null>(null);
     const [storeAllUpcomingEvents, setStoreAllUpcomingEvents] = useState<EventType[] | []>([]);
+    const [storeAllEventsCreatedByPresenter, setStoreAllEventsCreatedByPresenter] = useState<EventType[] | []>([]);
     const [logInPopupValue, setLoginPopupValue] = useState<boolean>(false)
     const [initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue] = useState<boolean>(false)
     const [loginForm, setLoginForm] = useState<loginFormI>({
@@ -181,6 +185,26 @@ const ContextData: React.FC<props> = ({ children }) => {
         }).then((response) => {
             // console.log(response, `${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=${limitForUpcomingEvents}&skip=${skipForUpcomingEvents}&industry=${filterFields.industry}&segment=${filterFields.segment}`);
             setStoreAllUpcomingEvents(response.data.events)
+            setAppLoader(false)
+            console.log('pk1')
+        }).catch((err) => {
+            console.log(err, 'err')
+            // setTimeout(()=>{
+            setAppLoader(false)
+            // }, 5000)
+        })
+    }
+
+    const getAllEventsDataByApiForPresenter = () => {
+        // getAllToAttendEventsDataByApi()
+        setAppLoader(true);
+        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/presenters?limit=0&skip=0&industry=${filterFields.industry}&segment=${filterFields.segment}`, {
+            headers: {
+                Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
+            },
+        }).then((response) => {
+            // console.log(response, `${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=${limitForUpcomingEvents}&skip=${skipForUpcomingEvents}&industry=${filterFields.industry}&segment=${filterFields.segment}`);
+            setStoreAllEventsCreatedByPresenter(response.data)
             setAppLoader(false)
             console.log('pk1')
         }).catch((err) => {
@@ -374,7 +398,7 @@ const ContextData: React.FC<props> = ({ children }) => {
 
 
     return (
-        <ProductContextData.Provider value={{ storeAllUpcomingEvents, setStoreAllUpcomingEvents, isFilterForm, setIsFilterForm, toggleEventTabs, setToggleEventTabs, activeMainTab, setActiveMainTab, activeEventSubTab, setEventSubTab, getAllPresentersDataByApi, storeAllPresenters, setStoreAllPresenters, presentersDetailsPopupValue, setPresentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopup, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, loginForm, setLoginForm, loginUserDetail, setLoginUserDetail, getAllPastEventsDataByApi, storeAllPastEvents, setStoreAllPastEvents, getAllSubAdminListDataByApi, storeAllSubAdminList, setStoreAllSubAdminList, getAllToAttendEventsDataByApi, storeAllToAttendEvents, setLimitForUpcomingEvent, setSkipForUpcomingEvent, limitForUpcomingEvents, skipForUpcomingEvents, skipForPastEvents, limitForPastEvents, setLimitForPastEvent, setSkipForPastEvent, filterFields, setFilterFields, applyFilterData, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue, forgetPasswordForEmail, setForgetPasswordForEmail, removeFilter, appLoader, toggleSidebar, setToggleSidebar, eventsDetailsPopupValue, setEventsDetailsPopupValue, eventsDetailsPopup, setEventsDetailsPopup, uploadBulkUserApi, excelBulkUserFile, setExcelBulkUserFile, handleChangeExcelFile, isLoadingForExcel, setIsLoadingForExcel, inputfileValue }}>
+        <ProductContextData.Provider value={{ storeAllUpcomingEvents, setStoreAllUpcomingEvents, isFilterForm, setIsFilterForm, toggleEventTabs, setToggleEventTabs, activeMainTab, setActiveMainTab, activeEventSubTab, setEventSubTab, getAllPresentersDataByApi, storeAllPresenters, setStoreAllPresenters, presentersDetailsPopupValue, setPresentersDetailsPopupValue, presentersDetailsPopup, setPresentersDetailsPopup, getAllUpcomingEventsDataByApi, logInPopupValue, setLoginPopupValue, loginForm, setLoginForm, loginUserDetail, setLoginUserDetail, getAllPastEventsDataByApi, storeAllPastEvents, setStoreAllPastEvents, getAllSubAdminListDataByApi, storeAllSubAdminList, setStoreAllSubAdminList, getAllToAttendEventsDataByApi, storeAllToAttendEvents, setLimitForUpcomingEvent, setSkipForUpcomingEvent, limitForUpcomingEvents, skipForUpcomingEvents, skipForPastEvents, limitForPastEvents, setLimitForPastEvent, setSkipForPastEvent, filterFields, setFilterFields, applyFilterData, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue, forgetPasswordForEmail, setForgetPasswordForEmail, removeFilter, appLoader, toggleSidebar, setToggleSidebar, eventsDetailsPopupValue, setEventsDetailsPopupValue, eventsDetailsPopup, setEventsDetailsPopup, uploadBulkUserApi, excelBulkUserFile, storeAllEventsCreatedByPresenter, getAllEventsDataByApiForPresenter, setExcelBulkUserFile, handleChangeExcelFile, isLoadingForExcel, setIsLoadingForExcel, inputfileValue, setStoreAllEventsCreatedByPresenter }}>
             {children}
         </ProductContextData.Provider>
     )

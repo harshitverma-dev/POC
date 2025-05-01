@@ -25,11 +25,12 @@ const UpcomingEvents: React.FC = () => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { getAllPresentersDataByApi, appLoader, storeAllPresenters, getAllUpcomingEventsDataByApi, loginUserDetail, storeAllUpcomingEvents, setLoginPopupValue, logInPopupValue, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
+    const { getAllPresentersDataByApi, appLoader, storeAllPresenters,removeFilter, getAllUpcomingEventsDataByApi, loginUserDetail, storeAllUpcomingEvents, setLoginPopupValue, logInPopupValue, initateForgetPasswordPopupValue, setInitateForgetPasswordPopupValue } = context;
 
     const CONTACT_EMAIL = 'timetappers@osttalent.com';
 
     useEffect(() => {
+        // removeFilter();
         getAllPresentersDataByApi();
         getAllUpcomingEventsDataByApi();
         // console.log(storeAllPresenters)
