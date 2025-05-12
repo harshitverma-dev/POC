@@ -352,7 +352,7 @@ const ContextData: React.FC<props> = ({ children }) => {
 
     // useEffect(() => {
     //     getAllUpcomingEventsDataByApi();
-    // }, [limitForUpcomingEvents, skipForUpcomingEvents])
+    // }, [limitForUpcomingEvents, skipForUpcomingEvents]);
 
     // const fetchFilterChangesApi = async () => {
     //     if (location.pathname === '/presenters-list') {
