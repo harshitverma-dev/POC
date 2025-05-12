@@ -60,7 +60,7 @@ const SeeAllPresentersMain: React.FC = () => {
             <div className='flex flex-col md:flex-row gap-3 w-full items-start'>
                 <div className='w-[100%] md:w-[65%] lg:w-[70%] xl:w-[75%] 2xl:w-4/5'>
                     {/* <EventsTab /> */}
-                    <div className='grid grid-cols-2 2xl:grid-cols-3 gap-3 bg-white p-4 rounded-[15px_15px_0_0]'>
+                    <div className='grid grid-cols-2 2xl:grid-cols-3 gap-3 bg-white p-4 rounded-[15px_15px_0_0] thin-scrollbar-presenter'>
                         {
                             appLoader ? <div>Data is beening loaded ...</div> : (storeAllPresenters !== null && storeAllPresenters?.length > 0) ? storeAllPresenters?.map((items, index) => {
                                 return (

@@ -2,7 +2,9 @@ type SegmentType = string[]
 type IndustryType = string[]
 export interface IndustrySegemntType {
     industry: string,
-    segment: string
+    segment: string,
+    presenterIndustry: string,
+    presenterSegment: string,
 }
 
 // export const SegmentList:SegmentType = ['IT', 'Finance', 'Consulting', 'Sales & Marketing'];

@@ -57,7 +57,7 @@ export interface createContextType {
     filterFields: IndustrySegemntType,
     setFilterFields: React.Dispatch<React.SetStateAction<IndustrySegemntType>>,
     applyFilterData: () => void,
-    removeFilter: () => void
+    removeFilter: (filterType: string) => void
     forgetPasswordForEmail: string
     setForgetPasswordForEmail: React.Dispatch<React.SetStateAction<string>>,
     setToggleSidebar: React.Dispatch<React.SetStateAction<boolean>>,
@@ -128,7 +128,9 @@ const ContextData: React.FC<props> = ({ children }) => {
     // const [storeLengthOfPastEvents, setStoreLengthOfPastEvent] = useState<number>(0)
     const [filterFields, setFilterFields] = useState<IndustrySegemntType>({
         industry: '',
-        segment: ''
+        segment: '',
+        presenterIndustry: '',
+        presenterSegment: ''
     })
     const [forgetPasswordForEmail, setForgetPasswordForEmail] = useState<string>('')
     const [toggleSidebar, setToggleSidebar] = useState<boolean>(false);
@@ -149,7 +151,7 @@ const ContextData: React.FC<props> = ({ children }) => {
     // get All Presenters ->>
     const getAllPresentersDataByApi = () => {
         setAppLoader(true);
-        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/presentrs?limit=0&skip=0&industry=${filterFields.industry}&segment=${filterFields.segment}`).then((response) => {
+        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/profile/v1/presentrs?limit=0&skip=0&industry=${encodeURIComponent(filterFields.presenterIndustry)}&segment=${filterFields.presenterSegment}`).then((response) => {
             // console.log(response);
             setAppLoader(false);
             setStoreAllPresenters(response.data.presenters);
@@ -178,7 +180,7 @@ const ContextData: React.FC<props> = ({ children }) => {
     const getAllUpcomingEventsDataByApi = () => {
         getAllToAttendEventsDataByApi()
         setAppLoader(true);
-        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=0&skip=0&industry=${filterFields.industry}&segment=${filterFields.segment}`, {
+        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=0&skip=0&industry=${encodeURIComponent(filterFields.industry)}&segment=${filterFields.segment}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
@@ -198,7 +200,7 @@ const ContextData: React.FC<props> = ({ children }) => {
     const getAllEventsDataByApiForPresenter = () => {
         // getAllToAttendEventsDataByApi()
         setAppLoader(true);
-        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/presenters?limit=0&skip=0&industry=${filterFields.industry}&segment=${filterFields.segment}`, {
+        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/presenters?limit=0&skip=0&industry=${encodeURIComponent(filterFields.industry)}&segment=${filterFields.segment}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
@@ -235,7 +237,7 @@ const ContextData: React.FC<props> = ({ children }) => {
     // }
     const getAllPastEventsDataByApi = () => {
         setAppLoader(true)
-        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/past-events?limit=0&skip=0&industry=${filterFields.industry}&segment=${filterFields.segment}`, {
+        axios.get(`${import.meta.env.VITE_BASE_URL}/university-student/events/v1/past-events?limit=0&skip=0&industry=${encodeURIComponent(filterFields.industry)}&segment=${filterFields.segment}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('userAccessToken')}`
             },
@@ -352,15 +354,23 @@ const ContextData: React.FC<props> = ({ children }) => {
     //     getAllUpcomingEventsDataByApi();
     // }, [limitForUpcomingEvents, skipForUpcomingEvents])
 
-    const fetchFilterChangesApi = async () => {
-        if (location.pathname === '/presenters-list') {
-            await getAllPresentersDataByApi();
-        } else {
-            await Promise.all([
-                getAllUpcomingEventsDataByApi(),
-                getAllPastEventsDataByApi()
-            ]);
-        }
+    // const fetchFilterChangesApi = async () => {
+    //     if (location.pathname === '/presenters-list') {
+    //         await getAllPresentersDataByApi();
+    //     } else {
+    //         await Promise.all([
+    //             getAllUpcomingEventsDataByApi(),
+    //             getAllPastEventsDataByApi()
+    //         ]);
+    //     }
+    // }
+
+    const fetchFilterChangesApi = () => {
+        getAllPresentersDataByApi();
+        getAllUpcomingEventsDataByApi();
+        getAllEventsDataByApiForPresenter();
+        getAllPastEventsDataByApi();
+        getAllToAttendEventsDataByApi();
     }
 
 
@@ -369,28 +379,59 @@ const ContextData: React.FC<props> = ({ children }) => {
         setIsFilterForm(false)
     }
 
-    useEffect(() => {
-        if (filterFields.industry === '' && filterFields.segment === '') {
-            fetchFilterChangesApi();
-            getAllUpcomingEventsDataByApi(),
-            getAllPastEventsDataByApi()
-        }
-    }, [filterFields])
+    // useEffect(() => {
+    //     if (filterFields.industry === '' && filterFields.segment === '') {
+    //         fetchFilterChangesApi();
+    //         getAllUpcomingEventsDataByApi(),
+    //         getAllPastEventsDataByApi()
+    //     }
+    // }, [filterFields])
 
-    const removeFilter = () => {
-        setFilterFields({
-            industry: '',
-            segment: ''
-        })
-        setIsFilterForm(false)
-    }
+ const [filtersCleared, setFiltersCleared] = useState(false);
 
+useEffect(() => {
+  // Clear filters when path changes
+  removeFilter('bothFilter');
+  setFiltersCleared(true);
+}, [location.pathname]);
 
-    useEffect(() => {
-        if (location.pathname !== '/' && location.pathname !== '/my-events') {
-            removeFilter();
-        }
-    }, [location.pathname])
+useEffect(() => {
+  if (filtersCleared) {
+    // Now call APIs
+    getAllPresentersDataByApi();
+    getAllUpcomingEventsDataByApi();
+    getAllEventsDataByApiForPresenter();
+    getAllPastEventsDataByApi();
+    getAllToAttendEventsDataByApi();
+    setFiltersCleared(false); // Reset flag
+  }
+}, [filtersCleared]);
+
+const removeFilter = (filterType: string) => {
+  if (filterType === 'eventFilter') {
+    setFilterFields(prev => ({
+      ...prev,
+      industry: '',
+      segment: '',
+    }));
+  } else if (filterType === 'presenterFilter') {
+    setFilterFields(prev => ({
+      ...prev,
+      presenterIndustry: '',
+      presenterSegment: '',
+    }));
+  } else if (filterType === 'bothFilter') {
+    setFilterFields({
+      industry: '',
+      segment: '',
+      presenterIndustry: '',
+      presenterSegment: ''
+    });
+  }
+
+  setIsFilterForm(false);
+};
+
 
 
 

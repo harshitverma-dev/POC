@@ -70,7 +70,7 @@ const MyEvents: React.FC = () => {
 
                         <div>
                             <EventsTab />
-                            <div className='grid grid-cols-2 2xl:grid-cols-3 gap-3 bg-white p-4 rounded-[15px_15px_0_0]'>
+                            <div className='grid grid-cols-2 2xl:grid-cols-3 gap-3 bg-white p-4 rounded-[15px_15px_0_0] thin-scrollbar'>
                                 {
 
                                     activeEventSubTab === 'To Attend' ?
