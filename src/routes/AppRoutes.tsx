@@ -13,6 +13,7 @@ import ProtectedRoute from "../components/ProtectedRoutes";
 import SubAdminTable from "../pages/SubAdminTable";
 import AddStudent from "../pages/AddStudent";
 import ForgotPassword from "../pages/ForgotPassword";
+import StudentTable from "../pages/StudentTable";
 // import AddNewUser from "../pages/AddNewPresenter";
 // AccessControl
 interface propsI {
@@ -79,7 +80,10 @@ const AppRoutes: React.FC<propsI> = ({ userRole }) => {
         {
             path: "/add-student",
             element: <AddStudent />
-
+        },
+         {
+            path: "/student-table",
+            element: <StudentTable />
         }
     ]
     return (

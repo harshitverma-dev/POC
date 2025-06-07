@@ -71,7 +71,7 @@ export const AccessControl = {
         ]
     },
     'SUBADMIN': {
-        routes: ['/add-student', '/change-password', '/presenters-list'],
+        routes: ['/add-student', '/change-password', '/presenters-list', '/student-table'],
         navLinks: [
             {
                 navName: 'Add Student',
@@ -80,7 +80,11 @@ export const AccessControl = {
             {
                 navName: 'Change Password',
                 navLink: '/change-password'
-            }
+            },
+             {
+                navName: 'Student List',
+                navLink: '/student-table'
+            },
         ]
     }
 }

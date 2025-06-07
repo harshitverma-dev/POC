@@ -193,8 +193,9 @@ const EventCard: React.FC<EventProps> = (props) => {
             </div>
             <div>
                 {
-                    (eventDetails == 'Upcoming Events' || eventDetails == '/') && <div className='eventBtnContainer flex justify-end items-center'>
-                        <Button disabled={isEventAlreadyAttended()} className='text-[12px] sm:text-[13px] lg:text-[15px]' size='small' loading={isLoadingForPostAttendEvent ? true : false} onClick={postAttendEventByApi} label={isEventAlreadyAttended() ? "Already Attending" : "Attend"} severity="secondary" />
+                    (eventDetails == 'Upcoming Events' || eventDetails == '/') && <div className='eventBtnContainer flex justify-between items-center'>
+                         <div className='text-[13px] md:text-[15px]'>Attendee - <span>{eventData.attendees}</span></div>
+                        <Button disabled={isEventAlreadyAttended()} className='text-[12px] sm:text-[13px] lg:text-[15px]' size='small' loading={isLoadingForPostAttendEvent ? true : false} onClick={postAttendEventByApi} label={isEventAlreadyAttended() ? "Attending" : "Attend"} severity="secondary" />
                     </div>
                 }
                 {
