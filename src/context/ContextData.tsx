@@ -212,7 +212,7 @@ const ContextData: React.FC<props> = ({ children }) => {
             // console.log(response, `${import.meta.env.VITE_BASE_URL}/university-student/events/v1/events?limit=${limitForUpcomingEvents}&skip=${skipForUpcomingEvents}&industry=${filterFields.industry}&segment=${filterFields.segment}`);
             setStoreAllEventsCreatedByPresenter(response.data)
             setAppLoader(false)
-            console.log('pk1')
+            // console.log('pk1')
         }).catch((err) => {
             console.log(err, 'err')
             // setTimeout(()=>{

@@ -28,7 +28,7 @@ const EventCard: React.FC<EventProps> = (props) => {
     if (!context) {
         throw new Error('it should not be null');
     }
-    const { getAllToAttendEventsDataByApi, getAllUpcomingEventsDataByApi, storeAllPresenters, setPresentersDetailsPopupValue, setPresentersDetailsPopup, loginUserDetail, storeAllToAttendEvents, setEventsDetailsPopup, setEventsDetailsPopupValue } = context;
+    const { getAllToAttendEventsDataByApi, getAllEventsDataByApiForPresenter, getAllUpcomingEventsDataByApi, storeAllPresenters, setPresentersDetailsPopupValue, setPresentersDetailsPopup, loginUserDetail, storeAllToAttendEvents, setEventsDetailsPopup, setEventsDetailsPopupValue } = context;
     const toast = useRef<Toast>(null)
     const { eventData, eventDetails } = props;
     const [isLoadingForPostAttendEvent, setIsLoadingForPostAttendEvent] = useState<boolean>(false)
@@ -37,6 +37,9 @@ const EventCard: React.FC<EventProps> = (props) => {
     const [storeEditEventsDetails, setStoreEditEventsDetails] = useState<any>(null)
     const [eventDate, setEventDate] = useState<Nullable<Date>>(null);
     const [CreateEventErrors, setCreateEventErrors] = useState([])
+
+
+    console.log(storeEditEventsDetails)
 
 
 
@@ -111,6 +114,7 @@ const EventCard: React.FC<EventProps> = (props) => {
                 });
                 setTimeout(() => {
                     // getLengthOfAllUpcomingEventsByApi();
+                    getAllEventsDataByApiForPresenter();
                     getAllUpcomingEventsDataByApi();
                 }, 1200)
 
@@ -166,6 +170,7 @@ const EventCard: React.FC<EventProps> = (props) => {
                 detail: 'Event updated successfully!'
             });
             setTimeout(() => {
+                getAllEventsDataByApiForPresenter();
                 getAllUpcomingEventsDataByApi();
             }, 1200)
         }).catch(err => {
@@ -194,7 +199,7 @@ const EventCard: React.FC<EventProps> = (props) => {
             <div>
                 {
                     (eventDetails == 'Upcoming Events' || eventDetails == '/') && <div className='eventBtnContainer flex justify-between items-center'>
-                         <div className='text-[13px] md:text-[15px]'>Attendee - <span>{eventData.attendees}</span></div>
+                        <div className='text-[13px] md:text-[15px]'>Attendee - <span>{eventData.attendees}</span></div>
                         <Button disabled={isEventAlreadyAttended()} className='text-[12px] sm:text-[13px] lg:text-[15px]' size='small' loading={isLoadingForPostAttendEvent ? true : false} onClick={postAttendEventByApi} label={isEventAlreadyAttended() ? "Attending" : "Attend"} severity="secondary" />
                     </div>
                 }
@@ -202,7 +207,7 @@ const EventCard: React.FC<EventProps> = (props) => {
                     eventDetails == 'To Attend' ? <div className='flex flex-col md:flex-row items-start justify-between md:items-center text-[#474747]'>
                         <div className='text-[13px] md:text-[15px]'>Attendee - <span>{eventData.attendees}</span></div>
                         <div className='flex justify-end items-center gap-2'>
-                            <Button severity="secondary" icon="pi pi-info-circle" onClick={showEventsFullInfo}/>
+                            <Button severity="secondary" icon="pi pi-info-circle" onClick={showEventsFullInfo} />
                             <Button className='text-[12px] md:text-[15px]' size='small' disabled={isLoadingForWithdrawAttendEvent} icon={isLoadingForWithdrawAttendEvent ? 'pi pi-spin pi-spinner' : 'pi pi-trash'} severity="danger" onClick={withdrawAttendEventByApi} />
                         </div>
                     </div> : eventDetails == 'To Present' ? <div className='flex justify-between items-center cursor-pointer text-[#474747]'>
@@ -232,11 +237,11 @@ const EventCard: React.FC<EventProps> = (props) => {
                     </div>
                     <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                         <label htmlFor="eventDescription" className="">Event Description:</label>
-                        <InputTextarea autoResize value={storeEditEventsDetails.description} name='eventDescription' onChange={onChangeFunForEditEvent} placeholder='Description..' rows={5} cols={30} className='mr-2 w-full' />
+                        <InputTextarea autoResize value={storeEditEventsDetails.description} name='description' onChange={onChangeFunForEditEvent} placeholder='Description..' rows={5} cols={30} className='mr-2 w-full' />
                     </div>
                     <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                         <label htmlFor="eventPlace" className="">Event Place:</label>
-                        <InputText id="eventPlace" value={storeEditEventsDetails.place} name='eventPlace' onChange={onChangeFunForEditEvent} placeholder="Enter the event place" className="mr-2 w-full" />
+                        <InputText id="eventPlace" value={storeEditEventsDetails.place} name='place' onChange={onChangeFunForEditEvent} placeholder="Enter the event place" className="mr-2 w-full" />
                     </div>
                     {/* <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                                 <label htmlFor="eventPrerequisite" className="">Event Pre-Requisite:</label>
@@ -245,11 +250,11 @@ const EventCard: React.FC<EventProps> = (props) => {
                     <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                         <label htmlFor="eventIndustry" className="">Event Industry:</label>
                         {/* <InputText id="eventIndustry" value={createEventDetails.eventIndustry} name='eventIndustry' onChange={onChangeFun} placeholder="Enter Industry" className="mr-2 w-full" /> */}
-                        <Dropdown value={storeEditEventsDetails.industry} name='eventIndustry' onChange={onChangeFunForEditEvent} options={IndustryList} placeholder="Select Industry" filter className="w-full md:w-14rem" />
+                        <Dropdown value={storeEditEventsDetails.industry} name='industry' onChange={onChangeFunForEditEvent} options={IndustryList} placeholder="Select Industry" filter className="w-full md:w-14rem" />
                     </div>
                     <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                         <label htmlFor="eventSegment" className="">Event Segment:</label>
-                        <Dropdown value={storeEditEventsDetails.segment} name='eventSegment' onChange={onChangeFunForEditEvent} options={SegmentList[storeEditEventsDetails?.industry ?? ''] || []} placeholder="Select Segment" filter className="w-full md:w-14rem" />
+                        <Dropdown value={storeEditEventsDetails.segment} name='segment' onChange={onChangeFunForEditEvent} options={SegmentList[storeEditEventsDetails?.industry ?? ''] || []} placeholder="Select Segment" filter className="w-full md:w-14rem" />
                     </div>
                     <div className="flex flex-wrap flex-col items-start justify-start mb-3 gap-2">
                         <label htmlFor="eventDateTime" className="">Event Date/Time:</label>
